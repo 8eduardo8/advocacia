@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="css/login/style.css" />
+	<title>Login</title>
+</h:head>
+<h:body style="margin: 0 0 0 0;">
+	<f:view>
+		<h:form>
+			<p:messages layout="table" errorStyle="color: red"
+				infoStyle="color: green" warnStyle="color: orange"
+				fatalStyle="color: gray" showDetail="true" />
+
+			<div align="center">
+				<img src="imagem/advocacia.png" style="height: 200px;" />
+				<h1 style="font-size: 24px; font-weight: normal; color: #777777;">Advocacia</h1>
+				<h2 style="font-size: 14px; font-weight: normal; color: #777777;">Sistema
+					de gestão de atendimentos</h2>
+			</div>
+			<br />
+			<h2 style="font-size: 14px; font-weight: normal; color: #777777;">Login</h2>
+			<p:inputText value="#{login.login}" />
+			<br />
+			<h2 style="font-size: 14px; font-weight: normal; color: #777777;">Senha</h2>
+			<p:password value="#{login.senha}" />
+			<br />
+			<p:commandButton value="Entrar" style="width:100%;"
+				action="#{login.entrar}" ajax="false" />
+			<br />
+			<br />
+			<div align="center">
+				<p:commandLink value="Esqueceu sua senha?" />
+			</div>
+		</h:form>
+	</f:view>
+</h:body>
+</html>
