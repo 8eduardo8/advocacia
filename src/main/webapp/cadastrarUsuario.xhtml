@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
 <h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Menu</title>
 	<meta name="viewport"
 		content="width=device-width, initial-scale=1, user-scalable=no" />
 </h:head>
 <h:body style="background:#ffffff;margin: 0 0 0 0;">
-	<ui:composition template="MenuPrime.xhtml">
+	<ui:composition template="menuPrime.xhtml">
 		<ui:define name="content">
 			<h:form>
 
@@ -23,35 +23,35 @@
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
 
 						<p:outputLabel value="Login" />
-						<p:inputText value="#{cadastrarUsuario.usuario.login}" />
+						<p:inputText value="#{cadastrarUsuario.usuarioBean.userLogin}" />
 
 						<p:outputLabel value="CPF" />
-						<p:inputMask value="#{cadastrarUsuario.usuario.cpf}"
+						<p:inputMask value="#{cadastrarUsuario.usuarioBean.cpf}"
 							mask="999.999.999-99" />
 
 						<p:outputLabel value="Nome" />
-						<p:inputText value="#{cadastrarUsuario.usuario.nome}" />
+						<p:inputText value="#{cadastrarUsuario.usuarioBean.nome}" />
 
 						<p:outputLabel value="Sobrenome" />
-						<p:inputText value="#{cadastrarUsuario.usuario.sobrenome}" />
+						<p:inputText value="#{cadastrarUsuario.usuarioBean.sobrenome}" />
 
 						<p:outputLabel value="Perfil" />
-						<p:selectOneMenu value="#{cadastrarUsuario.usuario.perfil}">
-							<f:selectItems value="#{cadastrarUsuario.usuario.listaPerfil}"
+						<p:selectOneMenu value="#{cadastrarUsuario.usuarioBean.perfil}">
+							<f:selectItems value="#{cadastrarUsuario.usuarioBean.listaPerfil}"
 								var="perfil" itemValue="#{perfil}" itemLabel="#{perfil}" />
 						</p:selectOneMenu>
 
 						<p:outputLabel value="E-mail" />
-						<p:inputText value="#{cadastrarUsuario.usuario.email}" />
+						<p:inputText value="#{cadastrarUsuario.usuarioBean.email}" />
 
 						<p:outputLabel value="Sexo" />
-						<p:selectOneMenu value="#{cadastrarUsuario.usuario.sexo}">
+						<p:selectOneMenu value="#{cadastrarUsuario.usuarioBean.sexo}">
 							<f:selectItem itemLabel="MASCULINO" itemValue="MASCULINO" />
 							<f:selectItem itemLabel="FEMININO" itemValue="FEMININO" />
 						</p:selectOneMenu>
 
 						<p:outputLabel value="Ativo" />
-						<p:selectBooleanButton value="#{cadastrarUsuario.usuario.ativo}"
+						<p:selectBooleanButton value="#{cadastrarUsuario.usuarioBean.ativo}"
 							onLabel="Sim" offLabel="Não" onIcon="pi pi-check"
 							offIcon="pi pi-times" style="width:60px" />
 
@@ -71,7 +71,7 @@
 				<br />
 				<br />
 
-				<p:panelGrid rendered="#{cadastrarUsuario.usuario.id > 0}"
+				<p:panelGrid rendered="#{cadastrarUsuario.usuarioBean.id > 0}"
 					columns="2"
 					columnClasses="ui-g-12 ui-md-6 ui-lg-6,ui-g-12 ui-md-6 ui-lg-6"
 					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">

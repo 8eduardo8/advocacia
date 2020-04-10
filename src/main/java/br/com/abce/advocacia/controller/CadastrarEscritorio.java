@@ -1,18 +1,27 @@
 package br.com.abce.advocacia.controller;
 
-import br.com.abce.advocacia.dao.EscritorioDao;
-import br.com.abce.advocacia.model.Escritorio;
+import br.com.abce.advocacia.bean.EscritorioBean;
+import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.service.impl.EscritorioService;
+import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 
 @Named
 @SessionScoped
-public class CadastrarEscritorio {
+public class CadastrarEscritorio implements Serializable {
 
-	public Escritorio escritorio;
+	public static final String CADASTRAR_ESCRITORIO = "cadastrarEscritorio";
+
+	private EscritorioBean escritorioBean;
+
+	@Inject
+	private EscritorioService escritorioService;
 
 	@PostConstruct
 	public void init() {
@@ -20,38 +29,40 @@ public class CadastrarEscritorio {
 	}
 
 	public String editar() {
-		return "cadastrarEscritorio";
+		return CADASTRAR_ESCRITORIO;
 	}
 
 	public String novo() {
-		escritorio = new Escritorio();
-		return "cadastrarEscritorio";
+		escritorioBean = new EscritorioBean();
+		return CADASTRAR_ESCRITORIO;
 	}
 
 	public String salvar() {
-		try {
-			escritorio.cnpj = escritorio.cnpj.toUpperCase().trim();
-			escritorio.razao = escritorio.razao.toUpperCase().trim();
-			escritorio.fantasia = escritorio.fantasia.toUpperCase().trim();
-			escritorio.endereco = escritorio.endereco.toUpperCase().trim();
 
-			new EscritorioDao().salvar(escritorio);
-			Mensagem.Info("ESCRIT�RIO SALVO!");
+		try {
+
+			escritorioService.salvar(escritorioBean);
+
+			Mensagem.info("ESCRITÓRIO SALVO!");
+
+		} catch (AdvocaciaException e) {
+			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			return "";
 		} catch (Exception e) {
-			Mensagem.Erro("ERRO AO SALVAR", e.getMessage());
-			e.printStackTrace();
+			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			LoggerUtil.error(e);
 			return "";
 		}
 
 		return novo();
 	}
 
-	public Escritorio getEscritorio() {
-		return escritorio;
+	public EscritorioBean getEscritorioBean() {
+		return escritorioBean;
 	}
 
-	public void setEscritorio(Escritorio escritorio) {
-		this.escritorio = escritorio;
+	public void setEscritorioBean(EscritorioBean escritorioBean) {
+		this.escritorioBean = escritorioBean;
 	}
 
 }

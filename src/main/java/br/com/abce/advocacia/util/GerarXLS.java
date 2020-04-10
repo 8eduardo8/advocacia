@@ -1,19 +1,14 @@
 package br.com.abce.advocacia.util;
 
-import java.io.File;
-
 import jxl.CellView;
 import jxl.Workbook;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
 import jxl.format.UnderlineStyle;
-import jxl.write.Label;
-import jxl.write.NumberFormat;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
+import jxl.write.*;
+
+import java.io.File;
 
 public class GerarXLS {
 	private WritableWorkbook workbook;

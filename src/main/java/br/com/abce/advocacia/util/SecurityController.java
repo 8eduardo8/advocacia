@@ -1,12 +1,12 @@
 package br.com.abce.advocacia.util;
 
+import br.com.abce.advocacia.controller.Login;
+
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-
-import br.com.abce.advocacia.controller.Login;
 
 public class SecurityController implements PhaseListener {
 
@@ -42,7 +42,7 @@ public class SecurityController implements PhaseListener {
 		}
 
 		// if (loginPage.getSenha().length() < 3) {
-		// Mensagem.Info("A ALTERA��O DA SUA SENHA � OBRIGAT�RIA!", "");
+		// Mensagem.info("A ALTERA��O DA SUA SENHA � OBRIGAT�RIA!", "");
 		// NavigationHandler handler =
 		// context.getApplication().getNavigationHandler();
 		// handler.handleNavigation(context, null, "/AlterarSenha.jsf");

@@ -1,27 +1,33 @@
 package br.com.abce.advocacia.controller;
 
-import br.com.abce.advocacia.dao.ProcessoDao;
-import br.com.abce.advocacia.dao.ProcessoUsuarioDao;
-import br.com.abce.advocacia.dao.UsuarioDao;
-import br.com.abce.advocacia.model.Processo;
-import br.com.abce.advocacia.model.ProcessoUsuario;
-import br.com.abce.advocacia.model.Usuario;
+import br.com.abce.advocacia.bean.ProcessoBean;
+import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.service.impl.ProcessoService;
+import br.com.abce.advocacia.service.impl.UsuarioService;
+import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
+import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 @Named
 @SessionScoped
-public class CadastrarProcesso {
+public class CadastrarProcesso implements Serializable {
 
-	public Processo processo;
-	public int usuarioSelecionado;
-	public List<WrapperProcessoUsuario> listaProcessoUsuario;
-	public List<Usuario> listaUsuario;
+	private ProcessoBean processoBean;
+	private UsuarioBean usuarioSelecionado;
+	private List<UsuarioBean> listaUsuarioBean;
+
+	@Inject
+	private UsuarioService usuarioService;
+
+	@Inject
+	private ProcessoService processoService;
 
 	@PostConstruct
 	public void init() {
@@ -30,47 +36,34 @@ public class CadastrarProcesso {
 
 	public String editar() {
 		try {
-			Processo aux = processo;
+			ProcessoBean aux = processoBean;
 			novo();
-			processo = aux;
-			List<ProcessoUsuario> lista = new ProcessoUsuarioDao().get(processo.id);
-			listaProcessoUsuario = new ArrayList<>();
-			for (ProcessoUsuario pu : lista) {
-				listaProcessoUsuario.add(new WrapperProcessoUsuario(pu));
-			}
+			processoBean = aux;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LoggerUtil.error(e);
 		}
 		return "cadastrarProcesso";
 	}
 
 	public String novo() {
 		try {
-			listaUsuario = new UsuarioDao().get();
+			listaUsuarioBean = usuarioService.listar();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LoggerUtil.error(e);
 		}
-		processo = new Processo();
-		listaProcessoUsuario = new ArrayList<>();
+		processoBean = new ProcessoBean();
 		return "cadastrarProcesso";
 	}
 
 	public String salvar() {
 		try {
-			processo.numero = processo.numero.toUpperCase().trim();
-			processo.area = processo.area.toUpperCase().trim();
 
-			new ProcessoDao().salvar(processo);
+			processoService.salvar(processoBean);
 
-			for (WrapperProcessoUsuario wrapper : listaProcessoUsuario) {
-				wrapper.processoUsuario.processo = processo.id;
-				new ProcessoUsuarioDao().salvar(wrapper.processoUsuario);
-			}
-
-			Mensagem.Info("ESCRITÓRIO SALVO!");
+			Mensagem.info("ESCRITORIO SALVO!");
 		} catch (Exception e) {
-			Mensagem.Erro("ERRO AO SALVAR", e.getMessage());
-			e.printStackTrace();
+			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			LoggerUtil.error(e);
 			return "";
 		}
 
@@ -79,79 +72,41 @@ public class CadastrarProcesso {
 
 	public String adicionar() {
 		try {
-			ProcessoUsuario pu = new ProcessoUsuario();
-			pu.usuario = usuarioSelecionado;
 
-			WrapperProcessoUsuario wrapper = new WrapperProcessoUsuario(pu);
-			listaProcessoUsuario.add(wrapper);
+			processoBean.getListaUsuarios().add(usuarioSelecionado);
 		} catch (Exception e) {
-			Mensagem.Warn("ERRO ADICIONAR", e.getMessage());
-			e.printStackTrace();
+			Mensagem.warn("ERRO ADICIONAR", e.getMessage());
+			LoggerUtil.error(e);
 		}
 		return "";
 	}
 
-	public String remover(WrapperProcessoUsuario item) {
-		listaProcessoUsuario.remove(item);
+	public String remover(UsuarioBean item) {
+		processoBean.getListaUsuarios().remove(item);
 		return "";
 	}
 
-	public Processo getProcesso() {
-		return processo;
+	public ProcessoBean getProcessoBean() {
+		return processoBean;
 	}
 
-	public void setProcesso(Processo processo) {
-		this.processo = processo;
+	public void setProcessoBean(ProcessoBean processoBean) {
+		this.processoBean = processoBean;
 	}
 
-	public List<WrapperProcessoUsuario> getListaProcessoUsuario() {
-		return listaProcessoUsuario;
+	public List<UsuarioBean> getListaUsuarioBean() {
+		return listaUsuarioBean;
 	}
 
-	public void setListaProcessoUsuario(List<WrapperProcessoUsuario> listaProcessoUsuario) {
-		this.listaProcessoUsuario = listaProcessoUsuario;
+	public void setListaUsuarioBean(List<UsuarioBean> listaUsuarioBean) {
+		this.listaUsuarioBean = listaUsuarioBean;
 	}
 
-	public List<Usuario> getListaUsuario() {
-		return listaUsuario;
-	}
-
-	public void setListaUsuario(List<Usuario> listaUsuario) {
-		this.listaUsuario = listaUsuario;
-	}
-
-	public int getUsuarioSelecionado() {
+	public UsuarioBean getUsuarioSelecionado() {
 		return usuarioSelecionado;
 	}
 
-	public void setUsuarioSelecionado(int usuarioSelecionado) {
+	public void setUsuarioSelecionado(UsuarioBean usuarioSelecionado) {
 		this.usuarioSelecionado = usuarioSelecionado;
-	}
-
-	//
-	public class WrapperProcessoUsuario {
-		public ProcessoUsuario processoUsuario;
-		public Usuario usuario;
-
-		public WrapperProcessoUsuario(ProcessoUsuario pu) throws Exception {
-			this.processoUsuario = pu;
-			usuario = new UsuarioDao().get(pu.usuario);
-		}
-
-		public ProcessoUsuario getProcessoUsuario() {
-			return processoUsuario;
-		}
-
-		public void setProcessoUsuario(ProcessoUsuario processoUsuario) {
-			this.processoUsuario = processoUsuario;
-		}
-
-		public Usuario getUsuario() {
-			return usuario;
-		}
-
-		public void setUsuario(Usuario usuario) {
-			this.usuario = usuario;
-		}
 	}
 }

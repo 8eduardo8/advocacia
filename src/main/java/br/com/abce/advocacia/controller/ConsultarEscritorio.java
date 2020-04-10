@@ -1,22 +1,30 @@
 package br.com.abce.advocacia.controller;
 
-import br.com.abce.advocacia.dao.EscritorioDao;
-import br.com.abce.advocacia.model.Escritorio;
+import br.com.abce.advocacia.bean.EscritorioBean;
+import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
+import br.com.abce.advocacia.service.impl.EscritorioService;
+import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
+import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Named
 @SessionScoped
-public class ConsultarEscritorio {
+public class ConsultarEscritorio implements Serializable {
 
-	public String filtro;
-	public boolean ativo;
-	public List<Escritorio> lista;
+	private String filtro;
+	private boolean ativo;
+	private List<EscritorioBean> lista;
+
+	@Inject
+	private EscritorioService escritorioService;
 
 	@PostConstruct
 	public void init() {
@@ -24,13 +32,18 @@ public class ConsultarEscritorio {
 	}
 
 	public String consultar() {
+
 		lista = new ArrayList<>();
 
 		try {
-			lista = new EscritorioDao().get();
+
+			lista = escritorioService.listar();
+
+		} catch (RecursoNaoEncontradoException ex) {
+			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.Erro("ERRO AO CONSULTAR!", e.getMessage());
-			e.printStackTrace();
+			Mensagem.erro("ERRO AO CONSULTAR!", e.getMessage());
+			LoggerUtil.error(e);
 		}
 
 		return "consultarEscritorio";
@@ -52,11 +65,11 @@ public class ConsultarEscritorio {
 		this.ativo = ativo;
 	}
 
-	public List<Escritorio> getLista() {
+	public List<EscritorioBean> getLista() {
 		return lista;
 	}
 
-	public void setLista(List<Escritorio> lista) {
+	public void setLista(List<EscritorioBean> lista) {
 		this.lista = lista;
 	}
 

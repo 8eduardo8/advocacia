@@ -1,20 +1,28 @@
 package br.com.abce.advocacia.controller;
 
-import br.com.abce.advocacia.dao.UsuarioDao;
-import br.com.abce.advocacia.model.Usuario;
+import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.service.impl.AutenticacaoService;
+import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 
 @Named
 @SessionScoped
-public class Login {
+public class Login implements Serializable {
 
-	public String login, senha;
-	public Usuario usuario;
-	boolean logado;
+	private String userLogin;
+	private String senha;
+	private UsuarioBean usuarioBean;
+	private boolean logado;
+
+	@Inject
+	private AutenticacaoService autenticacaoService;
 
 	@PostConstruct
 	public void init() {
@@ -22,39 +30,41 @@ public class Login {
 
 	public String entrar() {
 
-		usuario = null;
+		usuarioBean = null;
+		String retorno = null;
+
 		try {
-			usuario = new UsuarioDao().get(login);
+
+			usuarioBean = autenticacaoService.login(userLogin, senha);
+
+			logado = true;
+			retorno = "menu";
+
+		} catch (AdvocaciaException e) {
+			Mensagem.erro(e.getMessage());
+			retorno = "";
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (usuario == null) {
-			Mensagem.Erro("Login n�o encontrado!", "");
-			return "";
+			LoggerUtil.error(e);
+			Mensagem.erro(e.getMessage());
+			retorno = "";
 		}
 
-		if (usuario.senha.equals(senha) == false) {
-			Mensagem.Erro("Senha Inv�lida!", "");
-			return "";
-		}
-
-		logado = true;
-		return "menu";
+		return retorno;
 	}
 
 	public String sair() {
 		logado = false;
 		senha = "";
-		usuario = new Usuario();
-		return "login";
+		usuarioBean = new UsuarioBean();
+		return "userLogin";
 	}
 
-	public String getLogin() {
-		return login;
+	public String getUserLogin() {
+		return userLogin;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setUserLogin(String userLogin) {
+		this.userLogin = userLogin;
 	}
 
 	public String getSenha() {
@@ -65,12 +75,12 @@ public class Login {
 		this.senha = senha;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public UsuarioBean getUsuarioBean() {
+		return usuarioBean;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setUsuarioBean(UsuarioBean usuarioBean) {
+		this.usuarioBean = usuarioBean;
 	}
 
 	public boolean isLogado() {

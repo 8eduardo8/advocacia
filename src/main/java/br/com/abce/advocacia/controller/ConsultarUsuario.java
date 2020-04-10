@@ -1,23 +1,30 @@
 package br.com.abce.advocacia.controller;
 
-import br.com.abce.advocacia.dao.UsuarioDao;
-import br.com.abce.advocacia.model.Usuario;
+import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.service.impl.UsuarioService;
+import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
+import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Named
 @SessionScoped
-public class ConsultarUsuario {
+public class ConsultarUsuario implements Serializable {
 
-	public String filtro;
-	public String perfil;
-	public boolean ativo;
-	public List<Usuario> lista;
+	private String filtro;
+	private String perfil;
+	private boolean ativo;
+	private List<UsuarioBean> lista;
+
+	@Inject
+	private UsuarioService usuarioService;
 
 	@PostConstruct
 	public void init() {
@@ -28,10 +35,12 @@ public class ConsultarUsuario {
 		lista = new ArrayList<>();
 
 		try {
-			lista = new UsuarioDao().get();
+
+			lista = usuarioService.listar();
+
 		} catch (Exception e) {
-			Mensagem.Erro("ERRO AO CONSULTAR!", e.getMessage());
-			e.printStackTrace();
+			Mensagem.erro("ERRO AO CONSULTAR!", e.getMessage());
+			LoggerUtil.error(e);
 		}
 
 		return "consultarUsuario";
@@ -45,11 +54,11 @@ public class ConsultarUsuario {
 		this.filtro = filtro;
 	}
 
-	public List<Usuario> getLista() {
+	public List<UsuarioBean> getLista() {
 		return lista;
 	}
 
-	public void setLista(List<Usuario> lista) {
+	public void setLista(List<UsuarioBean> lista) {
 		this.lista = lista;
 	}
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
 <h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Menu</title>
 
 	<meta name="viewport"
@@ -15,7 +15,7 @@
 
 </h:head>
 <h:body style="background:#ffffff;margin: 0 0 0 0;">
-	<ui:composition template="MenuPrime.xhtml">
+	<ui:composition template="menuPrime.xhtml">
 		<ui:define name="content">
 			<h:form>
 				<p:panel header="Consultar Processo">
@@ -45,7 +45,7 @@
 				<br />
 				<br />
 				<p:dataTable value="#{consultarProcesso.lista}" var="item"
-					style="font-size:70%;" paginator="true"
+					style="font-size:70%;" paginator="true" emptyMessage="Nenhum registro encontrado."
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} usuários"
 					rowsPerPageTemplate="100,500,1000" rows="100">
@@ -54,7 +54,7 @@
 							style="background:#616161;border:none;"
 							action="#{cadastrarProcesso.editar}">
 							<f:setPropertyActionListener
-								target="#{cadastrarProcesso.processo}" value="#{item}" />
+                                    target="#{cadastrarProcesso.processoBean}" value="#{item}" />
 						</p:commandButton>
 					</p:column>
 					<p:column headerText="Número" style="width:120px;">

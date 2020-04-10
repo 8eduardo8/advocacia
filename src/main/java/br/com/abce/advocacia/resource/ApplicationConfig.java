@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package br.com.abce.advocacia.resource;
+import br.com.abce.advocacia.resource.v1.TesteResource;
 import io.swagger.jaxrs.config.BeanConfig;
 
 import javax.ws.rs.ApplicationPath;
@@ -22,7 +23,7 @@ public class ApplicationConfig extends Application {
 
         BeanConfig conf = new BeanConfig();
         conf.setTitle("API Sistema de Gestão de Processo Judicial");
-        conf.setDescription("Sistema de gestão de processo judicial");
+        conf.setDescription("Sistema de gestão de Processo judicial");
         conf.setVersion("1.0.0");
         conf.setBasePath("/advocacia/rest");
         conf.setResourcePackage("br.com.abce.advocacia");
@@ -43,10 +44,18 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        
-        resources.add(br.com.abce.advocacia.resource.TesteResource.class);
+
+        resources.add(br.com.abce.advocacia.resource.v1.TesteResource.class);
+        resources.add(br.com.abce.advocacia.resource.v1.EscritorioResource.class);
+        resources.add(br.com.abce.advocacia.resource.v1.UsuarioResource.class);
+        resources.add(br.com.abce.advocacia.resource.v1.AutenticacaoResource.class);
+        resources.add(br.com.abce.advocacia.resource.v1.NotaResource.class);
+        resources.add(br.com.abce.advocacia.resource.v1.ProcessoResource.class);
 
         // Swagger API documentation
+        resources.add(br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException.class);
+        resources.add(br.com.abce.advocacia.exceptions.ValidacaoException.class);
+        resources.add(br.com.abce.advocacia.exceptions.InfraestruturaException.class);
 
         // Swagger API documentation
         resources.add(io.swagger.jaxrs.listing.AcceptHeaderApiListingResource.class);

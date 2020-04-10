@@ -1,16 +1,17 @@
 package br.com.abce.advocacia.controller;
 
-import br.com.abce.advocacia.model.Nota;
+import br.com.abce.advocacia.bean.NotaBean;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Named
 @SessionScoped
-public class Menu {
+public class Menu implements Serializable {
 
 	List<WrapperNota> lista;
 
@@ -54,8 +55,29 @@ public class Menu {
 	}
 
 	public class WrapperNota {
-		public Nota nota;
-		public String mensagem;
+
+		private NotaBean notaBean;
+		private String mensagem;
+
+		public WrapperNota() {
+			super();
+		}
+
+		public String getMensagem() {
+			return mensagem;
+		}
+
+		public void setMensagem(String mensagem) {
+			this.mensagem = mensagem;
+		}
+
+		public NotaBean getNotaBean() {
+			return notaBean;
+		}
+
+		public void setNotaBean(NotaBean notaBean) {
+			this.notaBean = notaBean;
+		}
 	}
 
 	public List<WrapperNota> getLista() {

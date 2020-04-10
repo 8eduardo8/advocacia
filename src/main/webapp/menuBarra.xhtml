@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
 <h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Menu</title>
 
 	<meta name="viewport"
@@ -19,21 +19,21 @@
 		<h:form>
 			<p:sidebar widgetVar="sidebar1" baseZIndex="10000">
 				<div align="center">
-					<img src="imagem/user.png" style="width: 100px; align: center" />
+					<h:graphicImage src="imagem/user.png" style="width: 100px; align: center" />
 				</div>
 				<div>
-					<h:outputLabel value="#{login.login}" style="font-size:80%;" />
+					<h:outputLabel value="#{usuario.userLogin}" style="font-size:80%;" />
 					<br />
-					<h:outputLabel value="#{login.usuario.nome}"
+					<h:outputLabel value="#{usuario.usuarioBean.nome}"
 						style="font-size:90%;font-weight:bold;" />
 					<br />
-					<h:outputLabel value="#{login.usuario.perfil}"
+					<h:outputLabel value="#{usuario.usuarioBean.perfil}"
 						style="font-size:70%;color:#909090" />
 					<br />
 					<p:commandLink value="Atualizar Perfil" style="font-size:80%;"
 						action="#{cadastrarUsuario.editar}" ajax="false">
-						<f:setPropertyActionListener target="#{cadastrarUsuario.usuario}"
-							value="#{login.usuario}" />
+						<f:setPropertyActionListener target="#{cadastrarUsuario.usuarioBean}"
+							value="#{usuario.usuarioBean}" />
 					</p:commandLink>
 				</div>
 				<br />
@@ -52,7 +52,7 @@
 					<br />
 					<br />
 					<p:commandButton style="background: #B71C1C;border: none;"
-						value="Sair" action="#{login.sair}" ajax="false" />
+						value="Sair" action="#{usuario.sair}" ajax="false" />
 				</p:panelGrid>
 			</p:sidebar>
 

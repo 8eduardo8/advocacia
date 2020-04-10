@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="advocacia" transaction-type="JTA">
-        <jta-data-source>jdbc/advocacia_heroku</jta-data-source>
+<!--        <jta-data-source>jdbc/advocacia_heroku</jta-data-source>-->
+        <jta-data-source>jdbc/advocacia</jta-data-source>
+        <class>br.com.abce.advocacia.entity.EnderecoEntity</class>
+        <class>br.com.abce.advocacia.entity.EscritorioEntity</class>
+        <class>br.com.abce.advocacia.entity.NotaEntity</class>
+        <class>br.com.abce.advocacia.entity.NotaDocumentoEntity</class>
+        <class>br.com.abce.advocacia.entity.NotaTextoEntity</class>
+        <class>br.com.abce.advocacia.entity.ProcessoEntity</class>
+        <class>br.com.abce.advocacia.entity.ProcessoUsuarioEntity</class>
+        <class>br.com.abce.advocacia.entity.UsuarioEntity</class>
+        <class>br.com.abce.advocacia.entity.UsuarioEscritorioEntity</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.validation.factory" value="org.jboss.seam.validation.InjectingConstraintValidatorFactory"/>
+            <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/advocacia"/>
+            <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
         </properties>
     </persistence-unit>
 </persistence>
