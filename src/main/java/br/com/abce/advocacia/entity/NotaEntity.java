@@ -7,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "nota", schema = "advocacia", catalog = "")
 public class NotaEntity {
-    private int id;
+    private Long id;
     private Date dataCadastro;
     private Date dataAtualizacao;
     private Date dataExclusao;
@@ -16,12 +16,13 @@ public class NotaEntity {
     private NotaDocumentoEntity notaDocumentoByNotaDocumentoId;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

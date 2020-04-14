@@ -56,7 +56,7 @@ public class Login implements Serializable {
 		logado = false;
 		senha = "";
 		usuarioBean = new UsuarioBean();
-		return "userLogin";
+		return "login";
 	}
 
 	public String getUserLogin() {
@@ -90,5 +90,6 @@ public class Login implements Serializable {
 	public void setLogado(boolean logado) {
 		this.logado = logado;
 	}
+
 
 }

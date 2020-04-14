@@ -2,11 +2,11 @@ package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.ProcessoBean;
 import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.exceptions.AdvocaciaException;
 import br.com.abce.advocacia.service.impl.ProcessoService;
 import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
-import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -47,7 +47,11 @@ public class CadastrarProcesso implements Serializable {
 
 	public String novo() {
 		try {
+
 			listaUsuarioBean = usuarioService.listar();
+
+		} catch (AdvocaciaException ex) {
+			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
 			LoggerUtil.error(e);
 		}
@@ -61,6 +65,9 @@ public class CadastrarProcesso implements Serializable {
 			processoService.salvar(processoBean);
 
 			Mensagem.info("ESCRITORIO SALVO!");
+
+		} catch (AdvocaciaException ex) {
+			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
 			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
 			LoggerUtil.error(e);
@@ -71,9 +78,15 @@ public class CadastrarProcesso implements Serializable {
 	}
 
 	public String adicionar() {
+
 		try {
 
-			processoBean.getListaUsuarios().add(usuarioSelecionado);
+			if (!processoBean.getListaUsuarios().contains(usuarioSelecionado)) {
+				processoBean.getListaUsuarios().add(usuarioSelecionado);
+			} else {
+				Mensagem.info("Usuário já consta na relação de envolvidos.");
+			}
+
 		} catch (Exception e) {
 			Mensagem.warn("ERRO ADICIONAR", e.getMessage());
 			LoggerUtil.error(e);

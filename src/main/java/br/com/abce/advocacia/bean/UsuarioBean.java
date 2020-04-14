@@ -1,20 +1,22 @@
 package br.com.abce.advocacia.bean;
 
+import br.com.abce.advocacia.Perfil;
 import io.swagger.annotations.ApiModel;
 
+import java.beans.Transient;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @ApiModel
-public class UsuarioBean implements Serializable {
+public class UsuarioBean implements Serializable, Bean {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private Long id;
 	private String login;
-	private String perfil;
+	private int perfil;
 	private String nome;
 	private String email;
 	private String senha;
@@ -23,10 +25,10 @@ public class UsuarioBean implements Serializable {
 	private String sexo;
 	private String sobrenome;
 
-	private String endereco;
-	private String cidade;
-	private String uf;
-	private String cep;
+	private String telefoneFixo;
+	private String telefoneCelular;
+
+	private EnderecoBean enderecoBean = new EnderecoBean();
 
 	private boolean recuperarSenha;
 	private String senhaTemporaria;
@@ -39,11 +41,11 @@ public class UsuarioBean implements Serializable {
 
 	private List<String> listaProcessoId;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -55,11 +57,11 @@ public class UsuarioBean implements Serializable {
 		this.login = login;
 	}
 
-	public String getPerfil() {
+	public int getPerfil() {
 		return perfil;
 	}
 
-	public void setPerfil(String perfil) {
+	public void setPerfil(int perfil) {
 		this.perfil = perfil;
 	}
 
@@ -159,43 +161,71 @@ public class UsuarioBean implements Serializable {
 		this.sobrenome = sobrenome;
 	}
 
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
 	public List<String> getListaProcessoId() {
 		return listaProcessoId;
 	}
 
 	public void setListaProcessoId(List<String> listaProcessoId) {
 		this.listaProcessoId = listaProcessoId;
+	}
+
+	public String getTelefoneFixo() {
+		return telefoneFixo;
+	}
+
+	public void setTelefoneFixo(String telefoneFixo) {
+		this.telefoneFixo = telefoneFixo;
+	}
+
+	public String getTelefoneCelular() {
+		return telefoneCelular;
+	}
+
+	public void setTelefoneCelular(String telefoneCelular) {
+		this.telefoneCelular = telefoneCelular;
+	}
+
+	@Transient
+	public String getDescPerfil(){
+		Perfil perfil = Perfil.getPerfil(this.getPerfil());
+		return perfil != null ? perfil.getDescricao() : "Desconhecido";
+	}
+
+	public EnderecoBean getEnderecoBean() {
+		return enderecoBean;
+	}
+
+	public void setEnderecoBean(EnderecoBean enderecoBean) {
+		this.enderecoBean = enderecoBean;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UsuarioBean that = (UsuarioBean) o;
+		return getPerfil() == that.getPerfil() &&
+				isRecuperarSenha() == that.isRecuperarSenha() &&
+				isAtivo() == that.isAtivo() &&
+				Objects.equals(getId(), that.getId()) &&
+				Objects.equals(getLogin(), that.getLogin()) &&
+				Objects.equals(getNome(), that.getNome()) &&
+				Objects.equals(getEmail(), that.getEmail()) &&
+				Objects.equals(getSenha(), that.getSenha()) &&
+				Objects.equals(getCpf(), that.getCpf()) &&
+				Objects.equals(getSexo(), that.getSexo()) &&
+				Objects.equals(getSobrenome(), that.getSobrenome()) &&
+				Objects.equals(getTelefoneFixo(), that.getTelefoneFixo()) &&
+				Objects.equals(getTelefoneCelular(), that.getTelefoneCelular()) &&
+				Objects.equals(getSenhaTemporaria(), that.getSenhaTemporaria()) &&
+				Objects.equals(getDataCadastro(), that.getDataCadastro()) &&
+				Objects.equals(getDataAtualizacao(), that.getDataAtualizacao()) &&
+				Objects.equals(getDataExclusao(), that.getDataExclusao()) &&
+				Objects.equals(getListaProcessoId(), that.getListaProcessoId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), getLogin(), getPerfil(), getNome(), getEmail(), getSenha(), getCpf(), getSexo(), getSobrenome(), getTelefoneFixo(), getTelefoneCelular(), getEnderecoBean(), isRecuperarSenha(), getSenhaTemporaria(), isAtivo(), getDataCadastro(), getDataAtualizacao(), getDataExclusao(), getListaProcessoId());
 	}
 }

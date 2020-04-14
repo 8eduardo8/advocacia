@@ -9,12 +9,15 @@ import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.repository.ProcessoRepository;
+import br.com.abce.advocacia.repository.ProcessoUsuarioRepository;
 import br.com.abce.advocacia.repository.UsuarioRepository;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProcessoService implements Serializable {
@@ -28,28 +31,49 @@ public class ProcessoService implements Serializable {
     @Inject
     private UsuarioService usuarioService;
 
-    public void salvar(final ProcessoBean processoBean) {
+    @Inject
+    private ProcessoUsuarioRepository processoUsuarioRepository;
+
+    @Transactional
+    public void salvar(final ProcessoBean processoBean) throws ValidacaoException {
+
+        if (StringUtils.isBlank(processoBean.getArea()))
+            throw new ValidacaoException("Área não informada.");
+
+        if (StringUtils.isBlank(processoBean.getNumero()))
+            throw new ValidacaoException("Número não informado.");
+
+        if (StringUtils.isBlank(processoBean.getComarca()))
+            throw new ValidacaoException("Comarca não informado.");
 
         ProcessoEntity entity = new ProcessoEntity();
 
+        entity.setId(processoBean.getId());
         entity.setArea(processoBean.getArea());
         entity.setNumero(processoBean.getNumero());
-        entity.setId(processoBean.getId());
-        entity.setDataInicio(new Date(processoBean.getDataInicio().getTime()));
+        entity.setComarca(processoBean.getComarca());
+        entity.setDataInicio(processoBean.getDataInicio());
 
-        List<ProcessoUsuarioEntity> processoUsuarioEntityList = new ArrayList<>();
+        if (entity.getId() == null) {
+            entity.setDataCadastro(new java.util.Date());
+            processoRepository.salvar(entity);
+
+        } else {
+            entity.setDataAtualizacao(new java.util.Date());
+            processoRepository.editar(entity);
+        }
+
+//        List<ProcessoUsuarioEntity> processoUsuarioEntityList = new ArrayList<>();
 
         for (UsuarioBean usuarioBean : processoBean.getListaUsuarios()) {
             ProcessoUsuarioEntity processoUsuarioEntity = new ProcessoUsuarioEntity();
+            processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar(usuarioBean.getId()));
+            processoUsuarioEntity.setDataCadastro(new Date());
             processoUsuarioEntity.setProcessoByProcessoId(entity);
-            processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar((long) usuarioBean.getId()));
-            processoUsuarioEntityList.add(processoUsuarioEntity);
+            processoUsuarioRepository.salvar(processoUsuarioEntity);
         }
 
-        entity.setProcessoUsuariosById(processoUsuarioEntityList);
-
-        processoRepository.salvar(entity);
-
+//        entity.setProcessoUsuariosById(processoUsuarioEntityList);
     }
 
     public List<ProcessoBean> listar() throws RecursoNaoEncontradoException {
@@ -83,6 +107,7 @@ public class ProcessoService implements Serializable {
         bean.setArea(entity.getArea());
         bean.setDataInicio(entity.getDataInicio());
         bean.setNumero(entity.getNumero());
+        bean.setComarca(entity.getComarca());
         bean.setSituacao(String.valueOf(entity.getSituacao()));
 
         List<UsuarioBean> usuarioBeanList = new ArrayList<>();

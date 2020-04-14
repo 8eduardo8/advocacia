@@ -9,7 +9,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "usuario", schema = "advocacia", catalog = "")
 public class UsuarioEntity {
-    private int id;
+    private Long id;
     private Date dataCadastro;
     private Date dataAtualizacao;
     private Date dataExclusao;
@@ -32,12 +32,13 @@ public class UsuarioEntity {
     private Collection<UsuarioEscritorioEntity> usuarioEscritoriosById;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -243,7 +244,7 @@ public class UsuarioEntity {
         return result;
     }
 
-    @OneToMany(mappedBy = "usuarioByUsuarioId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuarioByUsuarioId", cascade = CascadeType.PERSIST)
     public Collection<ProcessoUsuarioEntity> getProcessoUsuariosById() {
         return processoUsuariosById;
     }

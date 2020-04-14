@@ -23,7 +23,7 @@
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
 
 						<p:outputLabel value="Login" />
-						<p:inputText value="#{cadastrarUsuario.usuarioBean.userLogin}" />
+						<p:inputText value="#{cadastrarUsuario.usuarioBean.login}" />
 
 						<p:outputLabel value="CPF" />
 						<p:inputMask value="#{cadastrarUsuario.usuarioBean.cpf}"
@@ -37,8 +37,8 @@
 
 						<p:outputLabel value="Perfil" />
 						<p:selectOneMenu value="#{cadastrarUsuario.usuarioBean.perfil}">
-							<f:selectItems value="#{cadastrarUsuario.usuarioBean.listaPerfil}"
-								var="perfil" itemValue="#{perfil}" itemLabel="#{perfil}" />
+							<f:selectItems value="#{cadastrarUsuario.listaPerfil}"
+								var="perfil" itemValue="#{perfil.codigo}" itemLabel="#{perfil.descricao}" />
 						</p:selectOneMenu>
 
 						<p:outputLabel value="E-mail" />
@@ -46,8 +46,8 @@
 
 						<p:outputLabel value="Sexo" />
 						<p:selectOneMenu value="#{cadastrarUsuario.usuarioBean.sexo}">
-							<f:selectItem itemLabel="MASCULINO" itemValue="MASCULINO" />
-							<f:selectItem itemLabel="FEMININO" itemValue="FEMININO" />
+							<f:selectItem itemLabel="MASCULINO" itemValue="M" />
+							<f:selectItem itemLabel="FEMININO" itemValue="F" />
 						</p:selectOneMenu>
 
 						<p:outputLabel value="Ativo" />
@@ -55,8 +55,23 @@
 							onLabel="Sim" offLabel="Não" onIcon="pi pi-check"
 							offIcon="pi pi-times" style="width:60px" />
 
-					</p:panelGrid>
 
+						<p:outputLabel value="Telefone Fixo" />
+						<p:inputText value="#{cadastrarUsuario.usuarioBean.telefoneFixo}"
+											   mask="(999) 9999-9999"  maxlength="10" />
+
+						<p:outputLabel value="Telefone Celular" />
+						<p:inputText value="#{cadastrarUsuario.usuarioBean.telefoneCelular}"
+									 mask="(999) 999-9999? x99999" maxlength="11" />
+
+					</p:panelGrid>
+				</p:panel>
+
+				<ui:include src="endereco.xhtml">
+					<ui:param name="enderecoBean" value="#{cadastrarUsuario.usuarioBean.enderecoBean}"></ui:param>
+				</ui:include>
+
+                <p:panel>
 					<p:panelGrid columns="2"
 						columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-2 ui-lg-2"
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
@@ -68,8 +83,6 @@
 							action="#{cadastrarUsuario.novo}" ajax="false" />
 					</p:panelGrid>
 				</p:panel>
-				<br />
-				<br />
 
 				<p:panelGrid rendered="#{cadastrarUsuario.usuarioBean.id > 0}"
 					columns="2"

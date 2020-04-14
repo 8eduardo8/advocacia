@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package br.com.abce.advocacia.resource;
-import br.com.abce.advocacia.resource.v1.TesteResource;
+
 import io.swagger.jaxrs.config.BeanConfig;
 
 import javax.ws.rs.ApplicationPath;

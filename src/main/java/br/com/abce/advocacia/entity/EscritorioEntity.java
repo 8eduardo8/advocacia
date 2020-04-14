@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "escritorio", schema = "advocacia", catalog = "")
 public class EscritorioEntity {
-    private int id;
+    private Long id;
     private Date dataCadastro;
     private Date dataAtualizacao;
     private Date dataExclusao;
@@ -22,12 +22,13 @@ public class EscritorioEntity {
     private Collection<UsuarioEscritorioEntity> usuarioEscritoriosById;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -144,7 +145,7 @@ public class EscritorioEntity {
     }
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     public EnderecoEntity getEnderecoByEnderecoId() {
         return enderecoByEnderecoId;
     }

@@ -1,7 +1,6 @@
 package br.com.abce.advocacia.repository.impl;
 
 import br.com.abce.advocacia.entity.ProcessoEntity;
-import br.com.abce.advocacia.entity.ProcessoUsuarioEntity;
 import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.repository.ProcessoRepository;
 

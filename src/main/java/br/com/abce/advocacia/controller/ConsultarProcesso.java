@@ -5,7 +5,6 @@ import br.com.abce.advocacia.exceptions.AdvocaciaException;
 import br.com.abce.advocacia.service.impl.ProcessoService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
-import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -28,7 +27,6 @@ public class ConsultarProcesso implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		consultar();
 	}
 
 	public String consultar() {
@@ -40,7 +38,6 @@ public class ConsultarProcesso implements Serializable {
 
 		} catch (AdvocaciaException ex) {
 			Mensagem.info(ex.getMessage());
-
 		} catch (Exception e) {
 			LoggerUtil.error(e);
 			Mensagem.erro("ERRO AO CONSULTAR!", e.getMessage());

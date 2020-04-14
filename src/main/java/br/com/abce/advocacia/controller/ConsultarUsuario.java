@@ -1,10 +1,11 @@
 package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
-import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -28,7 +29,7 @@ public class ConsultarUsuario implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		consultar();
+
 	}
 
 	public String consultar() {
@@ -38,6 +39,8 @@ public class ConsultarUsuario implements Serializable {
 
 			lista = usuarioService.listar();
 
+		} catch (AdvocaciaException ex) {
+			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
 			Mensagem.erro("ERRO AO CONSULTAR!", e.getMessage());
 			LoggerUtil.error(e);

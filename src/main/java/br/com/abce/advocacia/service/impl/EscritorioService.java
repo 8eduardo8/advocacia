@@ -1,18 +1,22 @@
 package br.com.abce.advocacia.service.impl;
 
 import br.com.abce.advocacia.bean.EscritorioBean;
+import br.com.abce.advocacia.entity.EnderecoEntity;
 import br.com.abce.advocacia.entity.EscritorioEntity;
 import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.repository.EscritorioRepository;
+import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Util;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EscritorioService implements Serializable {
@@ -23,19 +27,48 @@ public class EscritorioService implements Serializable {
     @Inject
     private Util util;
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    @Transactional
     public void salvar(final EscritorioBean escritorioBean) throws InfraestruturaException {
 
 
         try {
 
+            if (StringUtils.isBlank(escritorioBean.getRazao()))
+                throw new ValidacaoException("Razão social não informada.");
+
+            if (StringUtils.isBlank(escritorioBean.getCnpj()))
+                throw new ValidacaoException("CNPJ não informada.");
+
+            if (StringUtils.isBlank(escritorioBean.getFantasia()))
+                throw new ValidacaoException("Nome Fantasia não informado.");
+
+
             EscritorioEntity escritorioEntity = new EscritorioEntity();
+            escritorioEntity.setId(escritorioBean.getId());
             escritorioEntity.setCnpj(util.trataParametro(escritorioBean.getCnpj()));
             escritorioEntity.setRazaoSocial(util.trataParametro(escritorioBean.getRazao()));
             escritorioEntity.setNomeFantasia(util.trataParametro(escritorioBean.getFantasia()));
-//            escritorioEntity.endereco = escritorioBean.endereco.toUpperCase().trim();
+            escritorioEntity.setSituacao(escritorioBean.isAtivo() ? Consts.REGISTRO_ATIVO : Consts.REGISTRO_INATIVO);
 
-            escritorioRepository.salvar(escritorioEntity);
+            EnderecoEntity entity = new EnderecoEntity();
+            entity.setId(escritorioBean.getEnderecoBean().getId());
+            entity.setCep(escritorioBean.getEnderecoBean().getCep());
+            entity.setCidade(util.trataParametro(escritorioBean.getEnderecoBean().getCidade()));
+            entity.setComplemento(util.trataParametro(escritorioBean.getEnderecoBean().getComplemento()));
+            entity.setBairro(util.trataParametro(escritorioBean.getEnderecoBean().getBairro()));
+            entity.setLogradouro(util.trataParametro(escritorioBean.getEnderecoBean().getLogradouro()));
+            entity.setNumero(util.trataParametro(escritorioBean.getEnderecoBean().getNumero()));
+            entity.setUf(util.trataParametro(escritorioBean.getEnderecoBean().getUf()));
+
+            escritorioEntity.setEnderecoByEnderecoId(entity);
+
+            if (escritorioEntity.getId() == 0) {
+                escritorioEntity.setDataCadastro(new Date());
+                escritorioRepository.salvar(escritorioEntity);
+            } else {
+                escritorioEntity.setDataAtualizacao(new Date());
+                escritorioRepository.editar(escritorioEntity);
+            }
 
         } catch (Exception e) {
             LoggerUtil.error(e);
@@ -73,9 +106,23 @@ public class EscritorioService implements Serializable {
 
         EscritorioBean bean = new EscritorioBean();
 
+        bean.setId(entity.getId());
         bean.setCnpj(entity.getCnpj());
         bean.setRazao(entity.getRazaoSocial());
         bean.setDataCadastro(entity.getDataCadastro());
+        bean.setFantasia(entity.getNomeFantasia());
+        bean.setAtivo(entity.getSituacao() == Consts.REGISTRO_ATIVO);
+
+        EnderecoEntity enderecoEntity = entity.getEnderecoByEnderecoId();
+
+        bean.getEnderecoBean().setCep(String.valueOf(enderecoEntity.getCep()));
+        bean.getEnderecoBean().setCidade(enderecoEntity.getCidade());
+        bean.getEnderecoBean().setComplemento(enderecoEntity.getComplemento());
+        bean.getEnderecoBean().setBairro(enderecoEntity.getBairro());
+        bean.getEnderecoBean().setNumero(enderecoEntity.getNumero());
+        bean.getEnderecoBean().setLogradouro(enderecoEntity.getLogradouro());
+        bean.getEnderecoBean().setUf(enderecoEntity.getUf());
+        bean.getEnderecoBean().setId(enderecoEntity.getId());
 
         return bean;
     }

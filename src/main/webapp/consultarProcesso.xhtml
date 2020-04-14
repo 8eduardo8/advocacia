@@ -51,22 +51,22 @@
 					rowsPerPageTemplate="100,500,1000" rows="100">
 					<p:column headerText="Ações" style="width:50px;">
 						<p:commandButton icon="pi pi-pencil" ajax="false"
-							style="background:#616161;border:none;"
+							style="background:#616161;border:none; text-align: center;"
 							action="#{cadastrarProcesso.editar}">
 							<f:setPropertyActionListener
                                     target="#{cadastrarProcesso.processoBean}" value="#{item}" />
 						</p:commandButton>
 					</p:column>
-					<p:column headerText="Número" style="width:120px;">
+					<p:column headerText="Número" style="width:120px; text-align: center;">
 						<h:outputText value="#{item.numero}" />
 					</p:column>
-					<p:column headerText="Área" style="width:200px;">
+					<p:column headerText="Área" style="width:200px; text-align: center;">
 						<h:outputText value="#{item.area}" />
 					</p:column>
-					<p:column headerText="Situação" style="width:200px;">
+					<p:column headerText="Situação" style="width:200px; text-align: center;">
 						<h:outputText value="#{item.situacao}" />
 					</p:column>
-					<p:column headerText="Data Início" style="width:100px;">
+					<p:column headerText="Data Início" style="width:100px; text-align: center;">
 						<h:outputText value="#{item.dataInicio}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>

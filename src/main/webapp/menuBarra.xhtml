@@ -22,18 +22,18 @@
 					<h:graphicImage src="imagem/user.png" style="width: 100px; align: center" />
 				</div>
 				<div>
-					<h:outputLabel value="#{usuario.userLogin}" style="font-size:80%;" />
+					<h:outputLabel value="#{login.usuarioBean.login}" style="font-size:80%;" />
 					<br />
-					<h:outputLabel value="#{usuario.usuarioBean.nome}"
+					<h:outputLabel value="#{login.usuarioBean.nome}"
 						style="font-size:90%;font-weight:bold;" />
 					<br />
-					<h:outputLabel value="#{usuario.usuarioBean.perfil}"
+					<h:outputLabel value="#{login.usuarioBean.descPerfil}"
 						style="font-size:70%;color:#909090" />
 					<br />
 					<p:commandLink value="Atualizar Perfil" style="font-size:80%;"
 						action="#{cadastrarUsuario.editar}" ajax="false">
 						<f:setPropertyActionListener target="#{cadastrarUsuario.usuarioBean}"
-							value="#{usuario.usuarioBean}" />
+							value="#{login.usuarioBean}" />
 					</p:commandLink>
 				</div>
 				<br />
@@ -52,7 +52,7 @@
 					<br />
 					<br />
 					<p:commandButton style="background: #B71C1C;border: none;"
-						value="Sair" action="#{usuario.sair}" ajax="false" />
+						value="Sair" action="#{login.sair}" ajax="false" />
 				</p:panelGrid>
 			</p:sidebar>
 

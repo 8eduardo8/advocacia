@@ -2,28 +2,30 @@ package br.com.abce.advocacia.bean;
 
 import io.swagger.annotations.ApiModel;
 
+import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Date;
 
 @ApiModel
 public class EscritorioBean implements Serializable {
 
-	private int id;
+	private Long id;
 	private String cnpj;
 	private String razao;
 	private String fantasia;
-	private String endereco;
 	private boolean ativo;
+
+	private EnderecoBean enderecoBean = new EnderecoBean();
 
 	private Date dataCadastro;
 	private Date dataAtualizacao;
 	private Date dataExclusao;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -49,14 +51,6 @@ public class EscritorioBean implements Serializable {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
 	}
 
 	public Date getDataCadastro() {
@@ -91,4 +85,11 @@ public class EscritorioBean implements Serializable {
 		this.ativo = ativo;
 	}
 
+	public EnderecoBean getEnderecoBean() {
+		return enderecoBean;
+	}
+
+	public void setEnderecoBean(EnderecoBean enderecoBean) {
+		this.enderecoBean = enderecoBean;
+	}
 }

@@ -12,7 +12,6 @@ import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.repository.NotaRepository;
-import br.com.abce.advocacia.repository.ProcessoRepository;
 import br.com.abce.advocacia.repository.ProcessoUsuarioRepository;
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,7 +50,7 @@ public class NotaService implements Serializable {
             NotaBean bean = new NotaBean();
 
             bean.setDataCadastro(entity.getDataCadastro());
-            bean.setId(entity.getId());
+            bean.setId(entity.getId().intValue());
             bean.setIdUsuario((long) entity.getProcessoUsuarioByProcessoUsuarioId().getUsuarioByUsuarioId().getId());
 
             NotaTextoEntity textoEntity = entity.getNotaTextoByNotaTextoId();
@@ -63,7 +62,7 @@ public class NotaService implements Serializable {
                 notaMensagem = new NotaMensagem();
                 notaMensagem.setMensagem(textoEntity.getDescricao());
                 notaMensagem.setTipo(textoEntity.getTipo());
-                notaMensagem.setNota(textoEntity.getId());
+                notaMensagem.setNota(textoEntity.getId().intValue());
 
             }
 

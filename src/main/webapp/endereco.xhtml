@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
+<body>
+<ui:composition>
+
+    <p:panel header="Endereço" style="margin-top: 15px;">
+        <p:panelGrid columns="4"
+                     columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-2 ui-lg-2, ui-g-12 ui-md-4 ui-lg-4"
+                     layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+            <p:outputLabel value="CEP" />
+            <p:inputText value="#{enderecoBean.cep}" size="10" maxlength="8" />
+
+            <p:outputLabel value="Logradouro" />
+            <p:inputText value="#{enderecoBean.logradouro}" size="45" maxlength="50" />
+
+            <p:outputLabel value="Bairro" />
+            <p:inputText value="#{enderecoBean.bairro}" size="45" maxlength="45" />
+
+            <p:outputLabel value="Complemento" />
+            <p:inputText value="#{enderecoBean.complemento}" size="45" maxlength="45" />
+
+            <p:outputLabel value="Cidade" />
+            <p:inputText value="#{enderecoBean.cidade}" size="45" maxlength="45" />
+
+            <p:outputLabel value="Número" />
+            <p:inputText value="#{enderecoBean.numero}"  size="10" maxlength="5"/>
+
+            <p:outputLabel value="UF" />
+            <p:selectOneMenu value="#{enderecoBean.uf}" >
+                <f:selectItem itemLabel="Selecione Um" itemValue="" />
+                <f:selectItem itemValue="AC" itemLabel="Acre" />
+                <f:selectItem itemValue="AL" itemLabel="Alagoas" />
+                <f:selectItem itemValue="AP" itemLabel="Amapá" />
+                <f:selectItem itemValue="AM" itemLabel="Amazonas" />
+                <f:selectItem itemValue="BA" itemLabel="Bahia" />
+                <f:selectItem itemValue="CE" itemLabel="Ceará" />
+                <f:selectItem itemValue="DF" itemLabel="Distrito Federal" />
+                <f:selectItem itemValue="ES" itemLabel="Espírito Santo" />
+                <f:selectItem itemValue="GO" itemLabel="Goiás" />
+                <f:selectItem itemValue="MA" itemLabel="Maranhão" />
+                <f:selectItem itemValue="MT" itemLabel="Mato Grosso" />
+                <f:selectItem itemValue="MS" itemLabel="Mato Grosso do Sul" />
+                <f:selectItem itemValue="MG" itemLabel="Minas Gerais" />
+                <f:selectItem itemValue="PA" itemLabel="Pará" />
+                <f:selectItem itemValue="PB" itemLabel="Paraíba" />
+                <f:selectItem itemValue="PR" itemLabel="Paraná" />
+                <f:selectItem itemValue="PE" itemLabel="Pernambuco" />
+                <f:selectItem itemValue="PI" itemLabel="Piauí" />
+                <f:selectItem itemValue="RJ" itemLabel="Rio de Janeiro" />
+                <f:selectItem itemValue="RN" itemLabel="Rio Grande do Norte" />
+                <f:selectItem itemValue="RS" itemLabel="Rio Grande do Sul" />
+                <f:selectItem itemValue="RO" itemLabel="Rondônia" />
+                <f:selectItem itemValue="RR" itemLabel="Roraima" />
+                <f:selectItem itemValue="SC" itemLabel="Santa Catarina" />
+                <f:selectItem itemValue="SP" itemLabel="São Paulo" />
+                <f:selectItem itemValue="SE" itemLabel="Sergipe" />
+                <f:selectItem itemValue="TO" itemLabel="Tocantins" />
+            </p:selectOneMenu>
+
+        </p:panelGrid>
+    </p:panel>
+
+</ui:composition>
+</body>
+</html>

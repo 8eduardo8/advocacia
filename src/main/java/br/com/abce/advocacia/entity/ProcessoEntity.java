@@ -8,23 +8,25 @@ import java.util.Objects;
 @Entity
 @Table(name = "processo", schema = "advocacia", catalog = "")
 public class ProcessoEntity {
-    private int id;
+    private Long id;
     private Date dataCadastro;
     private Date dataAtualizacao;
     private Date dataExclusao;
     private String numero;
     private String area;
+    private String comarca;
     private int situacao;
     private Date dataInicio;
     private Collection<ProcessoUsuarioEntity> processoUsuariosById;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -125,5 +127,15 @@ public class ProcessoEntity {
 
     public void setProcessoUsuariosById(Collection<ProcessoUsuarioEntity> processoUsuariosById) {
         this.processoUsuariosById = processoUsuariosById;
+    }
+
+    @Basic
+    @Column(name = "comarca", nullable = true, length = 45)
+    public String getComarca() {
+        return comarca;
+    }
+
+    public void setComarca(String comarca) {
+        this.comarca = comarca;
     }
 }

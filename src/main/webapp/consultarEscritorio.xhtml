@@ -51,7 +51,7 @@
 					rowsPerPageTemplate="100,500,1000" rows="100">
 					<p:column headerText="Ações" style="width:50px;">
 						<p:commandButton icon="pi pi-pencil" ajax="false"
-							style="background:#616161;border:none;"
+							style="background:#616161;border:none;  text-align: center;"
 							action="#{cadastrarEscritorio.editar}">
 							<f:setPropertyActionListener
                                     target="#{cadastrarEscritorio.escritorioBean}" value="#{item}" />
@@ -67,7 +67,7 @@
 						<h:outputText value="#{item.fantasia}" />
 					</p:column>
 					<p:column headerText="Endereço" style="width:200px; text-align: center;">
-						<h:outputText value="#{item.endereco}" />
+						<h:outputText value="#{item.enderecoBean.toString()}" />
 					</p:column>
 					<p:column headerText="Ativo" style="width:50px; text-align: center;">
 						<h:outputText value="#{item.ativo == true ? 'Sim' : 'Não'}" />

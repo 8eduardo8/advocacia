@@ -28,6 +28,9 @@
 						<p:outputLabel value="Área" />
 						<p:inputText value="#{cadastrarProcesso.processoBean.area}" />
 
+						<p:outputLabel value="Comarca" />
+						<p:inputText value="#{cadastrarProcesso.processoBean.comarca}" />
+
 						<p:outputLabel value="Situação" />
 						<p:inputText value="#{cadastrarProcesso.processoBean.situacao}" />
 
@@ -42,23 +45,24 @@
 						columnClasses="ui-g-12 ui-md-8 ui-lg-6,ui-g-12 ui-md-2 ui-lg-2"
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
 						<p:selectOneMenu filter="true" filterMatchMode="contains"
-							value="#{cadastrarProcesso.usuarioSelecionado}">
+							value="#{cadastrarProcesso.usuarioSelecionado}" converter="generic">
 							<f:selectItems value="#{cadastrarProcesso.listaUsuarioBean}"
-								var="item" itemLabel="#{item.cpf} #{item.nome} #{item.perfil}"
-								itemValue="#{item.id}" />
+								var="item" itemLabel="#{item.cpf} - #{item.nome} - #{item.perfil}"
+								itemValue="#{item}">
+							</f:selectItems>
 						</p:selectOneMenu>
 						<p:commandButton value="Adicionar" icon="pi pi-plus"
-							action="#{cadastrarProcesso.adicionar}" ajax="false" />
+							action="#{cadastrarProcesso.adicionar()}" ajax="false" />
 					</p:panelGrid>
 					<p:dataTable style="font-size:70%;"
 						value="#{cadastrarProcesso.processoBean.listaUsuarios}" var="item">
-						<p:column headerText="Usuário" style="width:300px;">
+						<p:column headerText="Usuário" style="width:300px; text-align: center;">
 							<h:outputText value="#{item.nome}" />
 						</p:column>
-						<p:column headerText="Perfil" style="width:150px;">
-							<h:outputText value="#{item.perfil}" />
+						<p:column headerText="Perfil" style="width:150px; text-align: center;">
+							<h:outputText value="#{item.descPerfil}" />
 						</p:column>
-						<p:column headerText="Ações" style="width:50px;">
+						<p:column headerText="Ações" style="width:50px; text-align: center;">
 							<p:commandButton icon="pi pi-trash" ajax="false"
 								style="background:#D32F2F;border:none;"
 								action="#{cadastrarProcesso.remover(item)}">

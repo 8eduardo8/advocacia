@@ -7,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "usuario_escritorio", schema = "advocacia", catalog = "")
 public class UsuarioEscritorioEntity {
-    private int id;
+    private Long id;
     private Date dataAtualizacao;
     private Date dataCadastrol;
     private Date dataExclusao;
@@ -17,12 +17,13 @@ public class UsuarioEscritorioEntity {
     private EscritorioEntity escritorioByEscritorioId;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,39 +1,40 @@
 package br.com.abce.advocacia.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "endereco", schema = "advocacia", catalog = "")
 public class EnderecoEntity {
-    private int id;
-    private Integer cep;
+    private Long id;
+    private String cep;
     private String logradouro;
     private String complemento;
     private String numero;
     private String cidade;
+    private String bairro;
     private String uf;
     private EscritorioEntity escritoriosById;
     private UsuarioEntity usuariosById;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "cep", nullable = true)
-    public Integer getCep() {
+    @Column(name = "cep", nullable = true, length = 8)
+    public String getCep() {
         return cep;
     }
 
-    public void setCep(Integer cep) {
+    public void setCep(String cep) {
         this.cep = cep;
     }
 
@@ -106,7 +107,7 @@ public class EnderecoEntity {
         return Objects.hash(id, cep, logradouro, complemento, numero, cidade, uf);
     }
 
-    @OneToOne(mappedBy = "enderecoByEnderecoId")
+    @OneToOne(mappedBy = "enderecoByEnderecoId", cascade = CascadeType.ALL)
     public EscritorioEntity getEscritoriosById() {
         return escritoriosById;
     }
@@ -115,12 +116,22 @@ public class EnderecoEntity {
         this.escritoriosById = escritoriosById;
     }
 
-    @OneToOne(mappedBy = "enderecoByEnderecoId")
+    @OneToOne(mappedBy = "enderecoByEnderecoId", cascade = CascadeType.ALL)
     public UsuarioEntity getUsuariosById() {
         return usuariosById;
     }
 
     public void setUsuariosById(UsuarioEntity usuariosById) {
         this.usuariosById = usuariosById;
+    }
+
+    @Basic
+    @Column(name = "bairro", nullable = true, length = 45)
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
     }
 }

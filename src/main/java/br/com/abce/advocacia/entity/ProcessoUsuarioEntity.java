@@ -8,23 +8,24 @@ import java.util.Objects;
 @Entity
 @Table(name = "processo_usuario", schema = "advocacia", catalog = "")
 public class ProcessoUsuarioEntity {
-    private int id;
+    private Long id;
     private Date dataCadastro;
     private Date dataAtualizacao;
     private Date dataExclusao;
-//    private int processoId;
-//    private int usuarioId;
+//    private Long processoId;
+//    private Long usuarioId;
     private Collection<NotaEntity> notasById;
     private ProcessoEntity processoByProcessoId;
     private UsuarioEntity usuarioByUsuarioId;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -60,21 +61,21 @@ public class ProcessoUsuarioEntity {
 
 //    @Basic
 //    @Column(name = "processo_id", nullable = false)
-//    public int getProcessoId() {
+//    public Long getProcessoId() {
 //        return processoId;
 //    }
 //
-//    public void setProcessoId(int processoId) {
+//    public void setProcessoId(Long processoId) {
 //        this.processoId = processoId;
 //    }
 //
 //    @Basic
 //    @Column(name = "usuario_id", nullable = false)
-//    public int getUsuarioId() {
+//    public Long getUsuarioId() {
 //        return usuarioId;
 //    }
 //
-//    public void setUsuarioId(int usuarioId) {
+//    public void setUsuarioId(Long usuarioId) {
 //        this.usuarioId = usuarioId;
 //    }
 

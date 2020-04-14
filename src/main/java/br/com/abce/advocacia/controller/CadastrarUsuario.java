@@ -1,18 +1,17 @@
 package br.com.abce.advocacia.controller;
 
+import br.com.abce.advocacia.Perfil;
 import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.exceptions.AdvocaciaException;
 import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
-import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 
 @Named
 @SessionScoped
@@ -24,7 +23,7 @@ public class CadastrarUsuario implements Serializable {
 	private String novaSenha;
 	private String confirmaSenha;
 
-	private final List<String> listaPerfil = Arrays.asList("ADMINSITRADOR", "SECRETARIA", "ADVOGADO", "CLIENTE");
+	private final Perfil[] listaPerfil = Perfil.values();
 
 	@Inject
 	private UsuarioService usuarioService;
@@ -49,9 +48,16 @@ public class CadastrarUsuario implements Serializable {
 
 		try {
 
+			if (usuarioBean.getId() == null)
+
+				usuarioBean.setSenha("abc123");
+
 			usuarioService.salvar(usuarioBean);
 
 			Mensagem.info("USU�RIO SALVO!");
+
+		} catch (AdvocaciaException ex) {
+			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
 			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
 			LoggerUtil.error(e);
@@ -118,7 +124,7 @@ public class CadastrarUsuario implements Serializable {
 		this.confirmaSenha = confirmaSenha;
 	}
 
-	public List<String> getListaPerfil() {
+	public Perfil[] getListaPerfil() {
 		return listaPerfil;
 	}
 }
