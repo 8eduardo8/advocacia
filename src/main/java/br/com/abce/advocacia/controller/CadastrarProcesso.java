@@ -2,6 +2,7 @@ package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.ProcessoBean;
 import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.bean.UsuarioResumidoBean;
 import br.com.abce.advocacia.exceptions.AdvocaciaException;
 import br.com.abce.advocacia.service.impl.ProcessoService;
 import br.com.abce.advocacia.service.impl.UsuarioService;
@@ -21,7 +22,7 @@ public class CadastrarProcesso implements Serializable {
 
 	private ProcessoBean processoBean;
 	private UsuarioBean usuarioSelecionado;
-	private List<UsuarioBean> listaUsuarioBean;
+	private List<UsuarioResumidoBean> listaUsuarioBean;
 
 	@Inject
 	private UsuarioService usuarioService;
@@ -46,9 +47,10 @@ public class CadastrarProcesso implements Serializable {
 	}
 
 	public String novo() {
+
 		try {
 
-			listaUsuarioBean = usuarioService.listar();
+			listaUsuarioBean = usuarioService.listarResumido();
 
 		} catch (AdvocaciaException ex) {
 			Mensagem.info(ex.getMessage());
@@ -64,7 +66,7 @@ public class CadastrarProcesso implements Serializable {
 
 			processoService.salvar(processoBean);
 
-			Mensagem.info("ESCRITORIO SALVO!");
+			Mensagem.info("PROCESSO SALVO!");
 
 		} catch (AdvocaciaException ex) {
 			Mensagem.info(ex.getMessage());
@@ -81,7 +83,7 @@ public class CadastrarProcesso implements Serializable {
 
 		try {
 
-			if (!processoBean.getListaUsuarios().contains(usuarioSelecionado)) {
+			if (!processoBean.getListaUsuarios().contains(usuarioSelecionado.getId())) {
 				processoBean.getListaUsuarios().add(usuarioSelecionado);
 			} else {
 				Mensagem.info("Usuário já consta na relação de envolvidos.");
@@ -107,11 +109,11 @@ public class CadastrarProcesso implements Serializable {
 		this.processoBean = processoBean;
 	}
 
-	public List<UsuarioBean> getListaUsuarioBean() {
+	public List<UsuarioResumidoBean> getListaUsuarioBean() {
 		return listaUsuarioBean;
 	}
 
-	public void setListaUsuarioBean(List<UsuarioBean> listaUsuarioBean) {
+	public void setListaUsuarioBean(List<UsuarioResumidoBean> listaUsuarioBean) {
 		this.listaUsuarioBean = listaUsuarioBean;
 	}
 

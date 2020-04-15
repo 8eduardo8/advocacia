@@ -1,27 +1,21 @@
 package br.com.abce.advocacia.bean;
 
-import br.com.abce.advocacia.Perfil;
 import io.swagger.annotations.ApiModel;
 
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @ApiModel
-public class UsuarioBean implements Serializable, Bean {
+public class UsuarioBean extends UsuarioResumidoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
 	private String login;
-	private int perfil;
-	private String nome;
 	private String email;
 	private String senha;
 
-	private String cpf;
 	private String sexo;
 	private String sobrenome;
 
@@ -41,36 +35,12 @@ public class UsuarioBean implements Serializable, Bean {
 
 	private List<String> listaProcessoId;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getLogin() {
 		return login;
 	}
 
 	public void setLogin(String login) {
 		this.login = login;
-	}
-
-	public int getPerfil() {
-		return perfil;
-	}
-
-	public void setPerfil(int perfil) {
-		this.perfil = perfil;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	public String getEmail() {
@@ -137,14 +107,6 @@ public class UsuarioBean implements Serializable, Bean {
 		this.dataExclusao = dataExclusao;
 	}
 
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
 	public String getSexo() {
 		return sexo;
 	}
@@ -183,12 +145,6 @@ public class UsuarioBean implements Serializable, Bean {
 
 	public void setTelefoneCelular(String telefoneCelular) {
 		this.telefoneCelular = telefoneCelular;
-	}
-
-	@Transient
-	public String getDescPerfil(){
-		Perfil perfil = Perfil.getPerfil(this.getPerfil());
-		return perfil != null ? perfil.getDescricao() : "Desconhecido";
 	}
 
 	public EnderecoBean getEnderecoBean() {

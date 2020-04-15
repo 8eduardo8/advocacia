@@ -6,7 +6,11 @@ public interface AbstractRepository<T> {
 
     void salvar(T entity);
 
+    void salvar(List<T> entity);
+
     void editar(T entity);
+
+    void editar(List<T> entity);
 
     void remover(T entity);
 

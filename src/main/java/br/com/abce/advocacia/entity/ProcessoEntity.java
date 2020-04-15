@@ -1,6 +1,7 @@
 package br.com.abce.advocacia.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
@@ -17,7 +18,7 @@ public class ProcessoEntity {
     private String comarca;
     private int situacao;
     private Date dataInicio;
-    private Collection<ProcessoUsuarioEntity> processoUsuariosById;
+    private Collection<ProcessoUsuarioEntity> processoUsuariosById = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

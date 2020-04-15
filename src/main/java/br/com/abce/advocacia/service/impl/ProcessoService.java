@@ -2,6 +2,7 @@ package br.com.abce.advocacia.service.impl;
 
 import br.com.abce.advocacia.bean.ProcessoBean;
 import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.bean.UsuarioResumidoBean;
 import br.com.abce.advocacia.entity.ProcessoEntity;
 import br.com.abce.advocacia.entity.ProcessoUsuarioEntity;
 import br.com.abce.advocacia.entity.UsuarioEntity;
@@ -53,6 +54,21 @@ public class ProcessoService implements Serializable {
         entity.setNumero(processoBean.getNumero());
         entity.setComarca(processoBean.getComarca());
         entity.setDataInicio(processoBean.getDataInicio());
+        entity.setDataCadastro(processoBean.getDataCadastro());
+        entity.setDataAtualizacao(processoBean.getDataCadastro());
+        entity.setDataExclusao(processoBean.getDataExclusao());
+
+        List<ProcessoUsuarioEntity> processoUsuarioEntityList = new ArrayList<>();
+
+        for (UsuarioResumidoBean usuarioBean : processoBean.getListaUsuarios()) {
+            ProcessoUsuarioEntity processoUsuarioEntity = new ProcessoUsuarioEntity();
+            processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar(usuarioBean.getId()));
+            processoUsuarioEntity.setDataCadastro(new Date());
+            processoUsuarioEntity.setProcessoByProcessoId(entity);
+            processoUsuarioEntityList.add(processoUsuarioEntity);
+        }
+
+        entity.setProcessoUsuariosById(processoUsuarioEntityList);
 
         if (entity.getId() == null) {
             entity.setDataCadastro(new java.util.Date());
@@ -61,19 +77,8 @@ public class ProcessoService implements Serializable {
         } else {
             entity.setDataAtualizacao(new java.util.Date());
             processoRepository.editar(entity);
+
         }
-
-//        List<ProcessoUsuarioEntity> processoUsuarioEntityList = new ArrayList<>();
-
-        for (UsuarioBean usuarioBean : processoBean.getListaUsuarios()) {
-            ProcessoUsuarioEntity processoUsuarioEntity = new ProcessoUsuarioEntity();
-            processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar(usuarioBean.getId()));
-            processoUsuarioEntity.setDataCadastro(new Date());
-            processoUsuarioEntity.setProcessoByProcessoId(entity);
-            processoUsuarioRepository.salvar(processoUsuarioEntity);
-        }
-
-//        entity.setProcessoUsuariosById(processoUsuarioEntityList);
     }
 
     public List<ProcessoBean> listar() throws RecursoNaoEncontradoException {
@@ -104,13 +109,17 @@ public class ProcessoService implements Serializable {
 
         ProcessoBean bean = new ProcessoBean();
 
+        bean.setId(entity.getId());
         bean.setArea(entity.getArea());
         bean.setDataInicio(entity.getDataInicio());
         bean.setNumero(entity.getNumero());
         bean.setComarca(entity.getComarca());
         bean.setSituacao(String.valueOf(entity.getSituacao()));
+        bean.setDataCadastro(entity.getDataCadastro());
+        bean.setDataAtualizacao(entity.getDataAtualizacao());
+        bean.setDataExclusao(entity.getDataExclusao());
 
-        List<UsuarioBean> usuarioBeanList = new ArrayList<>();
+        List<UsuarioResumidoBean> usuarioBeanList = new ArrayList<>();
 
         for (ProcessoUsuarioEntity processoUsuarioEntity : entity.getProcessoUsuariosById()) {
 

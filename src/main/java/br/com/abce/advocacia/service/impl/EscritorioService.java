@@ -111,6 +111,8 @@ public class EscritorioService implements Serializable {
         bean.setRazao(entity.getRazaoSocial());
         bean.setDataCadastro(entity.getDataCadastro());
         bean.setFantasia(entity.getNomeFantasia());
+        bean.setDataAtualizacao(entity.getDataAtualizacao());
+        bean.setDataExclusao(entity.getDataExclusao());
         bean.setAtivo(entity.getSituacao() == Consts.REGISTRO_ATIVO);
 
         EnderecoEntity enderecoEntity = entity.getEnderecoByEnderecoId();

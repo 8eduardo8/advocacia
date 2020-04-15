@@ -3,10 +3,8 @@ package br.com.abce.advocacia.bean;
 import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @ApiModel
 public class ProcessoBean implements Serializable, Bean {
@@ -22,7 +20,7 @@ public class ProcessoBean implements Serializable, Bean {
 	private Date dataAtualizacao;
 	private Date dataExclusao;
 
-	private List<UsuarioBean> listaUsuarios = new ArrayList<>();
+	private List<UsuarioResumidoBean> listaUsuarios;
 
 	public Long getId() {
 		return id;
@@ -88,11 +86,11 @@ public class ProcessoBean implements Serializable, Bean {
 		this.dataExclusao = dataExclusao;
 	}
 
-	public List<UsuarioBean> getListaUsuarios() {
+	public List<UsuarioResumidoBean> getListaUsuarios() {
 		return listaUsuarios;
 	}
 
-	public void setListaUsuarios(List<UsuarioBean> listaUsuarios) {
+	public void setListaUsuarios(List<UsuarioResumidoBean> listaUsuarios) {
 		this.listaUsuarios = listaUsuarios;
 	}
 
@@ -102,26 +100,5 @@ public class ProcessoBean implements Serializable, Bean {
 
 	public void setComarca(String comarca) {
 		this.comarca = comarca;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		ProcessoBean that = (ProcessoBean) o;
-		return Objects.equals(getId(), that.getId()) &&
-				Objects.equals(getNumero(), that.getNumero()) &&
-				Objects.equals(getArea(), that.getArea()) &&
-				Objects.equals(getSituacao(), that.getSituacao()) &&
-				Objects.equals(getDataInicio(), that.getDataInicio()) &&
-				Objects.equals(getComarca(), that.getComarca()) &&
-				Objects.equals(getDataCadastro(), that.getDataCadastro()) &&
-				Objects.equals(getDataAtualizacao(), that.getDataAtualizacao()) &&
-				Objects.equals(getDataExclusao(), that.getDataExclusao()) ;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(getId(), getNumero(), getArea(), getSituacao(), getDataInicio(), getComarca(), getDataCadastro(), getDataAtualizacao(), getDataExclusao());
 	}
 }

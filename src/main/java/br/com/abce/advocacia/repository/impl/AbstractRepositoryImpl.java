@@ -32,6 +32,14 @@ public abstract class AbstractRepositoryImpl<T> implements AbstractRepository<T>
         getEntityManager().persist(entity);
     }
 
+    public void salvar(List<T> entity) {
+        getEntityManager().persist(entity);
+    }
+
+    public void editar(List<T>  entity) {
+        getEntityManager().merge(entity);
+    }
+
     public void editar(T entity) {
         getEntityManager().merge(entity);
     }

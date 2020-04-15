@@ -108,7 +108,7 @@ public class ProcessoUsuarioEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "processo_id", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
+    @JoinColumn(name = "processo_id", referencedColumnName = "id")
     public ProcessoEntity getProcessoByProcessoId() {
         return processoByProcessoId;
     }
@@ -118,7 +118,7 @@ public class ProcessoUsuarioEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     public UsuarioEntity getUsuarioByUsuarioId() {
         return usuarioByUsuarioId;
     }

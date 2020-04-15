@@ -1,6 +1,7 @@
 package br.com.abce.advocacia.service.impl;
 
 import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.bean.UsuarioResumidoBean;
 import br.com.abce.advocacia.entity.EnderecoEntity;
 import br.com.abce.advocacia.entity.ProcessoUsuarioEntity;
 import br.com.abce.advocacia.entity.UsuarioEntity;
@@ -35,10 +36,21 @@ public class UsuarioService implements Serializable {
 
             throw new RecursoNaoEncontradoException("Usuário(s) não encontrados(s).");
 
-        return getUsuarioBeanList(listaUsuario);
+        return (List<UsuarioBean>) getUsuarioBeanList(listaUsuario);
     }
 
-    public List<UsuarioBean> getUsuarioBeanList(List<UsuarioEntity> listaUsuario) {
+    public List<UsuarioResumidoBean> listarResumido() throws RecursoNaoEncontradoException {
+
+        final List<UsuarioEntity> listaUsuario = usuarioRepository.listar();
+
+        if (listaUsuario.isEmpty())
+
+            throw new RecursoNaoEncontradoException("Usuário(s) não encontrados(s).");
+
+        return (List<UsuarioResumidoBean>) getUsuarioBeanList(listaUsuario);
+    }
+
+    public List<? extends UsuarioResumidoBean> getUsuarioBeanList(List<UsuarioEntity> listaUsuario) {
 
         List<UsuarioBean> listaUsuarioBeans = new ArrayList<>() ;
 

@@ -47,7 +47,7 @@
 						<p:selectOneMenu filter="true" filterMatchMode="contains"
 							value="#{cadastrarProcesso.usuarioSelecionado}" converter="generic">
 							<f:selectItems value="#{cadastrarProcesso.listaUsuarioBean}"
-								var="item" itemLabel="#{item.cpf} - #{item.nome} - #{item.perfil}"
+								var="item" itemLabel="#{item.cpf} - #{item.nome} - #{item.descPerfil}"
 								itemValue="#{item}">
 							</f:selectItems>
 						</p:selectOneMenu>
