@@ -8,4 +8,5 @@ public interface Messages {
     String NO_FOUND_INFO           = "Não foram encontrado informações!";
     String VALIDATION_ERROR        = "Erro de validação de négocio. Mensagem de erro vem no corpo da resposta.";
     String INTERNAL_ERROR          = "Erro interno do servidor (Internal Server Error)";
+    String UNAUTHORIZED             = "Não autorizado.";
 }

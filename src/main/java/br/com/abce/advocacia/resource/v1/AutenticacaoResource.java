@@ -6,6 +6,7 @@ import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.resource.StandardRestDefinition;
 import br.com.abce.advocacia.resource.v1.dto.LoginDto;
+import br.com.abce.advocacia.security.ApiSecurity;
 import br.com.abce.advocacia.service.impl.AutenticacaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +18,8 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/v1/autenticacao")
 @Api(value = "Operações de autenticação")
-public class AutenticacaoResource implements StandardRestDefinition {
+@ApiSecurity
+public class AutenticacaoResource extends AbstractResource implements StandardRestDefinition {
 
     @Inject
     private AutenticacaoService autenticacaoService;

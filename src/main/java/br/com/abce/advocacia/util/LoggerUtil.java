@@ -20,4 +20,8 @@ public class LoggerUtil {
     public static void error(final String mensagem, final Throwable throwable) {
         Logger.getLogger(Thread.currentThread().getStackTrace()[1].getClassName()).log(Level.SEVERE, mensagem, throwable);
     }
+
+    public static void debug(String mensagem) {
+        Logger.getLogger(Thread.currentThread().getStackTrace()[1].getClassName()).log(Level.CONFIG, mensagem);
+    }
 }

@@ -7,6 +7,7 @@ import br.com.abce.advocacia.bean.ProcessoCompletoBean;
 import br.com.abce.advocacia.exceptions.AdvocaciaException;
 import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
+import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.NotaService;
 import br.com.abce.advocacia.service.impl.ProcessoService;
 import br.com.abce.advocacia.util.LoggerUtil;
@@ -75,13 +76,15 @@ public class ConsultarProcesso implements Serializable {
 		} catch (InfraestruturaException e) {
 			LoggerUtil.error(e.getMessage(), e);
 			Mensagem.erro(e.getMessage());
+		} catch (ValidacaoException e) {
+			Mensagem.erro(e.getMessage());
 		}
 
 		return "detalharProcesso";
 
 	}
 
-	private List<NotaDocumento> carregaListaDocumentos(final Long idProcesso) throws InfraestruturaException {
+	private List<NotaDocumento> carregaListaDocumentos(final Long idProcesso) throws InfraestruturaException, ValidacaoException {
 
 		List<NotaDocumento> list = null;
 
@@ -96,7 +99,7 @@ public class ConsultarProcesso implements Serializable {
 		return list;
 	}
 
-	private List<NotaAndamento> carregaListaAndamentos(final Long idProcesso) throws InfraestruturaException {
+	private List<NotaAndamento> carregaListaAndamentos(final Long idProcesso) throws InfraestruturaException, ValidacaoException {
 
 		List<NotaAndamento> list = null;
 

@@ -2,7 +2,6 @@ package br.com.abce.advocacia.bean;
 
 import io.swagger.annotations.ApiModel;
 
-import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Date;
 

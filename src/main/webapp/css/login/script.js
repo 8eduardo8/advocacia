@@ -33,12 +33,3 @@ $(window, document, undefined).ready(function() {
   });
 
 });
-
-
-function start() {
-  PF('statusDialog').show();
-}
-
-function stop() {
-  PF('statusDialog').hide();
-}

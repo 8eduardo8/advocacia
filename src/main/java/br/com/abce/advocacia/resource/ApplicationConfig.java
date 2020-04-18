@@ -51,11 +51,14 @@ public class ApplicationConfig extends Application {
         resources.add(br.com.abce.advocacia.resource.v1.AutenticacaoResource.class);
         resources.add(br.com.abce.advocacia.resource.v1.NotaResource.class);
         resources.add(br.com.abce.advocacia.resource.v1.ProcessoResource.class);
+        resources.add(br.com.abce.advocacia.resource.v1.AndamentoResource.class);
+        resources.add(br.com.abce.advocacia.resource.v1.DocumentoResource.class);
 
         // Swagger API documentation
         resources.add(br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException.class);
         resources.add(br.com.abce.advocacia.exceptions.ValidacaoException.class);
         resources.add(br.com.abce.advocacia.exceptions.InfraestruturaException.class);
+        resources.add(br.com.abce.advocacia.exceptions.AcessoNegadoException.class);
 
         // Swagger API documentation
         resources.add(io.swagger.jaxrs.listing.AcceptHeaderApiListingResource.class);

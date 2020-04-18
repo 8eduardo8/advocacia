@@ -20,23 +20,25 @@
 		<ui:define name="content">
 			<h:form>
 
-				<div style="margin-top: 50px; margin-left: 50px;">
-					<p><span>Olá #{login.usuarioBean.nome}!</span></p>
-				</div>
+				<p:panel style="border: none;">
+					<div style="margin-top: 50px; margin-left: 50px;">
+						<p><span>Olá #{login.usuarioBean.nome}!</span></p>
+					</div>
+				</p:panel>
 
-				<p:panel rendered="#{not empty dashboard.listaProcessos}" style="border: 0;">
+				<p:panel rendered="#{not empty dashboard.listaProcessos}" style="border: none">
 					<p><span>Encontramos esses processos</span></p>
 
-					<p:dataTable  var="processo" value="#{dashboard.listaProcessos}" >
+					<p:dataTable  var="processo" value="#{dashboard.listaProcessos}" style="border: none" >
 						<p:column>
 							Nº #{processo.numero} - Atualiz. <h:outputText value="#{processo.dataInicio}" >
 																	<f:convertDateTime pattern="dd/MM/yyyy"/>
 															 </h:outputText>
 						</p:column>
 						<p:column style="width:32px;text-align: center">
-							<p:commandButton icon="pi-arrow-circle-right" ajax="false"
-											 style="background:#616161;border:none; text-align: center;"
-											 action="#{cadastrarProcesso.editar}">
+							<p:commandButton icon="pi pi-arrow-circle-right" ajax="false"
+                                             style="background:#616161;border:none; text-align: center;"
+											 action="#{consultarProcesso.consultar}">
 								<f:setPropertyActionListener
 										target="#{cadastrarProcesso.processoBean}" value="#{processo}" />
 							</p:commandButton>
@@ -46,7 +48,7 @@
 
 				<c:forEach items="#{dashboard.lista}">
 					<div class="balao" style="margin-bottom: 10px;">
-						<h:graphicImage src="imagem/user.png"
+						<h:graphicImage url="imagem/user.png"
 							style="height: 50px; float: left; margin-right: 5px;" />
 						<h:outputLabel value="TESTE" />
 						<br /> <br />
@@ -55,7 +57,7 @@
 					<div align="right">
 						<div class="balaoEnvio"
 							style="text-align: left; margin-bottom: 10px;">
-							<h:graphicImage src="imagem/user.png" align="right"
+							<h:graphicImage url="imagem/user.png" align="right"
                                  style="height: 50px; margin-left: 5px;" />
 							<h:outputLabel value="TESTE" />
 							<br /> <br />

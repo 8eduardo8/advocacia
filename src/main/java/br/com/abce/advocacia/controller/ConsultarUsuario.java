@@ -2,7 +2,6 @@ package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.UsuarioBean;
 import br.com.abce.advocacia.exceptions.AdvocaciaException;
-import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;

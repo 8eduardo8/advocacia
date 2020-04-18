@@ -4,9 +4,9 @@
 
 <!--<display-name>advocacia</display-name>-->
 
-    <welcome-file-list>
-        <welcome-file>login.xhtml</welcome-file>
-    </welcome-file-list>
+<!--    <welcome-file-list>-->
+<!--        <welcome-file>login.xhtml</welcome-file>-->
+<!--    </welcome-file-list>-->
 
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>

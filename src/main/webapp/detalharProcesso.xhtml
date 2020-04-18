@@ -80,7 +80,9 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText> - #{documento.nome}
 
-                            <p:commandButton title="Baixar Documento" ajax="false" icon="ui-icon pi pi-search" style="margin:0 auto;">
+                            <p:commandButton title="Baixar Documento" ajax="false" icon="ui-icon pi pi-download"
+                                             style="background:#616161;border:none; text-align: center; margin-left: 5px"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
                                 <p:fileDownload value="#{downloadFile.generateFile(documento)}" />
                             </p:commandButton>
                         </p:outputPanel>

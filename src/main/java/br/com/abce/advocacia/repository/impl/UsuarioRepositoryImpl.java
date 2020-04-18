@@ -32,4 +32,27 @@ public class UsuarioRepositoryImpl extends AbstractRepositoryImpl<UsuarioEntity>
 
         return usuarioEntity;
     }
+
+    @Override
+    public UsuarioEntity buscarCpfCnpj(final String cpfCnpj) throws InfraestruturaException {
+
+        UsuarioEntity usuarioEntity = null;
+
+        if (StringUtils.isNotBlank(cpfCnpj)) {
+
+            try {
+
+                usuarioEntity = (UsuarioEntity) getEntityManager().createQuery("select u from UsuarioEntity u where u.cpf = :cpf")
+                        .setParameter("cpf", cpfCnpj)
+                        .getSingleResult();
+
+            } catch (NoResultException ex) {
+                //ignore
+            } catch (PersistenceException ex){
+                throw new InfraestruturaException(ex.getMessage());
+            }
+        }
+
+        return usuarioEntity;
+    }
 }

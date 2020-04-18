@@ -1,7 +1,6 @@
 package br.com.abce.advocacia.service.impl;
 
 import br.com.abce.advocacia.bean.ProcessoBean;
-import br.com.abce.advocacia.bean.UsuarioBean;
 import br.com.abce.advocacia.bean.UsuarioResumidoBean;
 import br.com.abce.advocacia.entity.ProcessoEntity;
 import br.com.abce.advocacia.entity.ProcessoUsuarioEntity;

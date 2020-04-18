@@ -210,8 +210,10 @@ public class NotaService implements Serializable {
         }
     }
 
-    public List<NotaAndamento> listarAndamentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException {
+    public List<NotaAndamento> listarAndamentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException, ValidacaoException {
 
+        if (idProcesso == null)
+            throw new ValidacaoException("Id do processo não informado.");
 
         final List<NotaEntity> entityLists = notaRepository.listarAndamentos(idProcesso, Consts.TIPO_ANDAMENTO_PROCESSO);
 
@@ -243,7 +245,10 @@ public class NotaService implements Serializable {
 
     }
 
-    public List<NotaDocumento> listarDocumentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException {
+    public List<NotaDocumento> listarDocumentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException, ValidacaoException {
+
+        if (idProcesso == null)
+            throw new ValidacaoException("Id do processo não informado.");
 
         final List<NotaEntity> entityLists = notaRepository.listarDocumentos(idProcesso);
 
@@ -288,6 +293,12 @@ public class NotaService implements Serializable {
 
         if (notaDocumento.getArquivo() == null)
             throw new ValidacaoException("Arquivo não informado.");
+
+        if (notaDocumento.getIdProcesso() == null)
+            throw new ValidacaoException("Id do processo não informado.");
+
+        if (notaDocumento.getIdUsuario() == null)
+            throw new ValidacaoException("Id do usuário não informado.");
 
         try {
 

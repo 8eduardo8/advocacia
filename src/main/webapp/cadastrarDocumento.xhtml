@@ -51,7 +51,10 @@
                                  columnClasses="ui-g-12 ui-md-8 ui-lg-6,ui-g-12 ui-md-2 ui-lg-2"
                                  layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
                         <p:outputLabel value="Documento" />
-                        <p:fileUpload value="#{cadastrarDocumento.file}" mode="simple" skinSimple="true"/>
+                        <p:fileUpload value="#{cadastrarDocumento.file}" mode="simple" skinSimple="true"
+                                      sizeLimit="5242880" allowTypes="/(\.|\/)(pdf|jpe?g|png)$/" label="Escolher"
+                                      uploadIcon="upload"
+                                      validateContentType="Permitido apenas arquivos no formado (.pdf, .png, .jpe, .jpeg)"/>
 
                     </p:panelGrid>
 

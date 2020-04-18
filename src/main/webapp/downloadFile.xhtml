@@ -10,8 +10,21 @@
 >
 <body>
 <ui:composition>
+
+    <script type="text/javascript">
+
+        function start() {
+            PF('statusDialog').show();
+        }
+
+        function stop() {
+            PF('statusDialog').hide();
+        }
+
+    </script>
+
     <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
-        <p:graphicImage name="imagem/ajaxloadingbar.gif" />
+        <h:graphicImage url="imagem/ajaxloadingbar.gif" />
     </p:dialog>
 </ui:composition>
 </body>

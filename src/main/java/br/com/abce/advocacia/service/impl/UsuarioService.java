@@ -108,11 +108,13 @@ public class UsuarioService implements Serializable {
     }
 
     @Transactional
-    public void salvar(final UsuarioBean usuarioBean) throws ValidacaoException {
+    public void salvar(final UsuarioBean usuarioBean) throws ValidacaoException, InfraestruturaException {
 
         validaCamposObrigatorios(usuarioBean);
 
         validaTamanhoCampos(usuarioBean);
+
+        validaRegrasNegocio(usuarioBean);
 
         UsuarioEntity entity = new UsuarioEntity();
         EnderecoEntity enderecoEntity = new EnderecoEntity();
@@ -142,13 +144,33 @@ public class UsuarioService implements Serializable {
         entity.setEnderecoByEnderecoId(enderecoEntity);
 
 
-        if (entity.getId() == null) {
+        if (isNovoUsuario(entity.getId())) {
             entity.setDataCadastro(new Date());
             usuarioRepository.salvar(entity);
 
         } else {
             entity.setDataAtualizacao(new Date());
             usuarioRepository.editar(entity);
+        }
+    }
+
+    private boolean isNovoUsuario(Long entityId) {
+        return entityId == null;
+    }
+
+    private void validaRegrasNegocio(UsuarioBean usuarioBean) throws InfraestruturaException, ValidacaoException {
+
+        if (isNovoUsuario(usuarioBean.getId())) {
+
+            UsuarioEntity usuarioEntity = usuarioRepository.buscar(usuarioBean.getLogin());
+
+            if (usuarioEntity != null)
+                throw new ValidacaoException("Login de usuário já utilizado.");
+
+            usuarioEntity = usuarioRepository.buscarCpfCnpj(usuarioBean.getCpf());
+
+            if (usuarioEntity != null)
+                throw new ValidacaoException("CPF de usuário já cadastrado.");
         }
     }
 
