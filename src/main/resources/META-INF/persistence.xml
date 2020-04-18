@@ -12,20 +12,13 @@
         <class>br.com.abce.advocacia.entity.ProcessoUsuarioEntity</class>
         <class>br.com.abce.advocacia.entity.UsuarioEntity</class>
         <class>br.com.abce.advocacia.entity.UsuarioEscritorioEntity</class>
-        <class>br.com.abce.advocacia.model.EnderecoEntity</class>
-        <class>br.com.abce.advocacia.model.EscritorioEntity</class>
-        <class>br.com.abce.advocacia.model.UsuarioEntity</class>
-        <class>br.com.abce.advocacia.model.NotaEntity</class>
-        <class>br.com.abce.advocacia.model.NotaDocumentoEntity</class>
-        <class>br.com.abce.advocacia.model.NotaTextoEntity</class>
-        <class>br.com.abce.advocacia.model.ProcessoEntity</class>
-        <class>br.com.abce.advocacia.model.ProcessoUsuarioEntity</class>
-        <class>br.com.abce.advocacia.model.UsuarioEscritorioEntity</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.validation.factory" value="org.jboss.seam.validation.InjectingConstraintValidatorFactory"/>
             <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/advocacia"/>
             <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="persistenceUnit"/>

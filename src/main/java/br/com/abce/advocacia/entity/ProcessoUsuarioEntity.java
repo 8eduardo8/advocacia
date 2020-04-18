@@ -98,7 +98,7 @@ public class ProcessoUsuarioEntity {
 //        , processoId, usuarioId);
     }
 
-    @OneToMany(mappedBy = "processoUsuarioByProcessoUsuarioId")
+    @OneToMany(mappedBy = "processoUsuarioByProcessoUsuarioId", cascade = CascadeType.PERSIST)
     public Collection<NotaEntity> getNotasById() {
         return notasById;
     }

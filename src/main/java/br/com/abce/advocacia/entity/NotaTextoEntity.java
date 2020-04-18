@@ -9,6 +9,7 @@ public class NotaTextoEntity {
     private Long id;
     private String descricao;
     private int tipo;
+    private NotaEntity notaEntity;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -54,5 +55,14 @@ public class NotaTextoEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, descricao, tipo);
+    }
+
+    @OneToOne(mappedBy = "notaTextoByNotaTextoId", cascade = CascadeType.PERSIST)
+    public NotaEntity getNotaEntity() {
+        return notaEntity;
+    }
+
+    public void setNotaEntity(NotaEntity notaEntity) {
+        this.notaEntity = notaEntity;
     }
 }

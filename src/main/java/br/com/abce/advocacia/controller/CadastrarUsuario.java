@@ -54,7 +54,7 @@ public class CadastrarUsuario implements Serializable {
 
 			usuarioService.salvar(usuarioBean);
 
-			Mensagem.info("USU�RIO SALVO!");
+			Mensagem.info("USUÁRIO SALVO!");
 
 		} catch (AdvocaciaException ex) {
 			Mensagem.info(ex.getMessage());
@@ -70,10 +70,10 @@ public class CadastrarUsuario implements Serializable {
 	public String alterarSenha() {
 
 		if (!senhaAtual.equals(usuarioBean.getSenha())) {
-			Mensagem.erro("A SENHA DIGITADA N�O CONFERE COM A SUA SENHA!", "");
+			Mensagem.erro("A SENHA DIGITADA NÃO CONFERE COM A SUA SENHA!", "");
 			return "";
 		} else if (!novaSenha.equals(confirmaSenha)) {
-			Mensagem.erro("CONFIRMA��O DA SNEHA N�O CONFERE COM A NOVA SENHA!", "");
+			Mensagem.erro("CONFIRMAÇÃO DA SNEHA NÃO CONFERE COM A NOVA SENHA!", "");
 			return "";
 		}
 

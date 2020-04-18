@@ -82,8 +82,8 @@ public class NotaEntity {
         this.processoUsuarioByProcessoUsuarioId = processoUsuarioByProcessoUsuarioId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "nota_texto_id", referencedColumnName = "id", nullable = false)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "nota_texto_id", referencedColumnName = "id")
     public NotaTextoEntity getNotaTextoByNotaTextoId() {
         return notaTextoByNotaTextoId;
     }
@@ -92,8 +92,8 @@ public class NotaEntity {
         this.notaTextoByNotaTextoId = notaTextoByNotaTextoId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "nota_documento_id", referencedColumnName = "id", nullable = false)
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "nota_documento_id", referencedColumnName = "id")
     public NotaDocumentoEntity getNotaDocumentoByNotaDocumentoId() {
         return notaDocumentoByNotaDocumentoId;
     }

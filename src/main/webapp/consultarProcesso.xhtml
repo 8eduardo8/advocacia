@@ -49,12 +49,18 @@
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} usuários"
 					rowsPerPageTemplate="100,500,1000" rows="100">
-					<p:column headerText="Ações" style="width:50px;">
+					<p:column headerText="Ações" style="width:50px; text-align: center;">
 						<p:commandButton icon="pi pi-pencil" ajax="false"
 							style="background:#616161;border:none; text-align: center;"
 							action="#{cadastrarProcesso.editar}">
 							<f:setPropertyActionListener
                                     target="#{cadastrarProcesso.processoBean}" value="#{item}" />
+						</p:commandButton>
+						<p:commandButton icon="pi pi-pencil" ajax="false"
+										 style="background:#616161;border:none; text-align: center;"
+										 action="#{consultarProcesso.detalhar}">
+							<f:setPropertyActionListener
+									target="#{consultarProcesso.processoBean}" value="#{item}" />
 						</p:commandButton>
 					</p:column>
 					<p:column headerText="Número" style="width:120px; text-align: center;">

@@ -24,7 +24,7 @@ public class SecurityController implements PhaseListener {
 
 		if (loginPage == null || loginPage.getSenha() == null) {
 			NavigationHandler handler = context.getApplication().getNavigationHandler();
-			handler.handleNavigation(context, null, "/login.jsf");
+			handler.handleNavigation(context, null, "/login.xhtml");
 
 			// Pula para �ltima fase do ciclo de vida
 			context.renderResponse();
@@ -34,7 +34,7 @@ public class SecurityController implements PhaseListener {
 		// verifica se o usu�rio est� logado
 		if (!loginPage.isLogado()) {
 			NavigationHandler handler = context.getApplication().getNavigationHandler();
-			handler.handleNavigation(context, null, "/login.jsf");
+			handler.handleNavigation(context, null, "/login.xhtml");
 
 			// Pula para �ltima fase do ciclo de vida
 			context.renderResponse();

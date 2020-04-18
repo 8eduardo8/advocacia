@@ -9,4 +9,11 @@ public class Consts {
     public static final int PERFIL_ADVOGADO = 2;
     public static final int PERFIL_SECRETARIA = 3;
     public static final int PERFIL_ADMINISTRADOR = 4;
+
+    public static final int TIPO_ANDAMENTO_PROCESSO = 2;
+    public static final int TIPO_MENSAGEM = 1;
+
+
+    public static final String NAO_POSSIVEL_DADOS_USUARIO = "Não foi possível obter o dados do usuário.";
+    public static final String OPERACO_REALIZADA_SUCESSO = "Operação realizada com sucesso.";
 }

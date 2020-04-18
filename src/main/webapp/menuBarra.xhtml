@@ -41,17 +41,23 @@
 
 				<p:panelGrid columns="1" layout="grid"
 					styleClass="ui-panelgrid-blank ui-fluid">
-					<p:commandButton value="Início" action="#{menu.menu}" ajax="false" />
+					<p:commandButton value="Início" action="#{dashboard.carregaDashboard}" ajax="false" />
 					<p:commandButton value="Usuários"
 						action="#{consultarUsuario.consultar}" ajax="false" />
 					<p:commandButton value="Escritórios"
 						action="#{consultarEscritorio.consultar}" ajax="false" />
 					<p:commandButton value="Processos"
 						action="#{consultarProcesso.consultar}" ajax="false" />
-					<br />
-					<br />
-					<br />
-					<p:commandButton style="background: #B71C1C;border: none;"
+					<p:commandButton value="Andamentos"
+									 action="#{cadastrarAndamento.cadastrar}" ajax="false" >
+<!--						<f:setPropertyActionListener target="#{cadastrarAndamento.listaProcessoBean}"-->
+<!--													 value="#{dashboard.listaProcessos}" />-->
+					</p:commandButton>
+					<p:commandButton value="Documentos"
+									 action="#{cadastrarDocumento.cadastrar}" ajax="false" >
+					</p:commandButton>
+
+					<p:commandButton style="background: #B71C1C;border: none; margin-top: 30px"
 						value="Sair" action="#{login.sair}" ajax="false" />
 				</p:panelGrid>
 			</p:sidebar>

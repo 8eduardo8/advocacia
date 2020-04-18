@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Menu</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no" />
+</h:head>
+<h:body style="background:#ffffff;margin: 0 0 0 0;">
+    <ui:composition template="menuPrime.xhtml">
+        <ui:define name="content">
+            <h:form>
+
+                <p:panel header="Cadastrar Andamento">
+
+                    <p:panelGrid columns="4"
+                                 columnClasses="ui-g-12 ui-md-8 ui-lg-6,ui-g-12 ui-md-2 ui-lg-2"
+                                 layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                        <p:outputLabel value="Processo"/>
+                        <p:selectOneMenu filter="true" filterMatchMode="contains"
+                                         value="#{cadastrarAndamento.andamentoBean.idProcesso}">
+                            <f:selectItems value="#{cadastrarAndamento.listaProcessoBean}"
+                                           var="item" itemLabel="#{item.numero} - #{item.comarca}"
+                                           itemValue="#{item.id}">
+                            </f:selectItems>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="4"
+                                 columnClasses="ui-g-12 ui-md-8 ui-lg-6,ui-g-12 ui-md-2 ui-lg-2"
+                                 layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:outputLabel value="Descrição" />
+                        <p:selectOneMenu  value="#{cadastrarAndamento.andamentoBean.descricao}" effect="fold" editable="true">
+                            <f:selectItem itemLabel="Selecione uma opção" itemValue="" />
+                            <f:selectItem itemLabel="Convocação para depoimento" itemValue="Convocação para depoimento" />
+                            <f:selectItem itemLabel="Conclusos para despacho" itemValue="Conclusos para despacho" />
+                            <f:selectItem itemLabel="Recebidos os Autos" itemValue="Recebidos os Autos" />
+                            <f:selectItem itemLabel="Recebidos os autos expedir publicação" itemValue="Recebidos os autos expedir publicação" />
+                            <f:selectItem itemLabel="Expedição de Certidão" itemValue="Expedição de Certidão" />
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" style="margin-top: 15px;"
+                                 columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-2 ui-lg-2"
+                                 layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                        <p:commandButton icon="pi pi-check" value="SALVAR"
+                                         style="border:none;" action="#{cadastrarAndamento.salvar}"
+                                         ajax="false" />
+                        <p:commandButton icon="pi pi-times" value="CANCELAR"
+                                         style="background:#616161;border:none;"
+                                         action="#{cadastrarAndamento.novo}" ajax="false" />
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

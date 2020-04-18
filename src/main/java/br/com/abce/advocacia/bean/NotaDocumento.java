@@ -3,26 +3,31 @@ package br.com.abce.advocacia.bean;
 import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @ApiModel
 public class NotaDocumento implements Serializable {
 
-	private int nota;
+	private Long idDocumento;
 	private String nome;
 	private String descricao;
 	private byte[] arquivo;
 	private String formato;
+	private Long idUsuario;
+	private Long idProcesso;
+
+	private Date dataCadastro;
 
 	public NotaDocumento() {
 		super();
 	}
 
-	public int getNota() {
-		return nota;
+	public Long getIdDocumento() {
+		return idDocumento;
 	}
 
-	public void setNota(int nota) {
-		this.nota = nota;
+	public void setIdDocumento(Long idDocumento) {
+		this.idDocumento = idDocumento;
 	}
 
 	public String getNome() {
@@ -57,4 +62,27 @@ public class NotaDocumento implements Serializable {
 		this.formato = formato;
 	}
 
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public Long getIdProcesso() {
+		return idProcesso;
+	}
+
+	public void setIdProcesso(Long idProcesso) {
+		this.idProcesso = idProcesso;
+	}
 }

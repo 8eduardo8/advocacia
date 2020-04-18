@@ -12,6 +12,7 @@ public class NotaDocumentoEntity {
     private String descricao;
     private byte[] arquivo;
     private String formarto;
+    private NotaEntity notaEntity;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -83,4 +84,12 @@ public class NotaDocumentoEntity {
         return result;
     }
 
+    @OneToOne(mappedBy = "notaDocumentoByNotaDocumentoId", cascade = CascadeType.PERSIST)
+    public NotaEntity getNotaEntity() {
+        return notaEntity;
+    }
+
+    public void setNotaEntity(NotaEntity notaEntity) {
+        this.notaEntity = notaEntity;
+    }
 }

@@ -38,7 +38,7 @@ public class Login implements Serializable {
 			usuarioBean = autenticacaoService.login(userLogin, senha);
 
 			logado = true;
-			retorno = "menu";
+			retorno = "dashboard";
 
 		} catch (AdvocaciaException e) {
 			Mensagem.erro(e.getMessage());

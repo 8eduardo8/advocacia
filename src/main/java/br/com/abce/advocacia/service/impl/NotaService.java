@@ -1,9 +1,6 @@
 package br.com.abce.advocacia.service.impl;
 
-import br.com.abce.advocacia.bean.NotaBean;
-import br.com.abce.advocacia.bean.NotaDocumento;
-import br.com.abce.advocacia.bean.NotaMensagem;
-import br.com.abce.advocacia.bean.ProcessoBean;
+import br.com.abce.advocacia.bean.*;
 import br.com.abce.advocacia.entity.NotaDocumentoEntity;
 import br.com.abce.advocacia.entity.NotaEntity;
 import br.com.abce.advocacia.entity.NotaTextoEntity;
@@ -13,9 +10,12 @@ import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.repository.NotaRepository;
 import br.com.abce.advocacia.repository.ProcessoUsuarioRepository;
+import br.com.abce.advocacia.util.Consts;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
+import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,7 +74,8 @@ public class NotaService implements Serializable {
         return notaBeanList;
     }
 
-    public void registrarNota(NotaBean notaBean) throws ValidacaoException {
+    @Transactional
+    public void salvarNota(NotaBean notaBean) throws ValidacaoException, InfraestruturaException {
 
         if (notaBean.getIdProcesso() == null || notaBean.getIdProcesso() == 0L)
 
@@ -84,9 +85,9 @@ public class NotaService implements Serializable {
 
             throw new ValidacaoException("Id do usuário não informado.");
 
-        if (notaBean.getIdProcessoUsuario() == null || notaBean.getIdProcessoUsuario() == 0L)
-
-            throw new ValidacaoException("Id do processo/usuário não informado.");
+//        if (notaBean.getIdProcessoUsuario() == null || notaBean.getIdProcessoUsuario() == 0L)
+//
+//            throw new ValidacaoException("Id do processo/usuário não informado.");
 
         final NotaDocumento notaDocumento = notaBean.getNotaDocumento();
 
@@ -96,41 +97,49 @@ public class NotaService implements Serializable {
 
         validaNotaMensagem(notaMensagem);
 
-        final ProcessoUsuarioEntity processoUsuarioEntity = processoUsuarioRepository.buscar(notaBean.getIdProcessoUsuario());
+//        final ProcessoUsuarioEntity processoUsuarioEntity = processoUsuarioRepository.buscar(notaBean.getIdProcessoUsuario());
 
-        if (processoUsuarioEntity == null)
+        try {
 
-            throw new ValidacaoException("Processo/Usuario não encontrado.");
+            final ProcessoUsuarioEntity processoUsuarioEntity = processoUsuarioRepository.buscar(notaBean.getIdUsuario(), notaBean.getIdProcesso());
 
-        NotaEntity entity = new NotaEntity();
+            if (processoUsuarioEntity == null)
 
-        entity.setDataCadastro(new Date());
+                throw new ValidacaoException("Processo/Usuario não encontrado.");
 
-        if (notaMensagem != null) {
+            NotaEntity entity = new NotaEntity();
 
-            NotaTextoEntity notaTextoEntity = new NotaTextoEntity();
+            entity.setDataCadastro(new Date());
 
-            notaTextoEntity.setDescricao(notaMensagem.getMensagem());
-            notaTextoEntity.setTipo(notaMensagem.getTipo());
+            if (notaMensagem != null) {
 
-            entity.setNotaTextoByNotaTextoId(notaTextoEntity);
+                NotaTextoEntity notaTextoEntity = new NotaTextoEntity();
+
+                notaTextoEntity.setDescricao(notaMensagem.getMensagem());
+                notaTextoEntity.setTipo(notaMensagem.getTipo());
+
+                entity.setNotaTextoByNotaTextoId(notaTextoEntity);
+            }
+
+            if (notaDocumento != null) {
+
+                NotaDocumentoEntity documentoEntity = new NotaDocumentoEntity();
+
+                documentoEntity.setArquivo(notaDocumento.getArquivo());
+                documentoEntity.setDescricao(notaDocumento.getDescricao());
+                documentoEntity.setFormarto(notaDocumento.getFormato());
+                documentoEntity.setNome(notaDocumento.getNome());
+
+                entity.setNotaDocumentoByNotaDocumentoId(documentoEntity);
+            }
+
+            entity.setProcessoUsuarioByProcessoUsuarioId(processoUsuarioEntity);
+
+            notaRepository.salvar(entity);
+
+        } catch (PersistenceException e) {
+            throw new InfraestruturaException(e.getMessage(), e);
         }
-
-        if (notaDocumento != null) {
-
-            NotaDocumentoEntity documentoEntity = new NotaDocumentoEntity();
-
-            documentoEntity.setArquivo(notaDocumento.getArquivo());
-            documentoEntity.setDescricao(notaDocumento.getDescricao());
-            documentoEntity.setFormarto(notaDocumento.getFormato());
-            documentoEntity.setNome(notaDocumento.getNome());
-
-            entity.setNotaDocumentoByNotaDocumentoId(documentoEntity);
-        }
-
-        entity.setProcessoUsuarioByProcessoUsuarioId(processoUsuarioEntity);
-
-        notaRepository.salvar(entity);
 
     }
 
@@ -164,6 +173,149 @@ public class NotaService implements Serializable {
 
                 throw new ValidacaoException("Descrição do arquivo não informado.");
 
+        }
+    }
+
+    @Transactional
+    public void salvarAndamento(NotaAndamento andamentoBean) throws ValidacaoException, InfraestruturaException {
+
+        if (StringUtils.isBlank(andamentoBean.getDescricao()))
+            throw new ValidacaoException("Andamento não informado.");
+
+        try {
+
+            NotaTextoEntity notaTextoEntity = new NotaTextoEntity();
+
+            notaTextoEntity.setTipo(Consts.TIPO_ANDAMENTO_PROCESSO);
+            notaTextoEntity.setDescricao(andamentoBean.getDescricao().toUpperCase());
+
+            final ProcessoUsuarioEntity processoUsuarioEntity = processoUsuarioRepository
+                    .buscar(andamentoBean.getIdUsuario(), andamentoBean.getIdProcesso());
+
+            if (processoUsuarioEntity == null)
+                throw new ValidacaoException("Usuário não está autorizado a atualizar informações do processo.");
+
+            NotaEntity notaEntity = new NotaEntity();
+
+            notaEntity.setDataCadastro(new Date());
+            notaEntity.setNotaTextoByNotaTextoId(notaTextoEntity);
+            notaEntity.setProcessoUsuarioByProcessoUsuarioId(processoUsuarioEntity);
+
+            notaTextoEntity.setNotaEntity(notaEntity);
+
+            notaRepository.salvar(notaEntity);
+
+        } catch (PersistenceException e) {
+            throw new InfraestruturaException(e.getMessage(), e);
+        }
+    }
+
+    public List<NotaAndamento> listarAndamentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException {
+
+
+        final List<NotaEntity> entityLists = notaRepository.listarAndamentos(idProcesso, Consts.TIPO_ANDAMENTO_PROCESSO);
+
+        if (entityLists == null || entityLists.isEmpty())
+
+            throw new RecursoNaoEncontradoException("Lista de andamentos não encontrada");
+
+        List<NotaAndamento> listAndamento = new ArrayList<>();
+
+        for (NotaEntity entity : entityLists) {
+
+            NotaAndamento notaAndamento = new NotaAndamento();
+
+            NotaTextoEntity textoEntity = entity.getNotaTextoByNotaTextoId();
+
+            notaAndamento.setDescricao(textoEntity.getDescricao());
+
+            notaAndamento.setNota(entity.getId());
+            notaAndamento.setDataCadastro(entity.getDataCadastro());
+            ProcessoUsuarioEntity processoUsuarioId = entity.getProcessoUsuarioByProcessoUsuarioId();
+            notaAndamento.setIdProcesso(processoUsuarioId.getUsuarioByUsuarioId().getId());
+            notaAndamento.setIdProcesso(processoUsuarioId.getProcessoByProcessoId().getId());
+
+            listAndamento.add(notaAndamento);
+
+        }
+
+        return listAndamento;
+
+    }
+
+    public List<NotaDocumento> listarDocumentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException {
+
+        final List<NotaEntity> entityLists = notaRepository.listarDocumentos(idProcesso);
+
+        if (entityLists == null || entityLists.isEmpty())
+
+            throw new RecursoNaoEncontradoException("Lista de documentos não encontrada");
+
+        List<NotaDocumento> lista = new ArrayList<>();
+
+        for (NotaEntity entity : entityLists) {
+
+            NotaDocumento notaDocumento = new NotaDocumento();
+
+            NotaDocumentoEntity notaDocumentoEntity = entity.getNotaDocumentoByNotaDocumentoId();
+
+            notaDocumento.setIdDocumento(notaDocumentoEntity.getId());
+            notaDocumento.setDescricao(notaDocumentoEntity.getDescricao());
+            notaDocumento.setNome(notaDocumentoEntity.getNome());
+            notaDocumento.setFormato(notaDocumento.getFormato());
+
+            notaDocumento.setDataCadastro(entity.getDataCadastro());
+            ProcessoUsuarioEntity processoUsuarioId = entity.getProcessoUsuarioByProcessoUsuarioId();
+            notaDocumento.setIdProcesso(processoUsuarioId.getUsuarioByUsuarioId().getId());
+            notaDocumento.setIdProcesso(processoUsuarioId.getProcessoByProcessoId().getId());
+
+            lista.add(notaDocumento);
+
+        }
+
+        return lista;
+
+    }
+
+    @Transactional
+    public void salvarDocumento(NotaDocumento notaDocumento) throws ValidacaoException, InfraestruturaException {
+
+        if (StringUtils.isBlank(notaDocumento.getDescricao()))
+            throw new ValidacaoException("Descrição não informado.");
+
+        if (StringUtils.isBlank(notaDocumento.getFormato()))
+            throw new ValidacaoException("Formato não informado.");
+
+        if (notaDocumento.getArquivo() == null)
+            throw new ValidacaoException("Arquivo não informado.");
+
+        try {
+
+            NotaDocumentoEntity notaDocumentoEntity = new NotaDocumentoEntity();
+
+            notaDocumentoEntity.setDescricao(notaDocumento.getDescricao().toUpperCase());
+            notaDocumentoEntity.setNome(notaDocumento.getNome());
+            notaDocumentoEntity.setFormarto(notaDocumento.getFormato());
+            notaDocumentoEntity.setArquivo(notaDocumento.getArquivo());
+
+            final ProcessoUsuarioEntity processoUsuarioEntity = processoUsuarioRepository
+                    .buscar(notaDocumento.getIdUsuario(), notaDocumento.getIdProcesso());
+
+            if (processoUsuarioEntity == null)
+                throw new ValidacaoException("Usuário não está autorizado a atualizar informações do processo.");
+
+            NotaEntity notaEntity = new NotaEntity();
+
+            notaEntity.setDataCadastro(new Date());
+            notaEntity.setNotaDocumentoByNotaDocumentoId(notaDocumentoEntity);
+            notaEntity.setProcessoUsuarioByProcessoUsuarioId(processoUsuarioEntity);
+
+            notaDocumentoEntity.setNotaEntity(notaEntity);
+
+            notaRepository.salvar(notaEntity);
+
+        } catch (PersistenceException e) {
+            throw new InfraestruturaException(e.getMessage(), e);
         }
     }
 }

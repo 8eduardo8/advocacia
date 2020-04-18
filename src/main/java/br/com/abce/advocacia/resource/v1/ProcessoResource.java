@@ -56,7 +56,7 @@ public class ProcessoResource implements StandardRestDefinition {
     @POST
     @Path("/{id}/nota")
     @ApiOperation(value = "Cadastrar nota no processo.")
-    public void registrarNota(@BeanParam final NotaBean notaBean) throws ValidacaoException {
-        notaService.registrarNota(notaBean);
+    public void registrarNota(@BeanParam final NotaBean notaBean) throws ValidacaoException, InfraestruturaException {
+        notaService.salvarNota(notaBean);
     }
 }

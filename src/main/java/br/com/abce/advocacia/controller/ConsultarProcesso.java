@@ -1,7 +1,13 @@
 package br.com.abce.advocacia.controller;
 
+import br.com.abce.advocacia.bean.NotaAndamento;
+import br.com.abce.advocacia.bean.NotaDocumento;
 import br.com.abce.advocacia.bean.ProcessoBean;
+import br.com.abce.advocacia.bean.ProcessoCompletoBean;
 import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.exceptions.InfraestruturaException;
+import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
+import br.com.abce.advocacia.service.impl.NotaService;
 import br.com.abce.advocacia.service.impl.ProcessoService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
@@ -21,15 +27,25 @@ public class ConsultarProcesso implements Serializable {
 	private String filtro;
 	private String situacao;
 	private List<ProcessoBean> lista;
+	private List<NotaAndamento> listaAndamentos;
+	private List<NotaDocumento> listaDocumentos;
+
+	private ProcessoBean processoBean;
+
+	private ProcessoCompletoBean processoCompletoBean;
 
 	@Inject
 	private ProcessoService processoService;
+
+	@Inject
+	private NotaService notaService;
 
 	@PostConstruct
 	public void init() {
 	}
 
 	public String consultar() {
+
 		lista = new ArrayList<>();
 
 		try {
@@ -45,6 +61,56 @@ public class ConsultarProcesso implements Serializable {
 
 		return "consultarProcesso";
 	}
+
+	public String detalhar(){
+
+		try {
+
+			Long idProcesso = processoBean.getId();
+
+			listaAndamentos = carregaListaAndamentos(idProcesso);
+
+			listaDocumentos = carregaListaDocumentos(idProcesso);
+
+		} catch (InfraestruturaException e) {
+			LoggerUtil.error(e.getMessage(), e);
+			Mensagem.erro(e.getMessage());
+		}
+
+		return "detalharProcesso";
+
+	}
+
+	private List<NotaDocumento> carregaListaDocumentos(final Long idProcesso) throws InfraestruturaException {
+
+		List<NotaDocumento> list = null;
+
+		try {
+
+			list = notaService.listarDocumentos(idProcesso);
+
+		} catch (RecursoNaoEncontradoException e) {
+			// ignore
+		}
+
+		return list;
+	}
+
+	private List<NotaAndamento> carregaListaAndamentos(final Long idProcesso) throws InfraestruturaException {
+
+		List<NotaAndamento> list = null;
+
+		try {
+
+			list = notaService.listarAndamentos(idProcesso);
+
+		} catch (RecursoNaoEncontradoException e) {
+			// ignore
+		}
+
+		return list;
+	}
+
 
 	public String getFiltro() {
 		return filtro;
@@ -70,4 +136,51 @@ public class ConsultarProcesso implements Serializable {
 		this.lista = lista;
 	}
 
+	public ProcessoBean getProcessoBean() {
+		return processoBean;
+	}
+
+	public void setProcessoBean(ProcessoBean processoBean) {
+		this.processoBean = processoBean;
+	}
+
+	public ProcessoCompletoBean getProcessoCompletoBean() {
+		return processoCompletoBean;
+	}
+
+	public void setProcessoCompletoBean(ProcessoCompletoBean processoCompletoBean) {
+		this.processoCompletoBean = processoCompletoBean;
+	}
+
+	public ProcessoService getProcessoService() {
+		return processoService;
+	}
+
+	public void setProcessoService(ProcessoService processoService) {
+		this.processoService = processoService;
+	}
+
+	public NotaService getNotaService() {
+		return notaService;
+	}
+
+	public void setNotaService(NotaService notaService) {
+		this.notaService = notaService;
+	}
+
+	public void setListaAndamentos(List<NotaAndamento> listaAndamentos) {
+		this.listaAndamentos = listaAndamentos;
+	}
+
+	public void setListaDocumentos(List<NotaDocumento> listaDocumentos) {
+		this.listaDocumentos = listaDocumentos;
+	}
+
+	public List<NotaAndamento> getListaAndamentos() {
+		return listaAndamentos;
+	}
+
+	public List<NotaDocumento> getListaDocumentos() {
+		return listaDocumentos;
+	}
 }
