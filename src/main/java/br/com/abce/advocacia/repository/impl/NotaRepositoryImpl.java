@@ -9,6 +9,8 @@ import java.util.List;
 
 public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> implements NotaRepository {
 
+    public static final String ID_PROCESSO = "id_processo";
+
     @Override
     public List<NotaEntity> listar(final Long idProcesso) throws InfraestruturaException {
 
@@ -21,7 +23,7 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
                             "where n.processoUsuarioByProcessoUsuarioId.id = pu.id " +
                             "  and pu.processoByProcessoId.id = :id_processo")
 
-                    .setParameter("id_processo", idProcesso)
+                    .setParameter(ID_PROCESSO, idProcesso)
                     .getResultList();
 
         } catch (PersistenceException ex) {
@@ -39,7 +41,7 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
                             "         where n.notaTextoByNotaTextoId.tipo = :tipo" +
                             "           and n.processoUsuarioByProcessoUsuarioId.processoByProcessoId.id = :id_processo" +
                             "        order by n.dataCadastro asc ")
-                    .setParameter("id_processo", idProcesso)
+                    .setParameter(ID_PROCESSO, idProcesso)
                     .setParameter("tipo", tipo)
                     .getResultList();
 
@@ -57,7 +59,7 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
                             "         where n.processoUsuarioByProcessoUsuarioId.processoByProcessoId.id = :id_processo" +
                             "           and n.notaDocumentoByNotaDocumentoId.id is not null " +
                             "        order by n.dataCadastro asc ")
-                    .setParameter("id_processo", idProcesso)
+                    .setParameter(ID_PROCESSO, idProcesso)
                     .getResultList();
 
         } catch (PersistenceException ex) {

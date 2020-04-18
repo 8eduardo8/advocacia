@@ -24,7 +24,7 @@ import static br.com.abce.advocacia.util.Consts.NAO_POSSIVEL_DADOS_USUARIO;
 @SessionScoped
 public class Dashboard implements Serializable {
 
-	List<WrapperNota> lista;
+	private List<WrapperNota> lista;
 
 	private List<ProcessoBean> listaProcessos = new ArrayList<>();
 
@@ -104,7 +104,7 @@ public class Dashboard implements Serializable {
 		this.listaProcessos = listaProcessos;
 	}
 
-	public class WrapperNota {
+	public class WrapperNota implements Serializable {
 
 		private NotaBean notaBean;
 		private String mensagem;

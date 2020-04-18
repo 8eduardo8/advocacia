@@ -47,8 +47,8 @@ public class UsuarioResumidoBean implements Serializable, Bean {
 
     @Transient
     public String getDescPerfil(){
-        Perfil perfil = Perfil.getPerfil(this.getPerfil());
-        return perfil != null ? perfil.getDescricao() : "Desconhecido";
+        Perfil tipoPerfil = Perfil.getPerfil(this.getPerfil());
+        return tipoPerfil != null ? tipoPerfil.getDescricao() : "Desconhecido";
     }
 
 }

@@ -83,7 +83,7 @@ public class CadastrarProcesso implements Serializable {
 
 		try {
 
-			if (!processoBean.getListaUsuarios().contains(usuarioSelecionado.getId())) {
+			if (!processoBean.getListaUsuarios().contains(usuarioSelecionado)) {
 				processoBean.getListaUsuarios().add(usuarioSelecionado);
 			} else {
 				Mensagem.info("Usuário já consta na relação de envolvidos.");

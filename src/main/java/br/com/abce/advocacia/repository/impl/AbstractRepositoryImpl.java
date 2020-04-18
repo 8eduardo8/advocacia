@@ -49,14 +49,14 @@ public abstract class AbstractRepositoryImpl<T> implements AbstractRepository<T>
     }
 
     public T buscar(final Long id) {
-        return (T) getEntityManager().find(getGenericTypeClass(), id);
+        return getEntityManager().find(getGenericTypeClass(), id);
     }
 
     public void remover(final Long idEntity) {
 
         EntityManager entityManager = getEntityManager();
 
-        T entity = (T) entityManager.getReference(getGenericTypeClass(), idEntity);
+        T entity = entityManager.getReference(getGenericTypeClass(), idEntity);
 
         entityManager.remove(entity);
     }

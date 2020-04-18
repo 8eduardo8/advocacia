@@ -10,13 +10,15 @@ import javax.faces.event.PhaseListener;
 
 public class SecurityController implements PhaseListener {
 
+	public static final String LOGIN_XHTML = "/login.xhtml";
+
 	@Override
 	public void afterPhase(PhaseEvent event) {
 
 		FacesContext context = event.getFacesContext();
 
 		String paginaAcessada = context.getViewRoot().getViewId();
-		if ("/login.xhtml".equals(paginaAcessada) || paginaAcessada.contains("api") || paginaAcessada.contains("rest")) {
+		if (LOGIN_XHTML.equals(paginaAcessada) || paginaAcessada.contains("api") || paginaAcessada.contains("rest")) {
 			return;
 		}
 
@@ -41,16 +43,6 @@ public class SecurityController implements PhaseListener {
 			return;
 		}
 
-		// if (loginPage.getSenha().length() < 3) {
-		// Mensagem.info("A ALTERA��O DA SUA SENHA � OBRIGAT�RIA!", "");
-		// NavigationHandler handler =
-		// context.getApplication().getNavigationHandler();
-		// handler.handleNavigation(context, null, "/AlterarSenha.jsf");
-		//
-		// // Pula para �ltima fase do ciclo de vida
-		// context.renderResponse();
-		// return;
-		// }
 	}
 
 	@Override

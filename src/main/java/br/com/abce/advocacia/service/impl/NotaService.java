@@ -37,7 +37,7 @@ public class NotaService implements Serializable {
 
         ProcessoBean processoBean = processoService.buscar(idProcesso);
 
-        final List<NotaEntity> notaEntityList = notaRepository.listar((long) processoBean.getId());
+        final List<NotaEntity> notaEntityList = notaRepository.listar(processoBean.getId());
 
         if (notaEntityList.isEmpty())
 
@@ -51,7 +51,7 @@ public class NotaService implements Serializable {
 
             bean.setDataCadastro(entity.getDataCadastro());
             bean.setId(entity.getId().intValue());
-            bean.setIdUsuario((long) entity.getProcessoUsuarioByProcessoUsuarioId().getUsuarioByUsuarioId().getId());
+            bean.setIdUsuario(entity.getProcessoUsuarioByProcessoUsuarioId().getUsuarioByUsuarioId().getId());
 
             NotaTextoEntity textoEntity = entity.getNotaTextoByNotaTextoId();
 
@@ -85,10 +85,6 @@ public class NotaService implements Serializable {
 
             throw new ValidacaoException("Id do usuário não informado.");
 
-//        if (notaBean.getIdProcessoUsuario() == null || notaBean.getIdProcessoUsuario() == 0L)
-//
-//            throw new ValidacaoException("Id do processo/usuário não informado.");
-
         final NotaDocumento notaDocumento = notaBean.getNotaDocumento();
 
         validaNotaDocumento(notaDocumento);
@@ -96,8 +92,6 @@ public class NotaService implements Serializable {
         final NotaMensagem notaMensagem = notaBean.getNotaMensagem();
 
         validaNotaMensagem(notaMensagem);
-
-//        final ProcessoUsuarioEntity processoUsuarioEntity = processoUsuarioRepository.buscar(notaBean.getIdProcessoUsuario());
 
         try {
 

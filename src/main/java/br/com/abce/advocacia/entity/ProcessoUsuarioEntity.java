@@ -12,8 +12,6 @@ public class ProcessoUsuarioEntity {
     private Date dataCadastro;
     private Date dataAtualizacao;
     private Date dataExclusao;
-//    private Long processoId;
-//    private Long usuarioId;
     private Collection<NotaEntity> notasById;
     private ProcessoEntity processoByProcessoId;
     private UsuarioEntity usuarioByUsuarioId;
@@ -59,34 +57,12 @@ public class ProcessoUsuarioEntity {
         this.dataExclusao = dataExclusao;
     }
 
-//    @Basic
-//    @Column(name = "processo_id", nullable = false)
-//    public Long getProcessoId() {
-//        return processoId;
-//    }
-//
-//    public void setProcessoId(Long processoId) {
-//        this.processoId = processoId;
-//    }
-//
-//    @Basic
-//    @Column(name = "usuario_id", nullable = false)
-//    public Long getUsuarioId() {
-//        return usuarioId;
-//    }
-//
-//    public void setUsuarioId(Long usuarioId) {
-//        this.usuarioId = usuarioId;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProcessoUsuarioEntity that = (ProcessoUsuarioEntity) o;
         return id == that.id &&
-//                processoId == that.processoId &&
-//                usuarioId == that.usuarioId &&
                 Objects.equals(dataCadastro, that.dataCadastro) &&
                 Objects.equals(dataAtualizacao, that.dataAtualizacao) &&
                 Objects.equals(dataExclusao, that.dataExclusao);
@@ -95,7 +71,6 @@ public class ProcessoUsuarioEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, dataCadastro, dataAtualizacao, dataExclusao);
-//        , processoId, usuarioId);
     }
 
     @OneToMany(mappedBy = "processoUsuarioByProcessoUsuarioId", cascade = CascadeType.PERSIST)

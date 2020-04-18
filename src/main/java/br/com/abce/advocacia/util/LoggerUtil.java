@@ -5,6 +5,10 @@ import java.util.logging.Logger;
 
 public class LoggerUtil {
 
+    private LoggerUtil(){
+        super();
+    }
+
     public static void info(final String mensagem){
         Logger.getLogger(Thread.currentThread().getStackTrace()[1].getClassName()).info(mensagem);
     }

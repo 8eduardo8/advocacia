@@ -11,8 +11,6 @@ public class UsuarioEscritorioEntity {
     private Date dataAtualizacao;
     private Date dataCadastrol;
     private Date dataExclusao;
-//    private int usuarioId;
-//    private int escritorioId;
     private UsuarioEntity usuarioByUsuarioId;
     private EscritorioEntity escritorioByEscritorioId;
 
@@ -57,34 +55,12 @@ public class UsuarioEscritorioEntity {
         this.dataExclusao = dataExclusao;
     }
 
-//    @Basic
-//    @Column(name = "usuario_id", nullable = false)
-//    public int getUsuarioId() {
-//        return usuarioId;
-//    }
-//
-//    public void setUsuarioId(int usuarioId) {
-//        this.usuarioId = usuarioId;
-//    }
-//
-//    @Basic
-//    @Column(name = "escritorio_id", nullable = false)
-//    public int getEscritorioId() {
-//        return escritorioId;
-//    }
-//
-//    public void setEscritorioId(int escritorioId) {
-//        this.escritorioId = escritorioId;
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsuarioEscritorioEntity that = (UsuarioEscritorioEntity) o;
         return id == that.id &&
-//                usuarioId == that.usuarioId &&
-//                escritorioId == that.escritorioId &&
                 Objects.equals(dataAtualizacao, that.dataAtualizacao) &&
                 Objects.equals(dataCadastrol, that.dataCadastrol) &&
                 Objects.equals(dataExclusao, that.dataExclusao);
@@ -93,7 +69,6 @@ public class UsuarioEscritorioEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, dataAtualizacao, dataCadastrol, dataExclusao);
-//        , usuarioId, escritorioId);
     }
 
     @ManyToOne

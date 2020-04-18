@@ -78,7 +78,7 @@ public class CadastrarUsuario implements Serializable {
 		}
 
 		try {
-			usuarioBean = usuarioService.buscar((long) usuarioBean.getId());
+			usuarioBean = usuarioService.buscar(usuarioBean.getId());
 			if (usuarioBean != null) {
 				usuarioBean.setSenha(novaSenha);
 				usuarioService.salvar(usuarioBean);

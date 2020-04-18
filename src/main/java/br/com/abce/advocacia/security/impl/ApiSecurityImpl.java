@@ -20,6 +20,7 @@ public class ApiSecurityImpl implements Serializable {
 
 
     public ApiSecurityImpl() {
+        super();
     }
 
     @AroundInvoke

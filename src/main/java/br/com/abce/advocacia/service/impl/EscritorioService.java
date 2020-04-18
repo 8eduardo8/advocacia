@@ -142,7 +142,10 @@ public class EscritorioService implements Serializable {
         return getEscritorioBean(entity);
     }
 
-    public List<EscritorioBean> listar(final Long idUsuario) throws RecursoNaoEncontradoException, InfraestruturaException {
+    public List<EscritorioBean> listar(final Long idUsuario) throws RecursoNaoEncontradoException, InfraestruturaException, ValidacaoException {
+
+        if (idUsuario == null || idUsuario == 0L)
+            throw new ValidacaoException("Id do usuário não informado.");
 
         final List<EscritorioEntity> entityList = (idUsuario != null || idUsuario > 0L)
                 ? escritorioRepository.listar(idUsuario) : escritorioRepository.listar();

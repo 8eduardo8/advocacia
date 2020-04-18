@@ -23,6 +23,7 @@ public class InfraestruturaException extends AdvocaciaException implements Excep
                 .type(MediaType.APPLICATION_JSON).build();
     }
 
+    @Override
     public String getMessage() {
         return "Falha durante a operação, favor entrar em contato com os administradores do sistema!";
     }
