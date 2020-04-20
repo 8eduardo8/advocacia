@@ -10,9 +10,9 @@ import javax.faces.event.PhaseListener;
 
 public class SecurityController implements PhaseListener {
 
-	public static final String LOGIN_XHTML = "/login.xhtml";
+    public static final String LOGIN_XHTML = "/login.xhtml";
 
-	@Override
+    @Override
 	public void afterPhase(PhaseEvent event) {
 
 		FacesContext context = event.getFacesContext();
@@ -26,7 +26,7 @@ public class SecurityController implements PhaseListener {
 
 		if (loginPage == null || loginPage.getSenha() == null) {
 			NavigationHandler handler = context.getApplication().getNavigationHandler();
-			handler.handleNavigation(context, null, "/login.xhtml");
+			handler.handleNavigation(context, null, SecurityController.LOGIN_XHTML);
 
 			// Pula para �ltima fase do ciclo de vida
 			context.renderResponse();
@@ -36,7 +36,7 @@ public class SecurityController implements PhaseListener {
 		// verifica se o usu�rio est� logado
 		if (!loginPage.isLogado()) {
 			NavigationHandler handler = context.getApplication().getNavigationHandler();
-			handler.handleNavigation(context, null, "/login.xhtml");
+			handler.handleNavigation(context, null, SecurityController.LOGIN_XHTML);
 
 			// Pula para �ltima fase do ciclo de vida
 			context.renderResponse();

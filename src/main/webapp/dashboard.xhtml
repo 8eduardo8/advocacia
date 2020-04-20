@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -22,7 +22,7 @@
 
 				<p:panel style="border: none;">
 					<div style="margin-top: 50px; margin-left: 50px;">
-						<p><span>Olá #{login.usuarioBean.nome}!</span></p>
+						<p><span>OlÃ¡ #{login.usuarioBean.nome}!</span></p>
 					</div>
 				</p:panel>
 
@@ -31,7 +31,7 @@
 
 					<p:dataTable  var="processo" value="#{dashboard.listaProcessos}" style="border: none" >
 						<p:column>
-							Nº #{processo.numero} - Atualiz. <h:outputText value="#{processo.dataInicio}" >
+							NÂº #{processo.numero} - Atualiz. <h:outputText value="#{processo.dataInicio}" >
 																	<f:convertDateTime pattern="dd/MM/yyyy"/>
 															 </h:outputText>
 						</p:column>

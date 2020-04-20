@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -25,7 +25,7 @@
 						<p:outputLabel value="Filtro" />
 						<p:inputText value="#{consultarProcesso.filtro}" />
 
-						<p:outputLabel value="Situação" />
+						<p:outputLabel value="SituaÃ§Ã£o" />
 						<p:selectOneMenu value="#{consultarProcesso.situacao}">
 							<f:selectItem itemValue="" itemLabel="TODOS" />
 						</p:selectOneMenu>
@@ -49,7 +49,7 @@
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} processos"
 					rowsPerPageTemplate="100,500,1000" rows="100">
-					<p:column headerText="Ações" style="width:50px; text-align: center;">
+					<p:column headerText="AÃ§Ãµes" style="width:50px; text-align: center;">
 						<p:commandButton icon="pi pi-pencil" ajax="false"
 										style="background:#616161;border:none; text-align: center;"
 										action="#{cadastrarProcesso.editar}">
@@ -63,16 +63,16 @@
 									target="#{consultarProcesso.processoBean}" value="#{item}" />
 						</p:commandButton>
 					</p:column>
-					<p:column headerText="Número" style="width:120px; text-align: center;">
+					<p:column headerText="NÃºmero" style="width:120px; text-align: center;">
 						<h:outputText value="#{item.numero}" />
 					</p:column>
-					<p:column headerText="Área" style="width:200px; text-align: center;">
+					<p:column headerText="Ãrea" style="width:200px; text-align: center;">
 						<h:outputText value="#{item.area}" />
 					</p:column>
-					<p:column headerText="Situação" style="width:200px; text-align: center;">
+					<p:column headerText="SituaÃ§Ã£o" style="width:200px; text-align: center;">
 						<h:outputText value="#{item.situacao}" />
 					</p:column>
-					<p:column headerText="Data Início" style="width:100px; text-align: center;">
+					<p:column headerText="Data InÃ­cio" style="width:100px; text-align: center;">
 						<h:outputText value="#{item.dataInicio}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>

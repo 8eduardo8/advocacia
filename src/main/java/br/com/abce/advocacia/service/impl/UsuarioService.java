@@ -160,6 +160,9 @@ public class UsuarioService implements Serializable {
 
     private void validaRegrasNegocio(UsuarioBean usuarioBean) throws InfraestruturaException, ValidacaoException {
 
+        if (!util.isCPF(usuarioBean.getCpf()))
+            throw new ValidacaoException("CPF inválido.");
+
         if (isNovoUsuario(usuarioBean.getId())) {
 
             UsuarioEntity usuarioEntity = usuarioRepository.buscar(usuarioBean.getLogin());

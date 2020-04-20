@@ -39,6 +39,9 @@ public class EscritorioService implements Serializable {
             if (StringUtils.isBlank(escritorioBean.getCnpj()))
                 throw new ValidacaoException("CNPJ não informada.");
 
+            if (!util.isCNPJ(escritorioBean.getCnpj()))
+                throw new ValidacaoException("CNPJ inválido.");
+
             if (StringUtils.isBlank(escritorioBean.getFantasia()))
                 throw new ValidacaoException("Nome Fantasia não informado.");
 

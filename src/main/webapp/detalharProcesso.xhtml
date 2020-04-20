@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -22,17 +22,25 @@
 
                 <ui:include src="downloadFile.xhtml"></ui:include>
 
+                <p:panel style="text-align: right; border: none;">
+                    <p:commandButton icon="pi pi-pencil" ajax="false"
+                                     style="background:#616161;border:none; text-align: center;"
+                                     action="#{cadastrarProcesso.editar}">
+                        <f:setPropertyActionListener
+                                target="#{cadastrarProcesso.processoBean}" value="#{consultarProcesso.processoBean}" />
+                    </p:commandButton>
+                </p:panel>
                 <p:panel header="Processo">
                     <p:panelGrid columns="2"
                                  columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-10 ui-lg-10"
                                  layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-                        <p:outputLabel value="Número" />
+                        <p:outputLabel value="NÃºmero" />
                         <h:outputText value="#{consultarProcesso.processoBean.numero}" />
 
-                        <p:outputLabel value="Situação" />
+                        <p:outputLabel value="SituaÃ§Ã£o" />
                         <h:outputText value="#{consultarProcesso.processoBean.situacao}"/>
 
-                        <p:outputLabel value="Data Início" />
+                        <p:outputLabel value="Data InÃ­cio" />
                         <h:outputText value="#{consultarProcesso.processoBean.dataInicio}">
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputText>
@@ -40,10 +48,10 @@
                         <p:outputLabel value="Comarca" />
                         <h:outputText value="#{consultarProcesso.processoBean.comarca}"/>
 
-                        <p:outputLabel value="Área" />
+                        <p:outputLabel value="Ãrea" />
                         <h:outputText value="#{consultarProcesso.processoBean.area}"/>
 
-                        <p:outputLabel value="Data Atualização"/>
+                        <p:outputLabel value="Data AtualizaÃ§Ã£o"/>
                         <h:outputText value="#{consultarProcesso.processoBean.dataAtualizacao}">
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputText>
@@ -51,18 +59,35 @@
                     </p:panelGrid>
                 </p:panel>
 
+                <p:panel style="text-align: right; border: none;">
+                    <p:commandButton icon="pi pi-plus" ajax="false"
+                                     style="background:#616161;border:none; text-align: center;"
+                                     action="#{cadastrarProcesso.editar}">
+                        <f:setPropertyActionListener
+                                target="#{cadastrarProcesso.processoBean}" value="#{consultarProcesso.processoBean}" />
+                    </p:commandButton>
+                </p:panel>
                 <p:panel header="Envolvidos" style="margin-top: 10px">
 
                     <p:dataList value="#{consultarProcesso.processoBean.listaUsuarios}" var="usuario"
-                                emptyMessage="Não foram encontrados registros" style="border: none;">
+                                emptyMessage="NÃ£o foram encontrados registros" style="border: none;">
                         #{usuario.cpf} - #{usuario.nome} - #{usuario.descPerfil}
                     </p:dataList>
 
                 </p:panel>
 
+                <p:panel style="text-align: right; border: none;">
+                    <p:commandButton icon="pi pi-plus" ajax="false"
+                                     style="background:#616161;border:none; text-align: center;"
+                                     action="#{cadastrarAndamento.novo}">
+                        <f:setPropertyActionListener
+                                target="#{cadastrarProcesso.processoBean}" value="#{cadastrarAndamento.processoBean}" />
+                    </p:commandButton>
+                </p:panel>
+
                 <p:panel header="Andamentos"  style="margin-top: 10px">
 
-                    <p:dataList value="#{consultarProcesso.listaAndamentos}" var="andamento" emptyMessage="Não foram encontrados registros"
+                    <p:dataList value="#{consultarProcesso.listaAndamentos}" var="andamento" emptyMessage="NÃ£o foram encontrados registros"
                                 style="border: none;">
                         <h:outputText value="#{andamento.dataCadastro}" >
                             <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -71,10 +96,19 @@
 
                 </p:panel>
 
+                <p:panel style="text-align: right; border: none;">
+                    <p:commandButton icon="pi pi-plus" ajax="false"
+                                     style="background:#616161;border:none; text-align: center;"
+                                     action="#{cadastrarAndamento.novo}">
+                        <f:setPropertyActionListener
+                                target="#{cadastrarProcesso.processoBean}" value="#{cadastrarAndamento.processoBean}" />
+                    </p:commandButton>
+                </p:panel>
+
                 <p:panel header="Documentos"  style="margin-top: 10px">
 
                     <p:dataList value="#{consultarProcesso.listaDocumentos}" var="documento" style="border: none;"
-                                emptyMessage="Não foram encontrados registros">
+                                emptyMessage="NÃ£o foram encontrados registros">
                         <p:outputPanel>
                             <h:outputText value="#{documento.dataCadastro}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />

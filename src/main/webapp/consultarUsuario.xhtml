@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -18,7 +18,7 @@
 	<ui:composition template="menuPrime.xhtml">
 		<ui:define name="content">
 			<h:form>
-				<p:panel header="Consultar Usuários">
+				<p:panel header="Consultar UsuÃ¡rios">
 					<p:panelGrid columns="2"
 						columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-10 ui-lg-10"
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
@@ -35,7 +35,7 @@
 
 						<p:outputLabel value="Ativo" />
 						<p:selectBooleanButton value="#{consultarUsuario.ativo}"
-							onLabel="Sim" offLabel="Não" onIcon="pi pi-check"
+							onLabel="Sim" offLabel="NÃ£o" onIcon="pi pi-check"
 							offIcon="pi pi-times" style="width:60px" />
 
 					</p:panelGrid>
@@ -56,9 +56,9 @@
 				<p:dataTable value="#{consultarUsuario.lista}" var="item"
 					style="font-size:70%;" paginator="true" emptyMessage="Nenhum registro encontrado."
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} usuários"
+					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} usuÃ¡rios"
 					rowsPerPageTemplate="100,500,1000" rows="100">
-					<p:column headerText="Ações" style="width:50px;">
+					<p:column headerText="AÃ§Ãµes" style="width:50px;">
 						<p:commandButton icon="pi pi-pencil" ajax="false"
 							style="background:#616161;border:none; text-align: center;"
 							action="#{cadastrarUsuario.editar}">
@@ -88,7 +88,7 @@
 						<h:outputText value="#{item.descPerfil}" />
 					</p:column>
 					<p:column headerText="Ativo" style="width:50px; text-align: center;">
-						<h:outputText value="#{item.ativo == true ? 'Sim' : 'Não'}" />
+						<h:outputText value="#{item.ativo == true ? 'Sim' : 'NÃ£o'}" />
 					</p:column>
 				</p:dataTable>
 

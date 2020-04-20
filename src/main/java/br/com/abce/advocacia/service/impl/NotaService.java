@@ -35,9 +35,11 @@ public class NotaService implements Serializable {
 
     public List<NotaBean> listar(final Long idProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
 
-        ProcessoBean processoBean = processoService.buscar(idProcesso);
+        if (idProcesso == null || idProcesso == 0L)
+            throw new ValidacaoException("Id do processo não informado.");
 
-        final List<NotaEntity> notaEntityList = notaRepository.listar(processoBean.getId());
+
+        final List<NotaEntity> notaEntityList = notaRepository.listar(idProcesso);
 
         if (notaEntityList.isEmpty())
 
