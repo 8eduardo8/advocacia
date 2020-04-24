@@ -33,3 +33,8 @@ $(window, document, undefined).ready(function() {
   });
 
 });
+
+
+$('input[type=text]').click(function () {
+  return this.value.toUpperCase();
+});

@@ -18,7 +18,10 @@ public class SecurityController implements PhaseListener {
 		FacesContext context = event.getFacesContext();
 
 		String paginaAcessada = context.getViewRoot().getViewId();
-		if (LOGIN_XHTML.equals(paginaAcessada) || paginaAcessada.contains("api") || paginaAcessada.contains("rest")) {
+		if (LOGIN_XHTML.equals(paginaAcessada)
+				|| paginaAcessada.contains("api")
+				|| paginaAcessada.contains("rest")
+				|| paginaAcessada.contains("esqueciSenha.xhtml")) {
 			return;
 		}
 

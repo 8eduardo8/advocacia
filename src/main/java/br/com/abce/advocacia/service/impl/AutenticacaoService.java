@@ -14,6 +14,9 @@ public class AutenticacaoService implements Serializable {
     @Inject
     private UsuarioService usuarioService;
 
+    @Inject
+    private MailService mailService;
+
     public UsuarioBean login(final String usuario, final String senha) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
 
         if (StringUtils.isBlank(usuario))
@@ -27,8 +30,13 @@ public class AutenticacaoService implements Serializable {
         if (usuarioBean == null)
             throw new RecursoNaoEncontradoException("Usuário não encontrado.");
 
-        if (!usuarioBean.getSenha().equals(senha))
-            throw new ValidacaoException("Senha incorreta.");
+        if (!usuarioBean.getSenha().equals(senha)) {
+
+            if (usuarioBean.isRecuperarSenha()
+                    && !usuarioBean.getSenhaTemporaria().equals(senha))
+
+                throw new ValidacaoException("Senha incorreta.");
+        }
 
         return usuarioBean;
     }
@@ -38,6 +46,39 @@ public class AutenticacaoService implements Serializable {
 
     }
 
-    public void senhaProvisoria(String login, String email) {
+    public void senhaProvisoria(final String login, final String email) throws ValidacaoException, InfraestruturaException {
+
+        if (StringUtils.isBlank(login))
+            throw new ValidacaoException("Favor informar o login do usuário.");
+
+        if (StringUtils.isBlank(email))
+            throw new ValidacaoException("Favor informar o e-mail do usuário.");
+
+        UsuarioBean usuarioBean = usuarioService.buscar(login);
+
+        if (usuarioBean == null) {
+            throw new ValidacaoException("Usuário não encontrado.");
+        }
+
+        if (!usuarioBean.getEmail().equals(email))
+            throw new ValidacaoException("E-mail informado está incorreto.");
+
+        usuarioBean.setSenhaTemporaria("abc123");
+        usuarioBean.setRecuperarSenha(true);
+
+        usuarioService.salvar(usuarioBean);
+
+        final String assunto = "Senha provisória";
+
+        final String corpo = String.format("Olá %s,\n" +
+                        "\n" +
+                        "Uma senha provisória foi gerada para você acessar o sistema.\n" +
+                        "\n" +
+                        "\tsenha: %s\n" +
+                        "\n" +
+                        "Favor não responder e-mail automático.",
+                usuarioBean.getNome(), usuarioBean.getSenhaTemporaria());
+
+        mailService.enviarEmail(usuarioBean.getEmail(), assunto, corpo);
     }
 }

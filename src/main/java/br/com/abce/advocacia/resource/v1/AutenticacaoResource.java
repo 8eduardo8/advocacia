@@ -59,7 +59,7 @@ public class AutenticacaoResource extends AbstractResource implements StandardRe
     @Path("/esqueci-senha")
     @ApiOperation("Solicitar senha provisório para o usuário")
     public void logout(@FormParam("login") final String login,
-                       @FormParam("email") final String email) {
+                       @FormParam("email") final String email) throws ValidacaoException, InfraestruturaException {
 
         autenticacaoService.senhaProvisoria(login, email);
 

@@ -28,6 +28,11 @@ public class Login implements Serializable {
 	public void init() {
 	}
 
+	public String esqueciSenha() {
+
+		return "esqueciSenha";
+	}
+
 	public String entrar() {
 
 		usuarioBean = null;
