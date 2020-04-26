@@ -40,4 +40,13 @@ public class UsuarioResource extends AbstractResource implements StandardRestDef
 
     }
 
+    @GET
+    @Path("/{id}")
+    @ApiOperation("Consulta usuário")
+    public UsuarioBean consultar(@PathParam("id") final Long idUsuario) throws RecursoNaoEncontradoException {
+
+        return usuarioService.buscar(idUsuario);
+
+    }
+
 }

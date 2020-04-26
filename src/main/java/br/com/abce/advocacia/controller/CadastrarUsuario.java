@@ -3,18 +3,20 @@ package br.com.abce.advocacia.controller;
 import br.com.abce.advocacia.Perfil;
 import br.com.abce.advocacia.bean.UsuarioBean;
 import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.UsuarioService;
+import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
-@SessionScoped
+@RequestScoped
 public class CadastrarUsuario implements Serializable {
 
 	private UsuarioBean usuarioBean;
@@ -59,7 +61,7 @@ public class CadastrarUsuario implements Serializable {
 		} catch (AdvocaciaException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 			return "";
 		}
@@ -69,25 +71,19 @@ public class CadastrarUsuario implements Serializable {
 
 	public String alterarSenha() {
 
-		if (!senhaAtual.equals(usuarioBean.getSenha())) {
-			Mensagem.erro("A SENHA DIGITADA NÃO CONFERE COM A SUA SENHA!", "");
-			return "";
-		} else if (!novaSenha.equals(confirmaSenha)) {
-			Mensagem.erro("CONFIRMAÇÃO DA SNEHA NÃO CONFERE COM A NOVA SENHA!", "");
-			return "";
-		}
-
 		try {
-			usuarioBean = usuarioService.buscar(usuarioBean.getId());
-			if (usuarioBean != null) {
-				usuarioBean.setSenha(novaSenha);
-				usuarioService.salvar(usuarioBean);
-				Mensagem.info("SENHA ALTERADA!");
-			}
+
+			usuarioService.alterarSenha(usuarioBean, novaSenha, senhaAtual, confirmaSenha);
+
+			Mensagem.info(Consts.OPERACO_REALIZADA_SUCESSO);
+
+			return "dashboard";
+
+		} catch (ValidacaoException ex){
+			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.erro("ERRO AO SALVAR!", e.getMessage());
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
-			return "";
 		}
 		return "";
 	}

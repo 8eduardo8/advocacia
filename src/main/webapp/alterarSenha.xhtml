@@ -16,15 +16,15 @@
 				<p:panelGrid columns="2" style="align:center;text-align:left;"
 					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
 					<p:outputLabel value="Senha Atual" />
-					<p:password />
+					<p:password value="#{cadastrarUsuario.senhaAtual}" />
 
 					<p:outputLabel value="Nova Senha" />
-					<p:password />
+					<p:password value="#{cadastrarUsuario.novaSenha}"/>
 
 					<p:outputLabel value="Confirma Nova Senha" />
-					<p:password />
+					<p:password value="#{cadastrarUsuario.confirmaSenha}"/>
 
-					<p:commandButton value="Salvar" />
+					<p:commandButton value="Salvar" action="#{cadastrarUsuario.alterarSenha}" />
 				</p:panelGrid>
 			</h:form>
 		</ui:define>

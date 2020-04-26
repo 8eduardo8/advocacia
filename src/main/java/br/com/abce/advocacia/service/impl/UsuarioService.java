@@ -224,31 +224,64 @@ public class UsuarioService implements Serializable {
             throw new ValidacaoException("UF não informado.");
     }
 
-    public UsuarioBean buscar(final Long id) {
-
-        UsuarioBean usuarioBean = null;
+    public UsuarioBean buscar(final Long id) throws RecursoNaoEncontradoException {
 
         final UsuarioEntity entity = usuarioRepository.buscar(id);
 
-        if (entity != null) {
+        if (entity == null)
 
-            usuarioBean = getUsuarioBean(entity);
-        }
+            throw new RecursoNaoEncontradoException("Usuário não encontrado.");
 
-        return usuarioBean;
+        return getUsuarioBean(entity);
     }
 
-    public UsuarioBean buscar(final String login) throws InfraestruturaException {
-
-        UsuarioBean usuarioBean = null;
+    public UsuarioBean buscar(final String login) throws InfraestruturaException, RecursoNaoEncontradoException {
 
         final UsuarioEntity entity = usuarioRepository.buscar(login);
 
-        if (entity != null) {
+        if (entity == null)
 
-            usuarioBean = getUsuarioBean(entity);
+            throw new RecursoNaoEncontradoException("Usuário não encontrado.");
+
+        return  getUsuarioBean(entity);
+    }
+
+    public void alterarSenha(UsuarioBean usuarioBean, String novaSenha, String senhaAtual, String confirmaSenha) throws ValidacaoException, InfraestruturaException {
+
+        if (StringUtils.isNotBlank(novaSenha))
+            throw new ValidacaoException("Nova senha não informada");
+
+        if (StringUtils.isNotBlank(senhaAtual))
+            throw new ValidacaoException("Senha atual não informada");
+
+        if (StringUtils.isNotBlank(confirmaSenha))
+            throw new ValidacaoException("Confimração de senha não informada");
+
+        if (usuarioBean.isRecuperarSenha()) {
+
+            if (!senhaAtual.equals(usuarioBean.getSenhaTemporaria()))
+                throw new ValidacaoException("A senha digitada não confere com a sua senha provisória!");
+
+        } else {
+
+            if (!senhaAtual.equals(usuarioBean.getSenha())) {
+                throw new ValidacaoException("A senha digitada não confere com a sua senha!");
+            }
+
         }
 
-        return usuarioBean;
+        if (!novaSenha.equals(confirmaSenha)) {
+            throw new ValidacaoException("Confirmação de senha não confere com a nova senha!");
+        }
+
+        usuarioBean.setSenha(novaSenha);
+
+        if (usuarioBean.isRecuperarSenha()) {
+
+            usuarioBean.setSenhaTemporaria(null);
+            usuarioBean.setRecuperarSenha(false);
+        }
+
+        salvar(usuarioBean);
     }
 }
