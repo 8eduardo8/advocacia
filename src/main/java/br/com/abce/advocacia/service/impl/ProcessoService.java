@@ -11,6 +11,7 @@ import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.repository.ProcessoRepository;
 import br.com.abce.advocacia.repository.ProcessoUsuarioRepository;
 import br.com.abce.advocacia.repository.UsuarioRepository;
+import br.com.abce.advocacia.util.Consts;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
@@ -138,7 +139,7 @@ public class ProcessoService implements Serializable {
 
         if (id == null || id == 0L)
 
-            throw new ValidacaoException("Id do processo não informado.");
+            throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
         final ProcessoEntity entity = processoRepository.buscar(id);
 

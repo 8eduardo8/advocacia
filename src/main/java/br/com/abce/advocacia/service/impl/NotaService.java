@@ -23,6 +23,7 @@ import java.util.List;
 
 public class NotaService implements Serializable {
 
+
     @Inject
     private NotaRepository notaRepository;
 
@@ -36,7 +37,7 @@ public class NotaService implements Serializable {
     public List<NotaBean> listar(final Long idProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
 
         if (idProcesso == null || idProcesso == 0L)
-            throw new ValidacaoException("Id do processo não informado.");
+            throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
 
         final List<NotaEntity> notaEntityList = notaRepository.listar(idProcesso);
@@ -81,7 +82,7 @@ public class NotaService implements Serializable {
 
         if (notaBean.getIdProcesso() == null || notaBean.getIdProcesso() == 0L)
 
-            throw new ValidacaoException("Id do processo não informado.");
+            throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
         if (notaBean.getIdUsuario() == null || notaBean.getIdUsuario() == 0L)
 
@@ -209,7 +210,7 @@ public class NotaService implements Serializable {
     public List<NotaAndamento> listarAndamentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException, ValidacaoException {
 
         if (idProcesso == null)
-            throw new ValidacaoException("Id do processo não informado.");
+            throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
         final List<NotaEntity> entityLists = notaRepository.listarAndamentos(idProcesso, Consts.TIPO_ANDAMENTO_PROCESSO);
 
@@ -244,7 +245,7 @@ public class NotaService implements Serializable {
     public List<NotaDocumento> listarDocumentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException, ValidacaoException {
 
         if (idProcesso == null)
-            throw new ValidacaoException("Id do processo não informado.");
+            throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
         final List<NotaEntity> entityLists = notaRepository.listarDocumentos(idProcesso);
 
@@ -291,7 +292,7 @@ public class NotaService implements Serializable {
             throw new ValidacaoException("Arquivo não informado.");
 
         if (notaDocumento.getIdProcesso() == null)
-            throw new ValidacaoException("Id do processo não informado.");
+            throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
         if (notaDocumento.getIdUsuario() == null)
             throw new ValidacaoException("Id do usuário não informado.");

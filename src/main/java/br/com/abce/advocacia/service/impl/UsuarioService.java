@@ -75,7 +75,7 @@ public class UsuarioService implements Serializable {
         bean.setEmail(usuarioEntity.getEmail());
         bean.setSenha(usuarioEntity.getSenha());
         bean.setSexo(usuarioEntity.getSexo());
-        bean.setRecuperarSenha(usuarioEntity.getRecuperarSenha() == Consts.RECUPERACAO_SENHA);
+        bean.setRecuperarSenha(usuarioEntity.getRecuperarSenha().equals(Consts.RECUPERACAO_SENHA));
         bean.setSenhaTemporaria(usuarioEntity.getSenhaProvisoria());
         bean.setPerfil(usuarioEntity.getPerfil());
         bean.setSobrenome(usuarioEntity.getSobreNome());

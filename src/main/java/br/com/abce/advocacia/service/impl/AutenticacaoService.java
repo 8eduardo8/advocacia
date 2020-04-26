@@ -54,10 +54,14 @@ public class AutenticacaoService implements Serializable {
         if (StringUtils.isBlank(email))
             throw new ValidacaoException("Favor informar o e-mail do usuário.");
 
-        UsuarioBean usuarioBean = usuarioService.buscar(login);
+        UsuarioBean usuarioBean = null;
 
-        if (usuarioBean == null) {
-            throw new ValidacaoException("Usuário não encontrado.");
+        try {
+
+            usuarioBean = usuarioService.buscar(login);
+
+        } catch (RecursoNaoEncontradoException ex) {
+            throw new ValidacaoException(ex.getMessage());
         }
 
         if (!usuarioBean.getEmail().equals(email))
