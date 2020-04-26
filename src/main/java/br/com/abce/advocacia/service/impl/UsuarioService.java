@@ -246,6 +246,7 @@ public class UsuarioService implements Serializable {
         return  getUsuarioBean(entity);
     }
 
+    @Transactional
     public void alterarSenha(UsuarioBean usuarioBean, String novaSenha, String senhaAtual, String confirmaSenha) throws ValidacaoException, InfraestruturaException {
 
         if (StringUtils.isNotBlank(novaSenha))
