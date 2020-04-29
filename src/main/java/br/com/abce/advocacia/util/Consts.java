@@ -20,4 +20,5 @@ public class Consts {
     public static final String OPERACO_REALIZADA_SUCESSO = "Operação realizada com sucesso.";
 
     public static final String ID_PROCESSO_NAO_INFORMADO = "Id do processo não informado.";
+    public static final String ID_USUARIO_NAO_INFORMADO = "Id do usuário não informado.";
 }

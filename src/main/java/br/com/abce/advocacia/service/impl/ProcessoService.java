@@ -155,7 +155,7 @@ public class ProcessoService implements Serializable {
 
         if (idUsuario == null || idUsuario == 0L)
 
-            throw new ValidacaoException("Id do usuário não informado.");
+            throw new ValidacaoException(Consts.ID_USUARIO_NAO_INFORMADO);
 
         final List<ProcessoEntity> entityList = processoRepository.listar(idUsuario);
 
@@ -185,7 +185,7 @@ public class ProcessoService implements Serializable {
     public void addUsuario(Long idUsuario, Long idProcesso) throws ValidacaoException {
 
         if (idUsuario == null || idUsuario == 0L)
-            throw new ValidacaoException("Id do usuário não informado.");
+            throw new ValidacaoException(Consts.ID_USUARIO_NAO_INFORMADO);
 
         if (idProcesso == null || idProcesso == 0L)
             throw new ValidacaoException("Id do processo não informado.");
@@ -216,7 +216,7 @@ public class ProcessoService implements Serializable {
     public void remover(Long idUsuario, Long idProcesso) throws ValidacaoException {
 
         if (idUsuario == null || idUsuario == 0L)
-            throw new ValidacaoException("Id do usuário não informado.");
+            throw new ValidacaoException(Consts.ID_USUARIO_NAO_INFORMADO);
 
         if (idProcesso == null || idProcesso == 0L)
             throw new ValidacaoException("Id do processo não informado.");

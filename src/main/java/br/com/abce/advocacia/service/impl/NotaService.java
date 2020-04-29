@@ -86,7 +86,7 @@ public class NotaService implements Serializable {
 
         if (notaBean.getIdUsuario() == null || notaBean.getIdUsuario() == 0L)
 
-            throw new ValidacaoException("Id do usuário não informado.");
+            throw new ValidacaoException(Consts.ID_USUARIO_NAO_INFORMADO);
 
         final NotaDocumento notaDocumento = notaBean.getNotaDocumento();
 
@@ -295,7 +295,7 @@ public class NotaService implements Serializable {
             throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
         if (notaDocumento.getIdUsuario() == null)
-            throw new ValidacaoException("Id do usuário não informado.");
+            throw new ValidacaoException(Consts.ID_USUARIO_NAO_INFORMADO);
 
         try {
 
