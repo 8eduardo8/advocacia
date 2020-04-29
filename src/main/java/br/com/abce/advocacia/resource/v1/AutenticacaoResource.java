@@ -36,15 +36,15 @@ public class AutenticacaoResource extends AbstractResource implements StandardRe
 
     }
 
-    @POST
-    @Path("/login")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation("Login do usuário")
-    public void login(@BeanParam final LoginDto loginDto) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
-
-        autenticacaoService.login(loginDto.getUsuario(), loginDto.getSenha());
-
-    }
+//    @POST
+//    @Path("/login")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @ApiOperation("Login do usuário")
+//    public void login(@BeanParam final LoginDto loginDto) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
+//
+//        autenticacaoService.login(loginDto.getUsuario(), loginDto.getSenha());
+//
+//    }
 
     @POST
     @Path("/logout")
