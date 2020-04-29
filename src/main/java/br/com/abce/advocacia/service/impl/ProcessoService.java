@@ -58,17 +58,14 @@ public class ProcessoService implements Serializable {
         entity.setDataAtualizacao(processoBean.getDataCadastro());
         entity.setDataExclusao(processoBean.getDataExclusao());
 
-        List<ProcessoUsuarioEntity> processoUsuarioEntityList = new ArrayList<>();
-
-        for (UsuarioResumidoBean usuarioBean : processoBean.getListaUsuarios()) {
-            ProcessoUsuarioEntity processoUsuarioEntity = new ProcessoUsuarioEntity();
-            processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar(usuarioBean.getId()));
-            processoUsuarioEntity.setDataCadastro(new Date());
-            processoUsuarioEntity.setProcessoByProcessoId(entity);
-            processoUsuarioEntityList.add(processoUsuarioEntity);
-        }
-
-        entity.setProcessoUsuariosById(processoUsuarioEntityList);
+        if (processoBean.getListaUsuarios() != null)
+            for (UsuarioResumidoBean usuarioBean : processoBean.getListaUsuarios()) {
+                ProcessoUsuarioEntity processoUsuarioEntity = new ProcessoUsuarioEntity();
+                processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar(usuarioBean.getId()));
+                processoUsuarioEntity.setDataCadastro(new Date());
+                processoUsuarioEntity.setProcessoByProcessoId(entity);
+                entity.getProcessoUsuariosById().add(processoUsuarioEntity);
+            }
 
         if (entity.getId() == null) {
             entity.setDataCadastro(new java.util.Date());
@@ -123,11 +120,15 @@ public class ProcessoService implements Serializable {
 
         for (ProcessoUsuarioEntity processoUsuarioEntity : entity.getProcessoUsuariosById()) {
 
-            final UsuarioEntity usuarioEntity = processoUsuarioEntity.getUsuarioByUsuarioId();
+            if (processoUsuarioEntity.getDataExclusao() == null) {
 
-            if (usuarioEntity != null)
+                final UsuarioEntity usuarioEntity = processoUsuarioEntity.getUsuarioByUsuarioId();
 
-                usuarioBeanList.add(usuarioService.getUsuarioBean(usuarioEntity));
+                if (usuarioEntity != null)
+
+                    usuarioBeanList.add(usuarioService.getUsuarioBean(usuarioEntity));
+
+            }
         }
 
         bean.setListaUsuarios(usuarioBeanList);
@@ -165,9 +166,9 @@ public class ProcessoService implements Serializable {
         return getProcessoBeans(entityList);
     }
 
-    public ProcessoBean buscarPorNumero(final Long numProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
+    public ProcessoBean buscarPorNumero(final String numProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
 
-        if (numProcesso == null || numProcesso == 0L)
+        if (StringUtils.isBlank(numProcesso))
 
             throw new ValidacaoException("Nº do processo não informado.");
 
@@ -178,5 +179,57 @@ public class ProcessoService implements Serializable {
             throw new RecursoNaoEncontradoException("Processo não encontrado.");
 
         return getProcessoBean(processoEntity);
+    }
+
+    @Transactional
+    public void addUsuario(Long idUsuario, Long idProcesso) throws ValidacaoException {
+
+        if (idUsuario == null || idUsuario == 0L)
+            throw new ValidacaoException("Id do usuário não informado.");
+
+        if (idProcesso == null || idProcesso == 0L)
+            throw new ValidacaoException("Id do processo não informado.");
+
+        ProcessoUsuarioEntity processoUsuarioEntity = processoUsuarioRepository.buscar(idUsuario, idProcesso);
+
+        if (processoUsuarioEntity == null) {
+
+            ProcessoEntity entity = processoRepository.buscar(idProcesso);
+
+            processoUsuarioEntity = new ProcessoUsuarioEntity();
+            processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar(idUsuario));
+            processoUsuarioEntity.setDataCadastro(new Date());
+            processoUsuarioEntity.setProcessoByProcessoId(entity);
+
+            processoUsuarioRepository.salvar(processoUsuarioEntity);
+
+        } else {
+
+            processoUsuarioEntity.setDataExclusao(null);
+            processoUsuarioEntity.setDataAtualizacao(new Date());
+
+            processoUsuarioRepository.editar(processoUsuarioEntity);
+        }
+    }
+
+    @Transactional
+    public void remover(Long idUsuario, Long idProcesso) throws ValidacaoException {
+
+        if (idUsuario == null || idUsuario == 0L)
+            throw new ValidacaoException("Id do usuário não informado.");
+
+        if (idProcesso == null || idProcesso == 0L)
+            throw new ValidacaoException("Id do processo não informado.");
+
+        ProcessoUsuarioEntity processoUsuarioEntity = processoUsuarioRepository.buscar(idUsuario, idProcesso);
+
+        if (processoUsuarioEntity == null)
+
+            throw new ValidacaoException("Usuário não consta na relação de envolvido do processo.");
+
+
+        processoUsuarioEntity.setDataExclusao(new Date());
+
+        processoUsuarioRepository.editar(processoUsuarioEntity);
     }
 }

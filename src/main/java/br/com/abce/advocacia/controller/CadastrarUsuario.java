@@ -30,6 +30,9 @@ public class CadastrarUsuario implements Serializable {
 	@Inject
 	private UsuarioService usuarioService;
 
+	@Inject
+	private Login login;
+
 	@PostConstruct
 	public void init() {
 		novo();
@@ -73,7 +76,7 @@ public class CadastrarUsuario implements Serializable {
 
 		try {
 
-			usuarioService.alterarSenha(usuarioBean, novaSenha, senhaAtual, confirmaSenha);
+			usuarioService.alterarSenha(login.getUsuarioBean(), novaSenha, senhaAtual, confirmaSenha);
 
 			Mensagem.info(Consts.OPERACO_REALIZADA_SUCESSO);
 

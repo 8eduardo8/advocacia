@@ -183,7 +183,7 @@ public class UsuarioService implements Serializable {
     private void validaTamanhoCampos(final UsuarioBean usuarioBean) throws ValidacaoException {
 
         if (StringUtils.length(usuarioBean.getTelefoneCelular()) != 11
-            || StringUtils.length(usuarioBean.getTelefoneCelular()) != 10)
+            && StringUtils.length(usuarioBean.getTelefoneCelular()) != 10)
             throw new ValidacaoException("Tefefone celular inválido! Deve conter de 10 à 11 dígitos. ");
 
         if (StringUtils.length(usuarioBean.getTelefoneFixo()) != 10)
@@ -249,13 +249,13 @@ public class UsuarioService implements Serializable {
     @Transactional
     public void alterarSenha(UsuarioBean usuarioBean, String novaSenha, String senhaAtual, String confirmaSenha) throws ValidacaoException, InfraestruturaException {
 
-        if (StringUtils.isNotBlank(novaSenha))
+        if (StringUtils.isBlank(novaSenha))
             throw new ValidacaoException("Nova senha não informada");
 
-        if (StringUtils.isNotBlank(senhaAtual))
+        if (StringUtils.isBlank(senhaAtual))
             throw new ValidacaoException("Senha atual não informada");
 
-        if (StringUtils.isNotBlank(confirmaSenha))
+        if (StringUtils.isBlank(confirmaSenha))
             throw new ValidacaoException("Confimração de senha não informada");
 
         if (usuarioBean.isRecuperarSenha()) {

@@ -29,7 +29,7 @@ public class ProcessoRepositoryImpl extends AbstractRepositoryImpl<ProcessoEntit
     }
 
     @Override
-    public ProcessoEntity buscarPorNumProcesso(final Long numProcesso) throws InfraestruturaException {
+    public ProcessoEntity buscarPorNumProcesso(final String numProcesso) throws InfraestruturaException {
 
         ProcessoEntity processoEntity = null;
 

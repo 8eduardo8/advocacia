@@ -40,43 +40,49 @@
 
 					</p:panelGrid>
 
-					<h3>Envolvidos</h3>
-					<p:panelGrid columns="2"
-						columnClasses="ui-g-12 ui-md-8 ui-lg-6,ui-g-12 ui-md-2 ui-lg-2"
-						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-						<p:selectOneMenu filter="true" filterMatchMode="contains"
-							value="#{cadastrarProcesso.usuarioSelecionado}" converter="generic">
-							<f:selectItems value="#{cadastrarProcesso.listaUsuarioBean}"
-								var="item" itemLabel="#{item.cpf} - #{item.nome} - #{item.descPerfil}"
-								itemValue="#{item}">
-							</f:selectItems>
-						</p:selectOneMenu>
-						<p:commandButton value="Adicionar" icon="pi pi-plus"
-							action="#{cadastrarProcesso.adicionar()}" ajax="false" />
-					</p:panelGrid>
-					<p:dataTable style="font-size:70%;"
-						value="#{cadastrarProcesso.processoBean.listaUsuarios}" var="item">
-						<p:column headerText="Usuário" style="width:300px; text-align: center;">
-							<h:outputText value="#{item.nome}" />
-						</p:column>
-						<p:column headerText="Perfil" style="width:150px; text-align: center;">
-							<h:outputText value="#{item.descPerfil}" />
-						</p:column>
-						<p:column headerText="Ações" style="width:50px; text-align: center;">
-							<p:commandButton icon="pi pi-trash" ajax="false"
-								style="background:#D32F2F;border:none;"
-								action="#{cadastrarProcesso.remover(item)}">
-							</p:commandButton>
-						</p:column>
-					</p:dataTable>
+
+
+					<p:fieldset legend="Envolvidos" style="border: none;" >
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-12 ui-md-8 ui-lg-6,ui-g-12 ui-md-2 ui-lg-2"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:selectOneMenu filter="true" filterMatchMode="contains"
+								value="#{cadastrarProcesso.usuarioSelecionado}" converter="generic">
+								<f:selectItems value="#{cadastrarProcesso.listaUsuarioBean}"
+									var="item" itemLabel="#{item.cpf} - #{item.nome} - #{item.descPerfil}"
+									itemValue="#{item}">
+								</f:selectItems>
+							</p:selectOneMenu>
+							<p:commandButton value="Adicionar" icon="pi pi-plus"
+								action="#{cadastrarProcesso.adicionar()}" ajax="true" update="usuarios :formBarra:messages" />
+						</p:panelGrid>
+						<p:dataTable style="font-size:70%;" id="usuarios"
+							value="#{cadastrarProcesso.processoBean.listaUsuarios}" var="item">
+							<p:column headerText="Usuário" style="width:200px; text-align: center;">
+								<h:outputText value="#{item.nome}" />
+							</p:column>
+							<p:column headerText="Perfil" style="width:150px; text-align: center;">
+								<h:outputText value="#{item.descPerfil}" />
+							</p:column>
+							<p:column headerText="Situação" style="width:100px; text-align: center;">
+								<h:outputText value="#{item.descPerfil}" />
+							</p:column>
+							<p:column headerText="Ações" style="width:50px; text-align: center;">
+								<p:commandButton icon="pi pi-trash" ajax="true" update="usuarios :formBarra:messages"
+												 style="background:#D32F2F;border:none;"
+									action="#{cadastrarProcesso.remover(item)}">
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:fieldset>
 					<br />
 					<p:panelGrid columns="2"
 						columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-2 ui-lg-2"
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-						<p:commandButton icon="pi pi-check" value="SALVAR"
+						<p:commandButton icon="pi pi-check" value="Salvar" update="@form"
 							style="border:none;" action="#{cadastrarProcesso.salvar}"
 							ajax="false" />
-						<p:commandButton icon="pi pi-times" value="CANCELAR"
+						<p:commandButton icon="pi pi-times" value="Novo"
 							style="background:#616161;border:none;"
 							action="#{cadastrarProcesso.novo}" ajax="false" />
 					</p:panelGrid>

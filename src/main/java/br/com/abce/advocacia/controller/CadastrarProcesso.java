@@ -66,6 +66,8 @@ public class CadastrarProcesso implements Serializable {
 
 			processoService.salvar(processoBean);
 
+			processoBean = processoService.buscarPorNumero(processoBean.getNumero());
+
 			Mensagem.info("PROCESSO SALVO!");
 
 		} catch (AdvocaciaException ex) {
@@ -84,20 +86,43 @@ public class CadastrarProcesso implements Serializable {
 		try {
 
 			if (!processoBean.getListaUsuarios().contains(usuarioSelecionado)) {
+				if (processoBean.getId() != null)
+					processoService.addUsuario(usuarioSelecionado.getId(), processoBean.getId());
 				processoBean.getListaUsuarios().add(usuarioSelecionado);
 			} else {
-				Mensagem.info("Usuário já consta na relação de envolvidos.");
+				Mensagem.info("Usuário já consta na relação de envolvidos do processo.");
 			}
 
+		} catch (AdvocaciaException ex) {
+			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.warn("ERRO ADICIONAR", e.getMessage());
+			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
 			LoggerUtil.error(e);
+			return "";
 		}
 		return "";
 	}
 
 	public String remover(UsuarioBean item) {
-		processoBean.getListaUsuarios().remove(item);
+
+		try {
+
+			if (processoBean.getListaUsuarios().contains(usuarioSelecionado)) {
+				if (processoBean.getId() != null)
+					processoService.remover(usuarioSelecionado.getId(), processoBean.getId());
+				processoBean.getListaUsuarios().remove(item);
+			}  else {
+				Mensagem.info("Usuário não consta na relação de envolvidos do processo.");
+			}
+
+		} catch (AdvocaciaException ex) {
+			Mensagem.info(ex.getMessage());
+		} catch (Exception e) {
+			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			LoggerUtil.error(e);
+			return "";
+		}
+
 		return "";
 	}
 

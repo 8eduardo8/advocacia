@@ -9,5 +9,5 @@ public interface ProcessoRepository extends AbstractRepository<ProcessoEntity> {
 
     List<ProcessoEntity> listar(Long idUsuario) throws InfraestruturaException;
 
-    ProcessoEntity buscarPorNumProcesso(Long numProcesso) throws InfraestruturaException;
+    ProcessoEntity buscarPorNumProcesso(String numProcesso) throws InfraestruturaException;
 }

@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "processo_usuario", schema = "advocacia", catalog = "")
+@Table(name = "processo_usuario", schema = "advocacia", catalog = "", uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"processo_id", "usuario_id"}, name = "processo_id_usuario_id_UNIQUE")
+        })
 public class ProcessoUsuarioEntity {
     private Long id;
     private Date dataCadastro;

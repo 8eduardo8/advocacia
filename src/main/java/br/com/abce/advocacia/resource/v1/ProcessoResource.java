@@ -46,7 +46,7 @@ public class ProcessoResource extends AbstractResource implements StandardRestDe
 
     @GET
     @ApiOperation(value = "Busca o processo pelo numero do processo.")
-    public ProcessoBean getByNumeroProcesso(@QueryParam("num-processo") final Long idProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
+    public ProcessoBean getByNumeroProcesso(@QueryParam("num-processo") final String idProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
         return processoService.buscarPorNumero(idProcesso);
     }
 
