@@ -53,7 +53,7 @@
 
                         <p:outputLabel value="Data Atualização"/>
                         <h:outputText value="#{consultarProcesso.processoBean.dataAtualizacao}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
                         </h:outputText>
 
                     </p:panelGrid>
@@ -90,7 +90,7 @@
                     <p:dataList value="#{consultarProcesso.listaAndamentos}" var="andamento" emptyMessage="Não foram encontrados registros"
                                 style="border: none;">
                         <h:outputText value="#{andamento.dataCadastro}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                         </h:outputText> - #{andamento.descricao}
                     </p:dataList>
 
@@ -111,7 +111,7 @@
                                 emptyMessage="Não foram encontrados registros">
                         <p:outputPanel>
                             <h:outputText value="#{documento.dataCadastro}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                             </h:outputText> - #{documento.nome}
 
                             <p:commandButton title="Baixar Documento" ajax="false" icon="ui-icon pi pi-download"

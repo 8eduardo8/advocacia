@@ -209,10 +209,28 @@ public class NotaService implements Serializable {
 
     public List<NotaAndamento> listarAndamentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException, ValidacaoException {
 
+        return getNotaTexto(idProcesso, Consts.TIPO_ANDAMENTO_PROCESSO);
+
+    }
+
+    public List<NotaAndamento> listaMensagens(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException, ValidacaoException {
+
+        try {
+
+            return getNotaTexto(idProcesso, Consts.TIPO_MENSAGEM);
+
+        } catch (RecursoNaoEncontradoException ex) {
+            throw new RecursoNaoEncontradoException("Lista de mensagem não encontrada.");
+        }
+
+    }
+
+    private List<NotaAndamento> getNotaTexto(Long idProcesso, int tipoAndamentoProcesso) throws ValidacaoException, InfraestruturaException, RecursoNaoEncontradoException {
+
         if (idProcesso == null)
             throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
-        final List<NotaEntity> entityLists = notaRepository.listarAndamentos(idProcesso, Consts.TIPO_ANDAMENTO_PROCESSO);
+        final List<NotaEntity> entityLists = notaRepository.listarAndamentos(idProcesso, tipoAndamentoProcesso);
 
         if (entityLists == null || entityLists.isEmpty())
 
@@ -239,7 +257,6 @@ public class NotaService implements Serializable {
         }
 
         return listAndamento;
-
     }
 
     public List<NotaDocumento> listarDocumentos(final Long idProcesso) throws InfraestruturaException, RecursoNaoEncontradoException, ValidacaoException {

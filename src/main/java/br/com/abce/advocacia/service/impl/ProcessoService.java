@@ -58,16 +58,17 @@ public class ProcessoService implements Serializable {
         entity.setDataAtualizacao(processoBean.getDataCadastro());
         entity.setDataExclusao(processoBean.getDataExclusao());
 
-        if (processoBean.getListaUsuarios() != null)
-            for (UsuarioResumidoBean usuarioBean : processoBean.getListaUsuarios()) {
-                ProcessoUsuarioEntity processoUsuarioEntity = new ProcessoUsuarioEntity();
-                processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar(usuarioBean.getId()));
-                processoUsuarioEntity.setDataCadastro(new Date());
-                processoUsuarioEntity.setProcessoByProcessoId(entity);
-                entity.getProcessoUsuariosById().add(processoUsuarioEntity);
-            }
-
         if (entity.getId() == null) {
+
+            if (processoBean.getListaUsuarios() != null)
+                for (UsuarioResumidoBean usuarioBean : processoBean.getListaUsuarios()) {
+                    ProcessoUsuarioEntity processoUsuarioEntity = new ProcessoUsuarioEntity();
+                    processoUsuarioEntity.setUsuarioByUsuarioId(usuarioRepository.buscar(usuarioBean.getId()));
+                    processoUsuarioEntity.setDataCadastro(new Date());
+                    processoUsuarioEntity.setProcessoByProcessoId(entity);
+                    entity.getProcessoUsuariosById().add(processoUsuarioEntity);
+                }
+
             entity.setDataCadastro(new java.util.Date());
             processoRepository.salvar(entity);
 
@@ -116,6 +117,13 @@ public class ProcessoService implements Serializable {
         bean.setDataAtualizacao(entity.getDataAtualizacao());
         bean.setDataExclusao(entity.getDataExclusao());
 
+        bean.setListaUsuarios(getListaUsuarioResumido(entity));
+
+        return bean;
+    }
+
+    public List<UsuarioResumidoBean> getListaUsuarioResumido(ProcessoEntity entity) {
+
         List<UsuarioResumidoBean> usuarioBeanList = new ArrayList<>();
 
         for (ProcessoUsuarioEntity processoUsuarioEntity : entity.getProcessoUsuariosById()) {
@@ -131,9 +139,7 @@ public class ProcessoService implements Serializable {
             }
         }
 
-        bean.setListaUsuarios(usuarioBeanList);
-
-        return bean;
+        return usuarioBeanList;
     }
 
     public ProcessoBean buscar(final Long id) throws RecursoNaoEncontradoException, ValidacaoException {
@@ -231,5 +237,19 @@ public class ProcessoService implements Serializable {
         processoUsuarioEntity.setDataExclusao(new Date());
 
         processoUsuarioRepository.editar(processoUsuarioEntity);
+    }
+
+    public List<UsuarioResumidoBean> listarEnvolvidos(Long idProcesso) throws ValidacaoException, RecursoNaoEncontradoException {
+
+            if (idProcesso == null)
+                throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
+
+        final ProcessoEntity entity = processoRepository.buscar(idProcesso);
+
+        if (entity == null)
+
+            throw new RecursoNaoEncontradoException("Processo não encontrado.");
+
+        return getListaUsuarioResumido(entity);
     }
 }

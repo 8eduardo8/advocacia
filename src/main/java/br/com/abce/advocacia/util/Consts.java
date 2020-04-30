@@ -17,6 +17,7 @@ public class Consts {
 
 
     public static final String NAO_POSSIVEL_DADOS_USUARIO = "Não foi possível obter o dados do usuário.";
+    public static final String NAO_POSSIVEL_DADOS_PROCESSO = "Não foi possível obter o dados do processo.";
     public static final String OPERACO_REALIZADA_SUCESSO = "Operação realizada com sucesso.";
 
     public static final String ID_PROCESSO_NAO_INFORMADO = "Id do processo não informado.";

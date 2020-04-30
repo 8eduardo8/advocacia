@@ -1,9 +1,6 @@
 package br.com.abce.advocacia.resource.v1;
 
-import br.com.abce.advocacia.bean.NotaAndamento;
-import br.com.abce.advocacia.bean.NotaBean;
-import br.com.abce.advocacia.bean.NotaDocumento;
-import br.com.abce.advocacia.bean.ProcessoBean;
+import br.com.abce.advocacia.bean.*;
 import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
@@ -69,5 +66,12 @@ public class ProcessoResource extends AbstractResource implements StandardRestDe
     @ApiOperation(value = "Lista andamentos do processo.")
     public List<NotaDocumento> consultarDocumentos(@PathParam("id") final Long idProcesso) throws InfraestruturaException, ValidacaoException, RecursoNaoEncontradoException {
         return notaService.listarDocumentos(idProcesso);
+    }
+
+    @GET
+    @Path("{id}/envolvidos")
+    @ApiOperation(value = "Lista envolvidos no processo.")
+    public List<UsuarioResumidoBean> consultarEnvolvidos(@PathParam("id") final Long idProcesso) throws InfraestruturaException, ValidacaoException, RecursoNaoEncontradoException {
+        return processoService.listarEnvolvidos(idProcesso);
     }
 }

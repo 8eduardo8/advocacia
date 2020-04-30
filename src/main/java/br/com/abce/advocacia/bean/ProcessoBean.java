@@ -3,6 +3,7 @@ package br.com.abce.advocacia.bean;
 import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ProcessoBean implements Serializable, Bean {
 	private Date dataAtualizacao;
 	private Date dataExclusao;
 
-	private List<UsuarioResumidoBean> listaUsuarios;
+	private List<UsuarioResumidoBean> listaUsuarios = new ArrayList<>();
 
 	public Long getId() {
 		return id;
