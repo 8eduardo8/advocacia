@@ -53,6 +53,7 @@ public class ApplicationConfig extends Application {
         resources.add(br.com.abce.advocacia.resource.v1.ProcessoResource.class);
         resources.add(br.com.abce.advocacia.resource.v1.AndamentoResource.class);
         resources.add(br.com.abce.advocacia.resource.v1.DocumentoResource.class);
+        resources.add(br.com.abce.advocacia.resource.v1.NotificacaoResource.class);
 
         // Swagger API documentation
         resources.add(br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException.class);

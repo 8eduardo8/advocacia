@@ -3,14 +3,10 @@ package br.com.abce.advocacia.bean;
 import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @ApiModel
 public class NotaBean implements Serializable {
-
-	private final List<String> listaTipo = Arrays.asList("MENSAGEM", "ANDAMENTO", "DOCUMENTO");
 
 	private int id;
 	private String tipo;
@@ -69,10 +65,6 @@ public class NotaBean implements Serializable {
 
 	public void setDataExclusao(Date dataExclusao) {
 		this.dataExclusao = dataExclusao;
-	}
-
-	public List<String> getListaTipo() {
-		return listaTipo;
 	}
 
 	public NotaMensagem getNotaMensagem() {
