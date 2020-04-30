@@ -22,14 +22,7 @@
 
                 <ui:include src="downloadFile.xhtml"></ui:include>
 
-                <p:panel style="text-align: right; border: none;">
-                    <p:commandButton icon="pi pi-pencil" ajax="false"
-                                     style="background:#616161;border:none; text-align: center;"
-                                     action="#{cadastrarProcesso.editar}">
-                        <f:setPropertyActionListener
-                                target="#{cadastrarProcesso.processoBean}" value="#{consultarProcesso.processoBean}" />
-                    </p:commandButton>
-                </p:panel>
+
                 <p:panel header="Processo">
                     <p:panelGrid columns="2"
                                  columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-10 ui-lg-10"
@@ -38,7 +31,7 @@
                         <h:outputText value="#{consultarProcesso.processoBean.numero}" />
 
                         <p:outputLabel value="Situação" />
-                        <h:outputText value="#{consultarProcesso.processoBean.situacao}"/>
+                        <h:outputText value="#{consultarProcesso.processoBean.descSituacao}"/>
 
                         <p:outputLabel value="Data Início" />
                         <h:outputText value="#{consultarProcesso.processoBean.dataInicio}">
@@ -58,15 +51,15 @@
 
                     </p:panelGrid>
                 </p:panel>
-
                 <p:panel style="text-align: right; border: none;">
-                    <p:commandButton icon="pi pi-plus" ajax="false"
+                    <p:commandButton icon="pi pi-pencil" ajax="false" title="Editar Processo"
                                      style="background:#616161;border:none; text-align: center;"
                                      action="#{cadastrarProcesso.editar}">
                         <f:setPropertyActionListener
                                 target="#{cadastrarProcesso.processoBean}" value="#{consultarProcesso.processoBean}" />
                     </p:commandButton>
                 </p:panel>
+
                 <p:panel header="Envolvidos" style="margin-top: 10px">
 
                     <p:dataList value="#{consultarProcesso.processoBean.listaUsuarios}" var="usuario"
@@ -75,13 +68,12 @@
                     </p:dataList>
 
                 </p:panel>
-
                 <p:panel style="text-align: right; border: none;">
-                    <p:commandButton icon="pi pi-plus" ajax="false"
+                    <p:commandButton icon="pi pi-pencil" ajax="false" title="Editar Envolvidos"
                                      style="background:#616161;border:none; text-align: center;"
-                                     action="#{cadastrarAndamento.novo}">
+                                     action="#{cadastrarProcesso.editar}">
                         <f:setPropertyActionListener
-                                target="#{cadastrarProcesso.processoBean}" value="#{cadastrarAndamento.processoBean}" />
+                                target="#{cadastrarProcesso.processoBean}" value="#{consultarProcesso.processoBean}" />
                     </p:commandButton>
                 </p:panel>
 
@@ -93,15 +85,14 @@
                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                         </h:outputText> - #{andamento.descricao}
                     </p:dataList>
-
                 </p:panel>
 
                 <p:panel style="text-align: right; border: none;">
                     <p:commandButton icon="pi pi-plus" ajax="false"
                                      style="background:#616161;border:none; text-align: center;"
-                                     action="#{cadastrarAndamento.novo}">
+                                     action="#{cadastrarAndamento.cadastrar}">
                         <f:setPropertyActionListener
-                                target="#{cadastrarProcesso.processoBean}" value="#{cadastrarAndamento.processoBean}" />
+                                target="#{cadastrarAndamento.processoBean}" value="#{consultarProcesso.processoBean}" />
                     </p:commandButton>
                 </p:panel>
 
@@ -123,6 +114,15 @@
 
                     </p:dataList>
 
+                </p:panel>
+
+                <p:panel style="text-align: right; border: none;">
+                    <p:commandButton icon="pi pi-plus" ajax="false"
+                                     style="background:#616161;border:none; text-align: center;"
+                                     action="#{cadastrarDocumento.cadastrar}">
+                        <f:setPropertyActionListener
+                                target="#{cadastrarDocumento.documentoBean.idProcesso}" value="#{consultarProcesso.processoBean.id}" />
+                    </p:commandButton>
                 </p:panel>
 
                 <div  style="margin-top: 10px">

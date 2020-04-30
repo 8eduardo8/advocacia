@@ -11,7 +11,7 @@ import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -20,7 +20,7 @@ import java.util.List;
 import static br.com.abce.advocacia.util.Consts.NAO_POSSIVEL_DADOS_USUARIO;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class Dashboard implements Serializable {
 
 	private List<WrapperNota> lista;
