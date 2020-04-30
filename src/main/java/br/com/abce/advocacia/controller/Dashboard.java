@@ -11,24 +11,23 @@ import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import static br.com.abce.advocacia.util.Consts.NAO_POSSIVEL_DADOS_USUARIO;
 
 @Named
-@SessionScoped
+@RequestScoped
 public class Dashboard implements Serializable {
 
 	private List<WrapperNota> lista;
 
-	private List<ProcessoBean> listaProcessos = new ArrayList<>();
+	private List<ProcessoBean> listaProcessos;
 
-	private List<NotaBean> listaNotas = new ArrayList<>();
+	private List<NotaBean> listaNotas;
 
 	@Inject
 	private ProcessoService processoService;
@@ -60,7 +59,7 @@ public class Dashboard implements Serializable {
 
 		try {
 
-			listaNotas = notaService.listar(idUsuario);
+			listaNotas = notaService.listarNotasProcessosDoUsuario(idUsuario);
 
 		} catch (ValidacaoException e) {
 			Mensagem.info(NAO_POSSIVEL_DADOS_USUARIO);

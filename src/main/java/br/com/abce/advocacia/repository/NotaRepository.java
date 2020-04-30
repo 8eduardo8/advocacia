@@ -12,4 +12,6 @@ public interface NotaRepository extends AbstractRepository<NotaEntity> {
     List<NotaEntity> listarAndamentos(Long idProcesso, int tipoAndamentoProcesso) throws InfraestruturaException;
 
     List<NotaEntity> listarDocumentos(Long idProcesso) throws InfraestruturaException;
+
+    List<NotaEntity> listarNotaProcessoUsuario(Long idUsuario) throws InfraestruturaException;
 }

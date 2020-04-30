@@ -26,54 +26,54 @@
 					</div>
 				</p:panel>
 
+				<p:panel rendered="#{not empty dashboard.listaNotas}" style="border: none">
+					<p><span>Encontramos essas notificações</span></p>
+
+					<p:dataTable  var="nota" value="#{dashboard.listaNotas}" style="border: none" >
+						<p:column>
+							#{nota.usuarioResumidoBean.nome} - (#{nota.usuarioResumidoBean.descPerfil}) -
+							<h:outputText value="#{nota.dataCadastro}" >
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+							</h:outputText>
+							<h:outputText rendered="#{nota.notaMensagem != null and nota.notaMensagem.tipo == 1}"
+										  title="Nova Mensagem" style="margin-left: 5px;" styleClass="pi pi-comment"/>
+							<h:outputText rendered="#{nota.notaMensagem != null and nota.notaMensagem.tipo == 2}"
+										  title="Novo Andamento" style="margin-left: 5px;" styleClass="pi pi-refresh"/>
+							<h:outputText rendered="#{nota.notaDocumento != null}"
+										  title="Novo Documento" style="margin-left: 5px;" styleClass="pi pi-file"/>
+
+						</p:column>
+						<p:column style="width:32px;text-align: center">
+							<p:commandButton icon="pi pi-arrow-circle-right" ajax="false"
+											 style="background:#616161;border:none; text-align: center;">
+								<!--								<f:setPropertyActionListener-->
+								<!--										target="#{nota.idProcesso}" value="#{processo}" />-->
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+
 				<p:panel rendered="#{not empty dashboard.listaProcessos}" style="border: none">
 					<p><span>Encontramos esses processos</span></p>
 
 					<p:dataTable  var="processo" value="#{dashboard.listaProcessos}" style="border: none" >
 						<p:column>
 							Nº #{processo.numero} - Atualiz. <h:outputText value="#{processo.dataInicio}" >
-																	<f:convertDateTime pattern="dd/MM/yyyy"/>
+																	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
 															 </h:outputText>
 						</p:column>
 						<p:column style="width:32px;text-align: center">
 							<p:commandButton icon="pi pi-arrow-circle-right" ajax="false"
                                              style="background:#616161;border:none; text-align: center;"
-											 action="#{consultarProcesso.consultar}">
+											 action="#{consultarProcesso.detalhar}">
 								<f:setPropertyActionListener
-										target="#{cadastrarProcesso.processoBean}" value="#{processo}" />
+										target="#{consultarProcesso.processoBean}" value="#{processo}" />
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
 				</p:panel>
 
-				<c:forEach items="#{dashboard.lista}">
-					<div class="balao" style="margin-bottom: 10px;">
-						<h:graphicImage url="imagem/user.png"
-							style="height: 50px; float: left; margin-right: 5px;" />
-						<h:outputLabel value="TESTE" />
-						<br /> <br />
-						<h:outputLabel value="07/04/2020 09:31" style="color:#505050;" />
-					</div>
-					<div align="right">
-						<div class="balaoEnvio"
-							style="text-align: left; margin-bottom: 10px;">
-							<h:graphicImage url="imagem/user.png" align="right"
-                                 style="height: 50px; margin-left: 5px;" />
-							<h:outputLabel value="TESTE" />
-							<br /> <br />
-							<div align="right" style="text-align: right;">
-								<h:outputLabel value="07/04/2020 09:31" style="color:#303030" />
-							</div>
-						</div>
-					</div>
-				</c:forEach>
 
-
-				<div
-					style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: #F5F5F5; color: white; padding: 10px; margin-top: 20px;">
-					<p:inputTextarea cols="3" style="width:100%;border-color: #E0E0E0;" />
-					<p:commandButton icon="pi pi-caret-right" value="Enviar Mensagem" />
-				</div>
 			</h:form>
 		</ui:define>
 	</ui:composition>

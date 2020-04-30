@@ -112,7 +112,7 @@ public class ProcessoService implements Serializable {
         bean.setDataInicio(entity.getDataInicio());
         bean.setNumero(entity.getNumero());
         bean.setComarca(entity.getComarca());
-        bean.setSituacao(String.valueOf(entity.getSituacao()));
+        bean.setSituacao(entity.getSituacao());
         bean.setDataCadastro(entity.getDataCadastro());
         bean.setDataAtualizacao(entity.getDataAtualizacao());
         bean.setDataExclusao(entity.getDataExclusao());

@@ -66,4 +66,28 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
             throw new InfraestruturaException(ex.getMessage(), ex);
         }
     }
+
+    @Override
+    public List<NotaEntity> listarNotaProcessoUsuario(final Long idUsuario) throws InfraestruturaException {
+
+        try {
+
+            return getEntityManager().createQuery(
+                    "select n " +
+                            "from NotaEntity n, " +
+                            "     ProcessoUsuarioEntity pu, " +
+                            "     ProcessoUsuarioEntity pu2 " +
+                            "where n.processoUsuarioByProcessoUsuarioId.id = pu.id " +
+                            "  and pu.processoByProcessoId.id = pu2.processoByProcessoId.id " +
+                            "  and pu2.usuarioByUsuarioId.id = :id_usuario " +
+                            "  and pu.usuarioByUsuarioId.id <> :id_usuario " +
+                            "order by n.dataCadastro desc ")
+
+                    .setParameter("id_usuario", idUsuario)
+                    .getResultList();
+
+        } catch (PersistenceException ex) {
+            throw new InfraestruturaException(ex.getMessage(), ex);
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package br.com.abce.advocacia.bean;
 
+import br.com.abce.advocacia.SituacaoProcesso;
 import io.swagger.annotations.ApiModel;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +15,7 @@ public class ProcessoBean implements Serializable, Bean {
 	private Long id;
 	private String numero;
 	private String area;
-	private String situacao;
+	private int situacao;
 	private Date dataInicio;
 	private String comarca;
 
@@ -47,11 +49,11 @@ public class ProcessoBean implements Serializable, Bean {
 		this.area = area;
 	}
 
-	public String getSituacao() {
+	public int getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(String situacao) {
+	public void setSituacao(int situacao) {
 		this.situacao = situacao;
 	}
 
@@ -101,5 +103,11 @@ public class ProcessoBean implements Serializable, Bean {
 
 	public void setComarca(String comarca) {
 		this.comarca = comarca;
+	}
+
+	@Transient
+	public String getDescSituacao(){
+		SituacaoProcesso situacaoProcesso = SituacaoProcesso.getSituacaoProcesso(this.getSituacao());
+		return situacaoProcesso != null ? situacaoProcesso.getDescricao() : "Desconhecido";
 	}
 }

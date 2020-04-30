@@ -25,6 +25,8 @@ public class NotaBean implements Serializable {
 	private NotaDocumento notaDocumento;
 	private NotaMensagem notaMensagem;
 
+	private UsuarioResumidoBean usuarioResumidoBean;
+
 	public NotaBean() {
 		super();
 	}
@@ -111,5 +113,13 @@ public class NotaBean implements Serializable {
 
 	public void setIdProcessoUsuario(Long idProcessoUsuario) {
 		this.idProcessoUsuario = idProcessoUsuario;
+	}
+
+	public UsuarioResumidoBean getUsuarioResumidoBean() {
+		return usuarioResumidoBean;
+	}
+
+	public void setUsuarioResumidoBean(UsuarioResumidoBean usuarioResumidoBean) {
+		this.usuarioResumidoBean = usuarioResumidoBean;
 	}
 }

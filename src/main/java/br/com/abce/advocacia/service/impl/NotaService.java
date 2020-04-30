@@ -33,6 +33,9 @@ public class NotaService implements Serializable {
     @Inject
     private ProcessoService processoService;
 
+    @Inject
+    private UsuarioService usuarioService;
+
 
     public List<NotaBean> listar(final Long idProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
 
@@ -46,6 +49,11 @@ public class NotaService implements Serializable {
 
             throw new RecursoNaoEncontradoException("Nota(s) não encontrada(s)");
 
+        return getNotaBeans(notaEntityList);
+    }
+
+    private List<NotaBean> getNotaBeans(List<NotaEntity> notaEntityList) {
+
         List<NotaBean> notaBeanList = new ArrayList<>();
 
         for (NotaEntity entity : notaEntityList) {
@@ -56,20 +64,18 @@ public class NotaService implements Serializable {
             bean.setId(entity.getId().intValue());
             bean.setIdUsuario(entity.getProcessoUsuarioByProcessoUsuarioId().getUsuarioByUsuarioId().getId());
 
+            bean.setUsuarioResumidoBean(usuarioService.getUsuarioBean(entity.getProcessoUsuarioByProcessoUsuarioId().getUsuarioByUsuarioId()));
+
             NotaTextoEntity textoEntity = entity.getNotaTextoByNotaTextoId();
 
-            NotaMensagem notaMensagem = null;
-
-            if (textoEntity != null) {
-
-                notaMensagem = new NotaMensagem();
-                notaMensagem.setMensagem(textoEntity.getDescricao());
-                notaMensagem.setTipo(textoEntity.getTipo());
-                notaMensagem.setNota(textoEntity.getId().intValue());
-
-            }
+            NotaMensagem notaMensagem = getNotaMensagem(textoEntity);
 
             bean.setNotaMensagem(notaMensagem);
+
+            NotaDocumento notaDocumento = getNotaDocumento(entity.getNotaDocumentoByNotaDocumentoId());
+
+            bean.setNotaDocumento(notaDocumento);
+
 
             notaBeanList.add(bean);
         }
@@ -274,19 +280,7 @@ public class NotaService implements Serializable {
 
         for (NotaEntity entity : entityLists) {
 
-            NotaDocumento notaDocumento = new NotaDocumento();
-
-            NotaDocumentoEntity notaDocumentoEntity = entity.getNotaDocumentoByNotaDocumentoId();
-
-            notaDocumento.setIdDocumento(notaDocumentoEntity.getId());
-            notaDocumento.setDescricao(notaDocumentoEntity.getDescricao());
-            notaDocumento.setNome(notaDocumentoEntity.getNome());
-            notaDocumento.setFormato(notaDocumento.getFormato());
-
-            notaDocumento.setDataCadastro(entity.getDataCadastro());
-            ProcessoUsuarioEntity processoUsuarioId = entity.getProcessoUsuarioByProcessoUsuarioId();
-            notaDocumento.setIdProcesso(processoUsuarioId.getUsuarioByUsuarioId().getId());
-            notaDocumento.setIdProcesso(processoUsuarioId.getProcessoByProcessoId().getId());
+            NotaDocumento notaDocumento = getNotaDocumento(entity.getNotaDocumentoByNotaDocumentoId());
 
             lista.add(notaDocumento);
 
@@ -294,6 +288,44 @@ public class NotaService implements Serializable {
 
         return lista;
 
+    }
+
+
+    private NotaMensagem getNotaMensagem(NotaTextoEntity textoEntity) {
+
+        NotaMensagem notaMensagem = null;
+
+        if (textoEntity != null) {
+
+            notaMensagem = new NotaMensagem();
+            notaMensagem.setMensagem(textoEntity.getDescricao());
+            notaMensagem.setTipo(textoEntity.getTipo());
+            notaMensagem.setNota(textoEntity.getId().intValue());
+
+        }
+        return notaMensagem;
+    }
+
+    private NotaDocumento getNotaDocumento(NotaDocumentoEntity notaDocumentoEntity) {
+
+        NotaDocumento notaDocumento = null;
+
+        if (notaDocumentoEntity != null) {
+
+            notaDocumento = new NotaDocumento();
+
+            notaDocumento.setIdDocumento(notaDocumentoEntity.getId());
+            notaDocumento.setDescricao(notaDocumentoEntity.getDescricao());
+            notaDocumento.setNome(notaDocumentoEntity.getNome());
+            notaDocumento.setFormato(notaDocumento.getFormato());
+
+            notaDocumento.setDataCadastro(notaDocumentoEntity.getNotaEntity().getDataCadastro());
+            ProcessoUsuarioEntity processoUsuarioId = notaDocumentoEntity.getNotaEntity().getProcessoUsuarioByProcessoUsuarioId();
+            notaDocumento.setIdUsuario(processoUsuarioId.getUsuarioByUsuarioId().getId());
+            notaDocumento.setIdProcesso(processoUsuarioId.getProcessoByProcessoId().getId());
+        }
+
+        return notaDocumento;
     }
 
     @Transactional
@@ -342,5 +374,20 @@ public class NotaService implements Serializable {
         } catch (PersistenceException e) {
             throw new InfraestruturaException(e.getMessage(), e);
         }
+    }
+
+    public List<NotaBean> listarNotasProcessosDoUsuario(Long idUsuario) throws RecursoNaoEncontradoException, ValidacaoException, InfraestruturaException {
+
+        if (idUsuario == null || idUsuario == 0L)
+            throw new ValidacaoException(Consts.ID_USUARIO_NAO_INFORMADO);
+
+
+        final List<NotaEntity> notaEntityList = notaRepository.listarNotaProcessoUsuario(idUsuario);
+
+        if (notaEntityList.isEmpty())
+
+            throw new RecursoNaoEncontradoException("Nota(s) não encontrada(s)");
+
+        return getNotaBeans(notaEntityList);
     }
 }
