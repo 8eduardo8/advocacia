@@ -34,10 +34,11 @@
 					<p:panelGrid columns="2"
 						columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-2 ui-lg-2"
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-						<p:commandButton icon="pi pi-search" value="CONSULTAR"
+						<p:commandButton icon="pi pi-search" value="Consultar"
 							style="border:none;" action="#{consultarProcesso.consultar}"
 							ajax="false" />
-						<p:commandButton icon="pi pi-plus" value="NOVO"
+						<p:commandButton icon="pi pi-plus" value="Novo"
+						 	rendered="#{not login.usuarioBean.cliente}"
 							style="border:none;" action="#{cadastrarProcesso.novo}"
 							ajax="false" />
 					</p:panelGrid>
@@ -48,33 +49,40 @@
 					style="font-size:70%;" paginator="true" emptyMessage="Nenhum registro encontrado."
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} processos"
-					rowsPerPageTemplate="100,500,1000" rows="100">
-					<p:column headerText="Ações" style="width:50px; text-align: center;">
-						<p:commandButton icon="pi pi-pencil" ajax="false"
+					rowsPerPageTemplate="6,12,20" rows="100">
+					<p:column headerText="Ações" style="width:80px; text-align: center;">
+						<p:commandButton icon="pi pi-pencil" ajax="false" title="Editar"
+										 rendered="#{not login.usuarioBean.cliente}"
 										style="background:#616161;border:none; text-align: center;"
 										action="#{cadastrarProcesso.editar}">
 							<f:setPropertyActionListener
                                     target="#{cadastrarProcesso.processoBean}" value="#{item}" />
 						</p:commandButton>
-						<p:commandButton icon="pi pi-arrow-circle-right" ajax="false"
+						<p:commandButton icon="pi pi-arrow-circle-right" ajax="false" title="Detalhar"
 										 style="background:#616161;border:none; text-align: center;"
 										 action="#{consultarProcesso.detalhar}">
 							<f:setPropertyActionListener
 									target="#{consultarProcesso.processoBean}" value="#{item}" />
 						</p:commandButton>
+						<p:commandButton icon="pi pi-envelope" ajax="false"
+										 style="background:#616161;border:none; text-align: center;"
+										 action="#{chat.conversa}">
+							<f:setPropertyActionListener
+									target="#{chat.processoBean}" value="#{item}" />
+						</p:commandButton>
 					</p:column>
-					<p:column headerText="Número" style="width:120px; text-align: center;">
+					<p:column headerText="Número" style="width:100px; text-align: center;">
 						<h:outputText value="#{item.numero}" />
 					</p:column>
-					<p:column headerText="Área" style="width:200px; text-align: center;">
+					<p:column headerText="Área" style="width:180px; text-align: center;">
 						<h:outputText value="#{item.area}" />
 					</p:column>
 					<p:column headerText="Situação" style="width:200px; text-align: center;">
-						<h:outputText value="#{item.situacao}" />
+						<h:outputText value="#{item.descSituacao}" />
 					</p:column>
 					<p:column headerText="Data Início" style="width:100px; text-align: center;">
 						<h:outputText value="#{item.dataInicio}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 						</h:outputText>
 					</p:column>
 				</p:dataTable>

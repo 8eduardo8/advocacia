@@ -4,9 +4,12 @@ import br.com.abce.advocacia.bean.UsuarioBean;
 import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
+import br.com.abce.advocacia.util.Consts;
+import br.com.abce.advocacia.util.Util;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 
 public class AutenticacaoService implements Serializable {
@@ -17,6 +20,9 @@ public class AutenticacaoService implements Serializable {
     @Inject
     private MailService mailService;
 
+    @Inject
+    private Util util;
+
     public UsuarioBean login(final String usuario, final String senha) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
 
         if (StringUtils.isBlank(usuario))
@@ -25,17 +31,25 @@ public class AutenticacaoService implements Serializable {
         if (StringUtils.isBlank(senha))
             throw new ValidacaoException("Favor informar a senha.");
 
+        final String senhaCriptada = util.gerarHashMD5(senha);
+
         final UsuarioBean usuarioBean = usuarioService.buscar(usuario);
 
         if (usuarioBean == null)
             throw new RecursoNaoEncontradoException("Usuário não encontrado.");
 
-        if (!usuarioBean.getSenha().equals(senha)) {
+        if (!usuarioBean.getSenha().equals(senhaCriptada)) {
 
-            if (usuarioBean.isRecuperarSenha()
-                    && !usuarioBean.getSenhaTemporaria().equals(senha))
+            if (usuarioBean.isRecuperarSenha()) {
+
+                if (!usuarioBean.getSenhaTemporaria().equals(senhaCriptada))
+
+                    throw new ValidacaoException("Senha incorreta.");
+
+            } else {
 
                 throw new ValidacaoException("Senha incorreta.");
+            }
         }
 
         return usuarioBean;
@@ -46,6 +60,7 @@ public class AutenticacaoService implements Serializable {
 
     }
 
+    @Transactional
     public void senhaProvisoria(final String login, final String email) throws ValidacaoException, InfraestruturaException {
 
         if (StringUtils.isBlank(login))
@@ -67,22 +82,16 @@ public class AutenticacaoService implements Serializable {
         if (!usuarioBean.getEmail().equals(email))
             throw new ValidacaoException("E-mail informado está incorreto.");
 
-        usuarioBean.setSenhaTemporaria("abc123");
+        String novaSenha = util.gerarNovaSenha();
+
+        usuarioBean.setSenhaTemporaria(util.gerarHashMD5(novaSenha));
         usuarioBean.setRecuperarSenha(true);
 
         usuarioService.salvar(usuarioBean);
 
-        final String assunto = "Senha provisória";
+        final String corpo = String.format(Consts.CORPO_EMAIL_SENHA_PROVISORIA,
+                usuarioBean.getNome(), novaSenha);
 
-        final String corpo = String.format("Olá %s,\n" +
-                        "\n" +
-                        "Uma senha provisória foi gerada para você acessar o sistema.\n" +
-                        "\n" +
-                        "\tsenha: %s\n" +
-                        "\n" +
-                        "Favor não responder e-mail automático.",
-                usuarioBean.getNome(), usuarioBean.getSenhaTemporaria());
-
-        mailService.enviarEmail(usuarioBean.getEmail(), assunto, corpo);
+        mailService.enviarEmail(usuarioBean.getEmail(), Consts.ASSUNTO_SENHA_PROVISORIA, corpo);
     }
 }

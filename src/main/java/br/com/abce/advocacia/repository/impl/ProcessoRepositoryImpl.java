@@ -20,7 +20,8 @@ public class ProcessoRepositoryImpl extends AbstractRepositoryImpl<ProcessoEntit
                             "     ProcessoUsuarioEntity pu " +
                             "where p.id = pu.processoByProcessoId.id " +
                             "  and pu.usuarioByUsuarioId.id = :id_usuario " +
-                            "  and pu.dataExclusao is null ")
+                            "  and pu.dataExclusao is null " +
+                            "order by p.dataAtualizacao, p.dataCadastro desc ")
                     .setParameter("id_usuario", idUsuario)
                     .getResultList();
 

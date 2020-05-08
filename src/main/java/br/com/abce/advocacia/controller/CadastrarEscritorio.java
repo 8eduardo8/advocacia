@@ -1,20 +1,23 @@
 package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.EscritorioBean;
-import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.EscritorioService;
+import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
 @Named
 @RequestScoped
-public class CadastrarEscritorio implements Serializable {
+public class CadastrarEscritorio extends GenericController implements Serializable {
 
 	public static final String CADASTRAR_ESCRITORIO = "cadastrarEscritorio";
 
@@ -43,13 +46,13 @@ public class CadastrarEscritorio implements Serializable {
 
 			escritorioService.salvar(escritorioBean);
 
-			Mensagem.info("ESCRITÓRIO SALVO!");
+			Mensagem.info(Consts.OPERACO_REALIZADA_SUCESSO);
 
-		} catch (AdvocaciaException e) {
-			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+		} catch (ValidacaoException e) {
+			Mensagem.erro(e.getMessage());
 			return "";
 		} catch (Exception e) {
-			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 			return "";
 		}

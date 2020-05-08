@@ -1,6 +1,7 @@
 package br.com.abce.advocacia.bean;
 
 import br.com.abce.advocacia.Perfil;
+import br.com.abce.advocacia.converter.Bean;
 
 import java.beans.Transient;
 import java.io.Serializable;
@@ -51,4 +52,13 @@ public class UsuarioResumidoBean implements Serializable, Bean {
         return tipoPerfil != null ? tipoPerfil.getDescricao() : "Desconhecido";
     }
 
+    @Transient
+    public boolean isAdmin() {
+        return this.perfil == Perfil.ADMINISTRADOR.getCodigo();
+    }
+
+    @Transient
+    public boolean isCliente() {
+        return this.perfil == Perfil.CLIENTE.getCodigo();
+    }
 }

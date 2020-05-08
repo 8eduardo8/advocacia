@@ -1,13 +1,13 @@
 package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.UsuarioBean;
-import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@RequestScoped
+@ConversationScoped
 public class ConsultarUsuario implements Serializable {
 
 	private String filtro;
-	private String perfil;
+	private int perfil;
 	private boolean ativo;
 	private List<UsuarioBean> lista;
 
@@ -29,6 +29,7 @@ public class ConsultarUsuario implements Serializable {
 	@PostConstruct
 	public void init() {
 
+		consultar();
 	}
 
 	public String consultar() {
@@ -36,12 +37,12 @@ public class ConsultarUsuario implements Serializable {
 
 		try {
 
-			lista = usuarioService.listar();
+			lista = usuarioService.listar(filtro, perfil, ativo);
 
-		} catch (AdvocaciaException ex) {
+		} catch (RecursoNaoEncontradoException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.erro("ERRO AO CONSULTAR!", e.getMessage());
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 		}
 
@@ -72,11 +73,11 @@ public class ConsultarUsuario implements Serializable {
 		this.ativo = ativo;
 	}
 
-	public String getPerfil() {
+	public int getPerfil() {
 		return perfil;
 	}
 
-	public void setPerfil(String perfil) {
+	public void setPerfil(int perfil) {
 		this.perfil = perfil;
 	}
 

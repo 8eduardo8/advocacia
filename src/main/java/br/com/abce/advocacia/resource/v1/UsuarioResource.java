@@ -34,9 +34,9 @@ public class UsuarioResource extends AbstractResource implements StandardRestDef
 
     @GET
     @ApiOperation("Lista de usuário(s)")
-    public List<UsuarioBean> listar() throws RecursoNaoEncontradoException {
+    public List<UsuarioBean> listar(@QueryParam("nome") final String filtro, @QueryParam("perfil") final int perfil, @QueryParam("ativo") final boolean ativo) throws RecursoNaoEncontradoException, InfraestruturaException {
 
-        return usuarioService.listar();
+        return usuarioService.listar(filtro, perfil, ativo);
 
     }
 

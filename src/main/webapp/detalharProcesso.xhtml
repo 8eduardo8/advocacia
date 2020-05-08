@@ -53,10 +53,12 @@
                 </p:panel>
                 <p:panel style="text-align: right; border: none;">
                     <p:commandButton icon="pi pi-pencil" ajax="false" title="Editar Processo"
+                                     rendered="#{not login.usuarioBean.cliente}"
                                      style="background:#616161;border:none; text-align: center;"
                                      action="#{cadastrarProcesso.editar}">
                         <f:setPropertyActionListener
                                 target="#{cadastrarProcesso.processoBean}" value="#{consultarProcesso.processoBean}" />
+                        <f:param name="idProcesso" value="#{consultarProcesso.processoBean.id}" />
                     </p:commandButton>
                 </p:panel>
 
@@ -71,9 +73,11 @@
                 <p:panel style="text-align: right; border: none;">
                     <p:commandButton icon="pi pi-pencil" ajax="false" title="Editar Envolvidos"
                                      style="background:#616161;border:none; text-align: center;"
+                                     rendered="#{not login.usuarioBean.cliente}"
                                      action="#{cadastrarProcesso.editar}">
                         <f:setPropertyActionListener
                                 target="#{cadastrarProcesso.processoBean}" value="#{consultarProcesso.processoBean}" />
+                        <f:param name="idProcesso" value="#{consultarProcesso.processoBean.id}" />
                     </p:commandButton>
                 </p:panel>
 
@@ -89,10 +93,10 @@
 
                 <p:panel style="text-align: right; border: none;">
                     <p:commandButton icon="pi pi-plus" ajax="false"
+                                     rendered="#{not login.usuarioBean.cliente}"
                                      style="background:#616161;border:none; text-align: center;"
                                      action="#{cadastrarAndamento.cadastrar}">
-                        <f:setPropertyActionListener
-                                target="#{cadastrarAndamento.processoBean}" value="#{consultarProcesso.processoBean}" />
+                        <f:param name="idProcesso" value="#{consultarProcesso.processoBean.id}" />
                     </p:commandButton>
                 </p:panel>
 
@@ -118,10 +122,10 @@
 
                 <p:panel style="text-align: right; border: none;">
                     <p:commandButton icon="pi pi-plus" ajax="false"
+                                     rendered="#{not login.usuarioBean.cliente}"
                                      style="background:#616161;border:none; text-align: center;"
                                      action="#{cadastrarDocumento.cadastrar}">
-                        <f:setPropertyActionListener
-                                target="#{cadastrarDocumento.documentoBean.idProcesso}" value="#{consultarProcesso.processoBean.id}" />
+                        <f:param name="idProcesso" value="#{consultarProcesso.processoBean.id}" />
                     </p:commandButton>
                 </p:panel>
 
@@ -129,10 +133,11 @@
                     <p:panelGrid columns="2"
                                  columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-2 ui-lg-2"
                                  layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-                        <p:commandButton icon="pi pi-search" value="CONSULTAR"
+                        <p:commandButton icon="pi pi-search" value="Consultar"
                                          style="border:none;" action="#{consultarProcesso.consultar}"
                                          ajax="false" />
-                        <p:commandButton icon="pi pi-plus" value="NOVO"
+                        <p:commandButton icon="pi pi-plus" value="Novo"
+                                         rendered="#{not login.usuarioBean.cliente}"
                                          style="border:none;" action="#{cadastrarProcesso.novo}"
                                          ajax="false" />
                     </p:panelGrid>

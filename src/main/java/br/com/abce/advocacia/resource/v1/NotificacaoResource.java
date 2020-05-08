@@ -27,7 +27,7 @@ public class NotificacaoResource extends AbstractResource implements StandardRes
 
     @GET
     @ApiOperation(value = "Lista notificações dos processos exceto do id do usuário.")
-    public List<NotaBean> listaNotasExcetoUsuario(@QueryParam("id-usuario") final Long idUsuario) throws InfraestruturaException, ValidacaoException, RecursoNaoEncontradoException {
-        return notaService.listarNotasProcessosDoUsuario(idUsuario);
+    public List<NotaBean> listaNotasExcetoUsuario(@QueryParam("id-usuario") final Long idUsuario,  @QueryParam("page-number") int pageNumber, @QueryParam("page-size") int pageSize) throws InfraestruturaException, ValidacaoException, RecursoNaoEncontradoException {
+        return notaService.listarNotasProcessosDoUsuario(idUsuario, pageNumber, pageSize);
     }
 }

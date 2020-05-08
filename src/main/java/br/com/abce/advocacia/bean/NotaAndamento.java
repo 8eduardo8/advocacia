@@ -15,6 +15,8 @@ public class NotaAndamento implements Serializable {
 
 	private Date dataCadastro;
 
+	private String nomeUsuario;
+
 	public NotaAndamento() {
 		super();
 	}
@@ -57,5 +59,13 @@ public class NotaAndamento implements Serializable {
 
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
 	}
 }

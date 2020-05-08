@@ -17,6 +17,14 @@
 		<ui:define name="content">
 			<h:form>
 
+				<ui:include src="hidden_params.xhtml">
+					<ui:param name="bean" value="#{cadastrarUsuario.usuarioBean}"></ui:param>
+				</ui:include>
+
+				<h:inputHidden value="#{cadastrarUsuario.usuarioBean.recuperarSenha}"/>
+				<h:inputHidden value="#{cadastrarUsuario.usuarioBean.senhaTemporaria}"/>
+				<h:inputHidden value="#{cadastrarUsuario.usuarioBean.senha}"/>
+
 				<p:panel header="Dados Cadastrais">
 					<p:panelGrid columns="4"
 						columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-2 ui-lg-2, ui-g-12 ui-md-4 ui-lg-4"
@@ -64,6 +72,10 @@
 						<p:inputText value="#{cadastrarUsuario.usuarioBean.telefoneCelular}"
 									 mask="(999) 999-9999? x99999" maxlength="11" />
 
+						<ui:include src="info_datas.xhtml">
+							<ui:param name="bean" value="#{cadastrarUsuario.usuarioBean}"></ui:param>
+						</ui:include>
+
 					</p:panelGrid>
 				</p:panel>
 
@@ -75,10 +87,10 @@
 					<p:panelGrid columns="2"
 						columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-2 ui-lg-2"
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-						<p:commandButton icon="pi pi-check" value="SALVAR"
+						<p:commandButton icon="pi pi-check" value="Salvar"
 							style="border:none;" action="#{cadastrarUsuario.salvar}"
 							ajax="false" />
-						<p:commandButton icon="pi pi-times" value="CANCELAR"
+						<p:commandButton icon="pi pi-times" value="Cancelar"
 							style="background:#616161;border:none;"
 							action="#{cadastrarUsuario.novo}" ajax="false" />
 					</p:panelGrid>
@@ -102,7 +114,7 @@
 							<p:outputLabel value="Repetir Nova Senha" />
 							<p:password value="#{cadastrarUsuario.confirmaSenha}" />
 
-							<p:commandButton value="ALTERAR" style="border:none;"
+							<p:commandButton value="Alterar" style="border:none;"
 								action="#{cadastrarUsuario.alterarSenha}" ajax="false" />
 						</p:panelGrid>
 					</p:panel>

@@ -7,11 +7,12 @@ import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.NotaService;
 import br.com.abce.advocacia.service.impl.ProcessoService;
+import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -20,7 +21,7 @@ import java.util.List;
 import static br.com.abce.advocacia.util.Consts.NAO_POSSIVEL_DADOS_USUARIO;
 
 @Named
-@SessionScoped
+@ConversationScoped
 public class Dashboard implements Serializable {
 
 	private List<WrapperNota> lista;
@@ -59,7 +60,7 @@ public class Dashboard implements Serializable {
 
 		try {
 
-			listaNotas = notaService.listarNotasProcessosDoUsuario(idUsuario);
+			listaNotas = notaService.listarNotasProcessosDoUsuario(idUsuario, Consts.PAGINA_UM, Consts.PAGE_SIZE_DEFAULT);
 
 		} catch (ValidacaoException e) {
 			Mensagem.info(NAO_POSSIVEL_DADOS_USUARIO);

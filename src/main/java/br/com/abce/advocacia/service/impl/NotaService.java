@@ -1,6 +1,9 @@
 package br.com.abce.advocacia.service.impl;
 
-import br.com.abce.advocacia.bean.*;
+import br.com.abce.advocacia.bean.NotaAndamento;
+import br.com.abce.advocacia.bean.NotaBean;
+import br.com.abce.advocacia.bean.NotaDocumento;
+import br.com.abce.advocacia.bean.NotaMensagem;
 import br.com.abce.advocacia.entity.NotaDocumentoEntity;
 import br.com.abce.advocacia.entity.NotaEntity;
 import br.com.abce.advocacia.entity.NotaTextoEntity;
@@ -37,13 +40,16 @@ public class NotaService implements Serializable {
     private UsuarioService usuarioService;
 
 
-    public List<NotaBean> listar(final Long idProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
+    public List<NotaBean> listar(final Long idProcesso, int pageNumber, int pageSize) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
 
         if (idProcesso == null || idProcesso == 0L)
             throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
 
+        if (pageNumber == 0) pageNumber = Consts.PAGINA_UM;
 
-        final List<NotaEntity> notaEntityList = notaRepository.listar(idProcesso);
+        if (pageSize == 0) pageSize= Consts.PAGE_SIZE_DEFAULT;
+
+        final List<NotaEntity> notaEntityList = notaRepository.listar(idProcesso, pageNumber, pageSize);
 
         if (notaEntityList.isEmpty())
 
@@ -62,9 +68,14 @@ public class NotaService implements Serializable {
 
             bean.setDataCadastro(entity.getDataCadastro());
             bean.setId(entity.getId().intValue());
-            bean.setIdUsuario(entity.getProcessoUsuarioByProcessoUsuarioId().getUsuarioByUsuarioId().getId());
 
-            bean.setUsuarioResumidoBean(usuarioService.getUsuarioBean(entity.getProcessoUsuarioByProcessoUsuarioId().getUsuarioByUsuarioId()));
+            final ProcessoUsuarioEntity processoUsuarioId = entity.getProcessoUsuarioByProcessoUsuarioId();
+
+            bean.setIdUsuario(processoUsuarioId.getUsuarioByUsuarioId().getId());
+            bean.setIdProcesso(processoUsuarioId.getProcessoByProcessoId().getId());
+            bean.setIdProcessoUsuario(processoUsuarioId.getId());
+
+            bean.setUsuarioResumidoBean(usuarioService.getUsuarioBean(processoUsuarioId.getUsuarioByUsuarioId()));
 
             NotaTextoEntity textoEntity = entity.getNotaTextoByNotaTextoId();
 
@@ -75,7 +86,6 @@ public class NotaService implements Serializable {
             NotaDocumento notaDocumento = getNotaDocumento(entity.getNotaDocumentoByNotaDocumentoId());
 
             bean.setNotaDocumento(notaDocumento);
-
 
             notaBeanList.add(bean);
         }
@@ -257,6 +267,7 @@ public class NotaService implements Serializable {
             ProcessoUsuarioEntity processoUsuarioId = entity.getProcessoUsuarioByProcessoUsuarioId();
             notaAndamento.setIdProcesso(processoUsuarioId.getUsuarioByUsuarioId().getId());
             notaAndamento.setIdProcesso(processoUsuarioId.getProcessoByProcessoId().getId());
+            notaAndamento.setNomeUsuario(processoUsuarioId.getUsuarioByUsuarioId().getNome());
 
             listAndamento.add(notaAndamento);
 
@@ -376,13 +387,16 @@ public class NotaService implements Serializable {
         }
     }
 
-    public List<NotaBean> listarNotasProcessosDoUsuario(Long idUsuario) throws RecursoNaoEncontradoException, ValidacaoException, InfraestruturaException {
+    public List<NotaBean> listarNotasProcessosDoUsuario(Long idUsuario, int pageNumber, int pageSize) throws RecursoNaoEncontradoException, ValidacaoException, InfraestruturaException {
 
         if (idUsuario == null || idUsuario == 0L)
             throw new ValidacaoException(Consts.ID_USUARIO_NAO_INFORMADO);
 
+        if (pageNumber == 0) pageNumber = Consts.PAGINA_UM;
 
-        final List<NotaEntity> notaEntityList = notaRepository.listarNotaProcessoUsuario(idUsuario);
+        if (pageSize == 0) pageSize= Consts.PAGE_SIZE_DEFAULT;
+
+        final List<NotaEntity> notaEntityList = notaRepository.listarNotaProcessoUsuario(idUsuario, pageNumber, pageSize);
 
         if (notaEntityList.isEmpty())
 

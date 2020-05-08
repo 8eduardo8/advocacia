@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+    <p:outputLabel value="Data Cadastro"
+                   rendered="#{bean.dataCadastro != null}"/>
+    <h:outputText value="#{bean.dataCadastro}"
+                  rendered="#{bean.dataCadastro != null}">
+        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+    </h:outputText>
+
+    <p:outputLabel value="Data Atualização"
+                   rendered="#{bean.dataAtualizacao != null}"/>
+    <h:outputText value="#{bean.dataAtualizacao}"
+                  rendered="#{bean.dataAtualizacao != null}">
+        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+    </h:outputText>
+
+    <p:outputLabel value="Data Exclusao"
+                   rendered="#{bean.dataExclusao != null}"/>
+    <h:outputText value="#{bean.dataExclusao}"
+                  rendered="#{bean.dataExclusao != null}">
+        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+    </h:outputText>
+</ui:composition>>
+</html>

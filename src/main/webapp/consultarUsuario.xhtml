@@ -30,7 +30,7 @@
 						<p:selectOneMenu value="#{consultarUsuario.perfil}">
 							<f:selectItem itemValue="" itemLabel="TODOS" />
 							<f:selectItems value="#{cadastrarUsuario.listaPerfil}"
-								var="perfil" itemValue="#{perfil}" itemLabel="#{perfil}" />
+								var="perfil" itemValue="#{perfil.codigo}" itemLabel="#{perfil.descricao}" />
 						</p:selectOneMenu>
 
 						<p:outputLabel value="Ativo" />
@@ -43,10 +43,10 @@
 					<p:panelGrid columns="2"
 						columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-2 ui-lg-2"
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-						<p:commandButton icon="pi pi-search" value="CONSULTAR"
+						<p:commandButton icon="pi pi-search" value="Consultar"
 							style="border:none;" action="#{consultarUsuario.consultar}"
 							ajax="false" />
-						<p:commandButton icon="pi pi-plus" value="NOVO"
+						<p:commandButton icon="pi pi-plus" value="Novo"
 							style="border:none;" action="#{cadastrarUsuario.novo}"
 							ajax="false" />
 					</p:panelGrid>
@@ -57,7 +57,7 @@
 					style="font-size:70%;" paginator="true" emptyMessage="Nenhum registro encontrado."
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} usuários"
-					rowsPerPageTemplate="100,500,1000" rows="100">
+					rowsPerPageTemplate="6,12,20" rows="100">
 					<p:column headerText="Ações" style="width:50px;">
 						<p:commandButton icon="pi pi-pencil" ajax="false"
 							style="background:#616161;border:none; text-align: center;"

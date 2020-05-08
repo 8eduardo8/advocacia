@@ -26,11 +26,14 @@ public class UsuarioService implements Serializable {
     private UsuarioRepository usuarioRepository;
 
     @Inject
+    private MailService mailService;
+
+    @Inject
     private Util util;
 
-    public List<UsuarioBean> listar() throws RecursoNaoEncontradoException {
+    public List<UsuarioBean> listar(String filtro, int perfil, boolean ativo) throws RecursoNaoEncontradoException, InfraestruturaException {
 
-        final List<UsuarioEntity> listaUsuario = usuarioRepository.listar();
+        final List<UsuarioEntity> listaUsuario = usuarioRepository.listar(filtro, perfil, ativo);
 
         if (listaUsuario.isEmpty())
 
@@ -113,6 +116,13 @@ public class UsuarioService implements Serializable {
     @Transactional
     public void salvar(final UsuarioBean usuarioBean) throws ValidacaoException, InfraestruturaException {
 
+        String novaSenha = null;
+
+        if (StringUtils.isBlank(usuarioBean.getSenha())) {
+            novaSenha = util.gerarNovaSenha();
+            usuarioBean.setSenha(util.gerarHashMD5(novaSenha));
+        }
+
         validaCamposObrigatorios(usuarioBean);
 
         validaTamanhoCampos(usuarioBean);
@@ -135,9 +145,12 @@ public class UsuarioService implements Serializable {
         entity.setTelefoneCelular(usuarioBean.getTelefoneCelular());
         entity.setTelefoneFixo(usuarioBean.getTelefoneFixo());
         entity.setSenha(usuarioBean.getSenha());
+        entity.setSenhaProvisoria(usuarioBean.getSenhaTemporaria());
+        entity.setRecuperarSenha(usuarioBean.isRecuperarSenha() ? Consts.RECUPERACAO_SENHA : Consts.NAO_RECUPERACAO_SENHA);
 
         enderecoEntity.setId(usuarioBean.getEnderecoBean().getId());
         enderecoEntity.setCep(usuarioBean.getEnderecoBean().getCep());
+        enderecoEntity.setBairro(usuarioBean.getEnderecoBean().getBairro());
         enderecoEntity.setCidade(util.trataParametro(usuarioBean.getEnderecoBean().getCidade()));
         enderecoEntity.setComplemento(util.trataParametro(usuarioBean.getEnderecoBean().getComplemento()));
         enderecoEntity.setLogradouro(util.trataParametro(usuarioBean.getEnderecoBean().getLogradouro()));
@@ -148,8 +161,14 @@ public class UsuarioService implements Serializable {
 
 
         if (isNovoUsuario(entity.getId())) {
+
             entity.setDataCadastro(new Date());
             usuarioRepository.salvar(entity);
+
+            final String corpo = String.format(Consts.CORPO_EMAIL_NOVO_USUARIO,
+                    usuarioBean.getNome(), usuarioBean.getLogin(), novaSenha);
+
+            mailService.enviarEmail(usuarioBean.getEmail(), Consts.ASSUNTO_EMAIL_NOVO_USUARIO, corpo);
 
         } else {
             entity.setDataAtualizacao(new Date());
@@ -247,7 +266,10 @@ public class UsuarioService implements Serializable {
     }
 
     @Transactional
-    public void alterarSenha(UsuarioBean usuarioBean, String novaSenha, String senhaAtual, String confirmaSenha) throws ValidacaoException, InfraestruturaException {
+    public void alterarSenha(Long usuarioId, String novaSenha, String senhaAtual, String confirmaSenha) throws ValidacaoException, InfraestruturaException, RecursoNaoEncontradoException {
+
+        final String novaSenhaCriptograda = util.gerarHashMD5(novaSenha);
+        final String senhaAtualCriptografada = util.gerarHashMD5(senhaAtual);
 
         if (StringUtils.isBlank(novaSenha))
             throw new ValidacaoException("Nova senha não informada");
@@ -258,14 +280,19 @@ public class UsuarioService implements Serializable {
         if (StringUtils.isBlank(confirmaSenha))
             throw new ValidacaoException("Confimração de senha não informada");
 
+        if (StringUtils.length(novaSenha) < 6)
+            throw new ValidacaoException("Senha deve conter no mínimo 6 caracteres.");
+
+        UsuarioBean usuarioBean = buscar(usuarioId);
+
         if (usuarioBean.isRecuperarSenha()) {
 
-            if (!senhaAtual.equals(usuarioBean.getSenhaTemporaria()))
+            if (!senhaAtualCriptografada.equals(usuarioBean.getSenhaTemporaria()))
                 throw new ValidacaoException("A senha digitada não confere com a sua senha provisória!");
 
         } else {
 
-            if (!senhaAtual.equals(usuarioBean.getSenha())) {
+            if (!senhaAtualCriptografada.equals(usuarioBean.getSenha())) {
                 throw new ValidacaoException("A senha digitada não confere com a sua senha!");
             }
 
@@ -275,14 +302,20 @@ public class UsuarioService implements Serializable {
             throw new ValidacaoException("Confirmação de senha não confere com a nova senha!");
         }
 
-        usuarioBean.setSenha(novaSenha);
+        UsuarioEntity usuarioEntity = usuarioRepository.buscar(usuarioId);
+
+        usuarioEntity.setSenha(novaSenhaCriptograda);
 
         if (usuarioBean.isRecuperarSenha()) {
 
-            usuarioBean.setSenhaTemporaria(null);
-            usuarioBean.setRecuperarSenha(false);
+            usuarioEntity.setSenhaProvisoria(null);
+            usuarioEntity.setRecuperarSenha(Consts.NAO_RECUPERACAO_SENHA);
         }
 
-        salvar(usuarioBean);
+        usuarioRepository.salvar(usuarioEntity);
+
+        String corpo = String.format(Consts.CORPO_EMAIL_TROCA_SENHA, usuarioBean.getNome());
+
+        mailService.enviarEmail(usuarioBean.getEmail(), Consts.ASSUNTO_TROCA_SENHA, corpo);
     }
 }

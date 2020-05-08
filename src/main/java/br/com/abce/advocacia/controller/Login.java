@@ -1,7 +1,8 @@
 package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.UsuarioBean;
-import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
+import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.AutenticacaoService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
@@ -46,8 +47,8 @@ public class Login implements Serializable {
 
 			logado = true;
 
-		} catch (AdvocaciaException e) {
-			Mensagem.erro(e.getMessage());
+		} catch (ValidacaoException | RecursoNaoEncontradoException e) {
+			Mensagem.info(e.getMessage());
 			retorno = "";
 		} catch (Exception e) {
 			LoggerUtil.error(e);

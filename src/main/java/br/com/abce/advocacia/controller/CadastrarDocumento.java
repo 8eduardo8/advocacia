@@ -10,6 +10,7 @@ import br.com.abce.advocacia.service.impl.ProcessoService;
 import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.UploadedFile;
 
 import javax.annotation.PostConstruct;
@@ -21,11 +22,9 @@ import java.util.List;
 
 @Named
 @RequestScoped
-public class CadastrarDocumento implements Serializable {
+public class CadastrarDocumento extends GenericController implements Serializable {
 
     private NotaDocumento documentoBean;
-
-    private ProcessoBean processoBean;
 
     private List<ProcessoBean> listaProcessoBean;
 
@@ -83,7 +82,12 @@ public class CadastrarDocumento implements Serializable {
         try {
 
             documentoBean = new NotaDocumento();
-            processoBean = new ProcessoBean();
+
+            final String idProcesso = getProcessoIdFromRequest();
+
+            if (StringUtils.isNotBlank(idProcesso))
+
+                documentoBean.setIdProcesso(Long.parseLong(idProcesso));
 
             listaProcessoBean = processoService.listar(login.getUsuarioBean().getId());
 
@@ -103,14 +107,6 @@ public class CadastrarDocumento implements Serializable {
 
     public void setFile(UploadedFile file) {
         this.file = file;
-    }
-
-    public ProcessoBean getProcessoBean() {
-        return processoBean;
-    }
-
-    public void setProcessoBean(ProcessoBean processoBean) {
-        this.processoBean = processoBean;
     }
 
     public List<ProcessoBean> getListaProcessoBean() {

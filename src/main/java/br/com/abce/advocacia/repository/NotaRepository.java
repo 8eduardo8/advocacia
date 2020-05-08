@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface NotaRepository extends AbstractRepository<NotaEntity> {
 
-    List<NotaEntity> listar(Long idProcesso) throws InfraestruturaException;
+    List<NotaEntity> listar(Long idProcesso, final int pageNumber, final int pageSize) throws InfraestruturaException;
 
     List<NotaEntity> listarAndamentos(Long idProcesso, int tipoAndamentoProcesso) throws InfraestruturaException;
 
     List<NotaEntity> listarDocumentos(Long idProcesso) throws InfraestruturaException;
 
-    List<NotaEntity> listarNotaProcessoUsuario(Long idUsuario) throws InfraestruturaException;
+    List<NotaEntity> listarNotaProcessoUsuario(Long idUsuario, final int pageNumber, final int pageSize) throws InfraestruturaException;
 }

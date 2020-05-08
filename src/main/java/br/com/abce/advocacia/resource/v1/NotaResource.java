@@ -26,14 +26,12 @@ public class NotaResource extends AbstractResource implements StandardRestDefini
 
 
     @GET
-    @Path("/nota")
     @ApiOperation(value = "Lista notas no processo.")
-    public List<NotaBean> registrarNota(@QueryParam("id") final Long idProcesso) throws InfraestruturaException, ValidacaoException, RecursoNaoEncontradoException {
-        return notaService.listar(idProcesso);
+    public List<NotaBean> listar(@QueryParam("id") final Long idProcesso, @QueryParam("page-number") int pageNumber, @QueryParam("page-size") int pageSize) throws InfraestruturaException, ValidacaoException, RecursoNaoEncontradoException {
+        return notaService.listar(idProcesso, pageNumber, pageSize);
     }
 
     @POST
-    @Path("/nota")
     @ApiOperation(value = "Cadastrar nota no processo.")
     public void registrarNota(@BeanParam final NotaBean notaBean) throws ValidacaoException, InfraestruturaException {
         notaService.salvarNota(notaBean);

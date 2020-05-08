@@ -9,6 +9,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -39,6 +40,7 @@ public class MailService {
         }
     }
 
+    @Transactional(Transactional.TxType.MANDATORY)
     public void enviarEmail(final String emailDest, final String assunto, final String corpo) throws InfraestruturaException {
 
         try {

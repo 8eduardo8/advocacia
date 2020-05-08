@@ -1,64 +1,174 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
 >
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Menu</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1, user-scalable=no" />
-    <script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-1.3.2.min.js"></script>
-    <script type="text/javascript">
-        var ws;
-        $(document).ready(
-            function() {
-                ws = new WebSocket("ws://localhost:8080/advocacia/chat/alan");
-                ws.onopen = function(event) {
 
-                }
-                ws.onmessage = function(event) {
-                    var $textarea = $('#messages');
-                    var json = JSON.parse(event.data);
-                    $textarea.val($textarea.val() + json.username + ": " + json.message + "\n");
-                    $textarea.animate({
-                        scrollTop : $textarea.height()
-                    }, 1000);
-                }
-                ws.onclose = function(event) {
-
-                }
-            });
-        function sendMessage() {
-            var message = {
-                "username": $('#username').val(),
-                "message": $('#message').val()
-            }
-            ws.send(JSON.stringify(message));
-            $('#message').val('');
-        }
-    </script>
 </h:head>
-<h:body>
-    <div id="body">
-        <div id="menu">
-            <p class="welcome">
-                User: <input id="username" value="anonymous" />
-            </p>
-            <div style="clear: both"></div>
-        </div>
-        <div id="chatbox">
-            <textarea id="messages" rows="16" cols="50" readonly="readonly"></textarea>
-        </div>
-        <form name="message" action="">
-            <input name="usermsg" type="text" id="message" size="63" /> <input
-                type="button" name="submitmsg" value="Send..."
-                onclick="sendMessage();" />
-        </form>
-    </div>
-</h:body>
+<h:body style="background:#ffffff;margin: 0 0 0 0;">
+    <ui:composition template="menuPrime.xhtml">
+        <ui:define name="content">
 
+            <script type="text/javascript" charset="utf-8" src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+            <script type="text/javascript">
+                var ws;
+                $(document).ready(
+                    function connect() {
+
+                        var idProcesso = $("#chatForm\\:idProcesso").val();
+
+                        var dominio = "localhost:8080";
+
+                        ws = new WebSocket("ws://" + dominio + "/advocacia/chat/" + idProcesso);
+
+                        ws.onopen = function(event) {
+                            console.log("Socket conectado com sucesso: ", event.message)
+                        }
+
+                        ws.onmessage = function(event) {
+                            var json = JSON.parse(event.data);
+
+                            atualizaChat(json.content, json.data, json.nomeUsuario)
+
+                            console.log("mensagem recebida -> " + event.data);
+                        }
+
+                        ws.onclose = function(event) {
+                            console.log('Socket está fechado. Reconexão será em até 1 segundo.', e.reason);
+                            setTimeout(function() {
+                                connect();
+                            }, 1000);
+                        }
+
+
+                        ws.onerror = function(event) {
+                            console.error('Socket encontrou um erro: ', event.message, 'Fechando socket');
+                            ws.close()
+                        };
+
+                    });
+
+
+                function sendMessage() {
+
+                    var data = new Date();
+                    var usuario = $("#chatForm\\:nomeUsuario").val();
+                    var messageForm = $("#message");
+                    var message = {
+                        "idUsuario": $("#chatForm\\:idUsuario").val(),
+                        "nomeUsuario": usuario,
+                        "content": messageForm.val(),
+                        "file" : '',
+                        "nomeFile" : '',
+                        "formatoFile" : '',
+                        'data' : data
+                    }
+                    ws.send(JSON.stringify(message));
+
+                    messageForm.val('');
+                }
+
+                function atualizaChat(mensagem, data, autor){
+
+                    var nomeUsuario = $("#chatForm\\:nomeUsuario").val()
+                    var mensagens = $("#messages");
+
+                    if (nomeUsuario == autor) {
+
+                        mensagens.append('<div align="right"> '  +
+                            '  <div class="balaoEnvio" style="text-align: left; margin-bottom: 10px; white-space: normal;"> '  +
+                            '    <p>' + mensagem + '</p> '  +
+                            '    <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;"> '  +
+                            '        <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
+                            '         '  +
+                            '    </div> '  +
+                            '  </div> '  +
+                            '</div>');
+
+                    } else {
+
+                        mensagens.append('<div class="balao" style="margin-bottom: 10px; white-space: normal;"> '  +
+                            '    <p>' + mensagem + '</p> '  +
+                            '    <div style="text-align: right;text-size-adjust: auto;font-size: smaller;"> '  +
+                            '        <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
+                            '         '  +
+                            '    </div> '  +
+                            '  </div>')
+
+                    }
+                }
+            </script>
+
+            <h:form id="chatForm">
+                <title>Chat</title>
+
+                <div id="body">
+
+                    <p:panel header="Processo">
+                        <p:panelGrid columns="6"
+                                     columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-10 ui-lg-10"
+                                     layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                            <p:outputLabel value="Número" />
+                            <h:outputText value="#{chat.processoBean.numero}"/>
+
+                            <p:inputText type="hidden"  value="#{chat.processoBean.id}" id="idProcesso"/>
+                            <p:inputText type="hidden"  value="#{chat.usuarioBean.id}" id="idUsuario"/>
+                            <p:inputText type="hidden"  value="#{chat.usuarioBean.nome}" id="nomeUsuario"/>
+
+                        </p:panelGrid>
+
+                        <div style="position: fixed; left: 0; width: 100%; background-color: #F5F5F5; color: white; padding: 10px; margin-top: 20px;">
+                            <div id="messages" style="width:100%;border-color: #E0E0E0;overflow-x: scroll; overflow-y: hidden; overflow: auto; white-space: nowrap; height: 500px;">
+                                <p:repeat value="#{chat.lista}" var="item">
+                                    <p:outputPanel rendered="#{chat.usuarioBean.nome != item.nomeUsuario}">
+                                        <div class="balao" style="margin-bottom: 10px; white-space: normal;">
+                                            <h:outputLabel value="#{item.descricao}" />
+                                            <div style="text-align: right;text-size-adjust: auto;font-size: smaller;">
+                                                <h:outputLabel value="#{item.nomeUsuario}" style="color:#505050;" /> - <h:outputLabel value="#{item.dataCadastro}" style="color:#505050;">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                                </h:outputLabel>
+                                            </div>
+                                        </div>
+                                    </p:outputPanel>
+
+                                    <p:outputPanel rendered="#{chat.usuarioBean.nome == item.nomeUsuario}">
+                                        <div align="right">
+                                            <div class="balaoEnvio"
+                                                 style="text-align: left; margin-bottom: 10px; white-space: normal;">
+                                                <h:outputLabel value="#{item.descricao}" />
+                                                <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;">
+                                                    <h:outputLabel value="#{item.nomeUsuario}" style="color:#303030"/> - <h:outputLabel value="#{item.dataCadastro}" style="color:#303030">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                                    </h:outputLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:outputPanel>
+                                </p:repeat>
+                            </div>
+                        </div>
+
+
+                        <div style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: #F5F5F5; color: white; padding: 10px; margin-top: 20px;">
+                            <form name="message" action="">
+                                <textarea name="usermsg" id="message" style="width:100%;border-color: #E0E0E0;"  cols="22" rows="3" maxlength="2000" />
+                                <input type="button" name="submitmsg" value="Enviar Mensagem" onclick="sendMessage();" />
+                            </form>
+                        </div>
+
+                    </p:panel>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
 </html>

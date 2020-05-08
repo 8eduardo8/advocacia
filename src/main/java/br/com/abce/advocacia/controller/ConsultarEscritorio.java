@@ -1,13 +1,13 @@
 package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.EscritorioBean;
-import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.service.impl.EscritorioService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@RequestScoped
+@ConversationScoped
 public class ConsultarEscritorio implements Serializable {
 
 	private String filtro;
@@ -27,6 +27,8 @@ public class ConsultarEscritorio implements Serializable {
 
 	@PostConstruct
 	public void init() {
+
+		consultar();
 	}
 
 	public String consultar() {
@@ -37,10 +39,10 @@ public class ConsultarEscritorio implements Serializable {
 
 			lista = escritorioService.listar();
 
-		} catch (AdvocaciaException ex) {
+		} catch (RecursoNaoEncontradoException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.erro("ERRO AO CONSULTAR!", e.getMessage());
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 		}
 

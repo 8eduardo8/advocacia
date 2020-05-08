@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 public class UsuarioRepositoryImpl extends AbstractRepositoryImpl<UsuarioEntity> implements UsuarioRepository {
 
@@ -52,6 +53,21 @@ public class UsuarioRepositoryImpl extends AbstractRepositoryImpl<UsuarioEntity>
                 throw new InfraestruturaException(ex.getMessage());
             }
         }
+
+        return usuarioEntity;
+    }
+
+    @Override
+    public List<UsuarioEntity> listar(String filtro, int perfil, boolean ativo) throws InfraestruturaException {
+
+        List<UsuarioEntity> usuarioEntity = listar();
+//                (List<UsuarioEntity>) getEntityManager().createQuery(
+//                "select u from UsuarioEntity u " +
+//                        "where (:perfil is null or u.perfil = :perfil) " +
+//                        "  and (:ativo is null or :ativo = u.situacao) " +
+//                        "  and (:filtro is null or upper(u.nome) like ''%:filtro%'' ) ")
+//                .setParameter("perfil", perfil)
+//                .getResultList();
 
         return usuarioEntity;
     }

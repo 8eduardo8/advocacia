@@ -11,6 +11,7 @@ import br.com.abce.advocacia.service.impl.ProcessoService;
 import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -21,11 +22,9 @@ import java.util.List;
 
 @Named
 @RequestScoped
-public class CadastrarAndamento implements Serializable {
+public class CadastrarAndamento extends GenericController implements Serializable {
 
     private NotaAndamento andamentoBean;
-
-    private ProcessoBean processoBean;
 
     private List<ProcessoBean> listaProcessoBean;
 
@@ -76,7 +75,12 @@ public class CadastrarAndamento implements Serializable {
         try {
 
             andamentoBean = new NotaAndamento();
-            processoBean = new ProcessoBean();
+
+            final String idProcesso = getProcessoIdFromRequest();
+
+            if (StringUtils.isNotBlank(idProcesso))
+
+                andamentoBean.setIdProcesso(Long.parseLong(idProcesso));
 
             listaProcessoBean = processoService.listar(login.getUsuarioBean().getId());
 
@@ -96,14 +100,6 @@ public class CadastrarAndamento implements Serializable {
 
     public void setAndamentoBean(NotaAndamento andamentoBean) {
         this.andamentoBean = andamentoBean;
-    }
-
-    public ProcessoBean getProcessoBean() {
-        return processoBean;
-    }
-
-    public void setProcessoBean(ProcessoBean processoBean) {
-        this.processoBean = processoBean;
     }
 
     public List<ProcessoBean> getListaProcessoBean() {

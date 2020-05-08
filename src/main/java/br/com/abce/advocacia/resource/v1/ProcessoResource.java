@@ -50,8 +50,8 @@ public class ProcessoResource extends AbstractResource implements StandardRestDe
     @GET
     @Path("{id}/nota")
     @ApiOperation(value = "Lista notas no processo.")
-    public List<NotaBean> consultarNotas(@PathParam("id") final Long idProcesso) throws InfraestruturaException, ValidacaoException, RecursoNaoEncontradoException {
-        return notaService.listar(idProcesso);
+    public List<NotaBean> consultarNotas(@PathParam("id") final Long idProcesso, @QueryParam("page-number") int pageNumber, @QueryParam("page-size") int pageSize) throws InfraestruturaException, ValidacaoException, RecursoNaoEncontradoException {
+        return notaService.listar(idProcesso, pageNumber, pageSize);
     }
 
     @GET

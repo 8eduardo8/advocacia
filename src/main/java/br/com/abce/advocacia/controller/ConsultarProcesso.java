@@ -4,17 +4,17 @@ import br.com.abce.advocacia.bean.NotaAndamento;
 import br.com.abce.advocacia.bean.NotaDocumento;
 import br.com.abce.advocacia.bean.ProcessoBean;
 import br.com.abce.advocacia.bean.ProcessoCompletoBean;
-import br.com.abce.advocacia.exceptions.AdvocaciaException;
 import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.NotaService;
 import br.com.abce.advocacia.service.impl.ProcessoService;
+import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@RequestScoped
+@ConversationScoped
 public class ConsultarProcesso implements Serializable {
 
 	private String filtro;
@@ -32,6 +32,8 @@ public class ConsultarProcesso implements Serializable {
 	private List<NotaDocumento> listaDocumentos;
 
 	private ProcessoBean processoBean;
+
+	private Long idProcesso;
 
 	private ProcessoCompletoBean processoCompletoBean;
 
@@ -43,6 +45,8 @@ public class ConsultarProcesso implements Serializable {
 
 	@PostConstruct
 	public void init() {
+
+		consultar();
 	}
 
 	public String consultar() {
@@ -53,11 +57,11 @@ public class ConsultarProcesso implements Serializable {
 
 			lista = processoService.listar();
 
-		} catch (AdvocaciaException ex) {
+		} catch (RecursoNaoEncontradoException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
 			LoggerUtil.error(e);
-			Mensagem.erro("ERRO AO CONSULTAR!", e.getMessage());
+			Mensagem.erro(e.getMessage());
 		}
 
 		return "consultarProcesso";
@@ -67,16 +71,24 @@ public class ConsultarProcesso implements Serializable {
 
 		try {
 
-			Long idProcesso = processoBean.getId();
+			if (processoBean == null) {
 
-			listaAndamentos = carregaListaAndamentos(idProcesso);
+				if (idProcesso != null)
 
-			listaDocumentos = carregaListaDocumentos(idProcesso);
+					processoBean = processoService.buscar(idProcesso);
 
-		} catch (InfraestruturaException e) {
-			LoggerUtil.error(e.getMessage(), e);
-			Mensagem.erro(e.getMessage());
+			}
+
+			listaAndamentos = carregaListaAndamentos(processoBean.getId());
+
+			listaDocumentos = carregaListaDocumentos(processoBean.getId());
+
+		} catch (RecursoNaoEncontradoException e) {
+			Mensagem.info(e.getMessage());
 		} catch (ValidacaoException e) {
+			Mensagem.info(Consts.NAO_POSSIVEL_DADOS_PROCESSO);
+		} catch (Exception e) {
+			LoggerUtil.error(e.getMessage(), e);
 			Mensagem.erro(e.getMessage());
 		}
 
@@ -185,5 +197,13 @@ public class ConsultarProcesso implements Serializable {
 
 	public List<NotaDocumento> getListaDocumentos() {
 		return listaDocumentos;
+	}
+
+	public Long getIdProcesso() {
+		return idProcesso;
+	}
+
+	public void setIdProcesso(Long idProcesso) {
+		this.idProcesso = idProcesso;
 	}
 }

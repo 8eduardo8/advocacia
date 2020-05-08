@@ -1,6 +1,7 @@
 package br.com.abce.advocacia.bean;
 
 import br.com.abce.advocacia.SituacaoProcesso;
+import br.com.abce.advocacia.converter.Bean;
 import io.swagger.annotations.ApiModel;
 
 import java.beans.Transient;

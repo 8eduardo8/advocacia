@@ -3,22 +3,26 @@ package br.com.abce.advocacia.controller;
 import br.com.abce.advocacia.bean.ProcessoBean;
 import br.com.abce.advocacia.bean.UsuarioBean;
 import br.com.abce.advocacia.bean.UsuarioResumidoBean;
-import br.com.abce.advocacia.exceptions.AdvocaciaException;
+import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
+import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.ProcessoService;
 import br.com.abce.advocacia.service.impl.UsuarioService;
+import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named
-@RequestScoped
-public class CadastrarProcesso implements Serializable {
+@SessionScoped
+public class CadastrarProcesso extends GenericController implements Serializable {
 
 	private ProcessoBean processoBean;
 	private UsuarioBean usuarioSelecionado;
@@ -32,15 +36,28 @@ public class CadastrarProcesso implements Serializable {
 
 	@PostConstruct
 	public void init() {
+
 		novo();
 	}
 
 	public String editar() {
+
 		try {
+
+			final String idProcesso = getProcessoIdFromRequest();
+
+			if (StringUtils.isNotBlank(idProcesso) && processoBean == null)
+
+				processoBean = processoService.buscar(Long.parseLong(idProcesso));
+
 			ProcessoBean aux = processoBean;
 			novo();
 			processoBean = aux;
+
+		} catch (ValidacaoException | RecursoNaoEncontradoException e) {
+			Mensagem.info(e.getMessage());
 		} catch (Exception e) {
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 		}
 		return "cadastrarProcesso";
@@ -52,7 +69,7 @@ public class CadastrarProcesso implements Serializable {
 
 			listaUsuarioBean = usuarioService.listarResumido();
 
-		} catch (AdvocaciaException ex) {
+		} catch (RecursoNaoEncontradoException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
 			LoggerUtil.error(e);
@@ -68,12 +85,12 @@ public class CadastrarProcesso implements Serializable {
 
 			processoBean = processoService.buscarPorNumero(processoBean.getNumero());
 
-			Mensagem.info("PROCESSO SALVO!");
+			Mensagem.info(Consts.OPERACO_REALIZADA_SUCESSO);
 
-		} catch (AdvocaciaException ex) {
+		} catch (ValidacaoException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 			return "";
 		}
@@ -93,14 +110,14 @@ public class CadastrarProcesso implements Serializable {
 				Mensagem.info("Usuário já consta na relação de envolvidos do processo.");
 			}
 
-		} catch (AdvocaciaException ex) {
+		} catch (ValidacaoException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 			return "";
 		}
-		return "";
+		return "cadastrarProcesso";
 	}
 
 	public String remover(UsuarioBean item) {
@@ -115,15 +132,15 @@ public class CadastrarProcesso implements Serializable {
 				Mensagem.info("Usuário não consta na relação de envolvidos do processo.");
 			}
 
-		} catch (AdvocaciaException ex) {
+		} catch (ValidacaoException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
-			Mensagem.erro("ERRO AO SALVAR", e.getMessage());
+			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 			return "";
 		}
 
-		return "";
+		return "cadastrarProcesso";
 	}
 
 	public ProcessoBean getProcessoBean() {

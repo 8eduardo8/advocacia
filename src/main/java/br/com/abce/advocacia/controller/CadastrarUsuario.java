@@ -2,7 +2,6 @@ package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.Perfil;
 import br.com.abce.advocacia.bean.UsuarioBean;
-import br.com.abce.advocacia.exceptions.AdvocaciaException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.Consts;
@@ -51,32 +50,30 @@ public class CadastrarUsuario implements Serializable {
 
 	public String salvar() {
 
+		String retorno = "";
+
 		try {
-
-			if (usuarioBean.getId() == null)
-
-				usuarioBean.setSenha("abc123");
 
 			usuarioService.salvar(usuarioBean);
 
-			Mensagem.info("USUÁRIO SALVO!");
+			Mensagem.info(Consts.OPERACO_REALIZADA_SUCESSO);
 
-		} catch (AdvocaciaException ex) {
+			retorno = novo();
+
+		} catch (ValidacaoException ex) {
 			Mensagem.info(ex.getMessage());
 		} catch (Exception e) {
 			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
-			return "";
 		}
-
-		return novo();
+		return retorno;
 	}
 
 	public String alterarSenha() {
 
 		try {
 
-			usuarioService.alterarSenha(login.getUsuarioBean(), novaSenha, senhaAtual, confirmaSenha);
+			usuarioService.alterarSenha(login.getUsuarioBean().getId(), novaSenha, senhaAtual, confirmaSenha);
 
 			Mensagem.info(Consts.OPERACO_REALIZADA_SUCESSO);
 

@@ -5,7 +5,6 @@ import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.resource.StandardRestDefinition;
-import br.com.abce.advocacia.resource.v1.dto.LoginDto;
 import br.com.abce.advocacia.security.ApiSecurity;
 import br.com.abce.advocacia.service.impl.AutenticacaoService;
 import io.swagger.annotations.Api;

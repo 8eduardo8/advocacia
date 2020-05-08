@@ -42,16 +42,16 @@
 				<p:panelGrid columns="1" layout="grid"
 					styleClass="ui-panelgrid-blank ui-fluid">
 					<p:commandButton value="Início" action="#{dashboard.carregaDashboard}" ajax="false" />
-					<p:commandButton value="Usuários"
+					<p:commandButton value="Usuários" rendered="#{not login.usuarioBean.cliente}"
 						action="#{consultarUsuario.consultar}" ajax="false" />
-					<p:commandButton value="Escritórios"
+					<p:commandButton value="Escritórios" rendered="#{login.usuarioBean.admin}"
 						action="#{consultarEscritorio.consultar}" ajax="false" />
 					<p:commandButton value="Processos"
 						action="#{consultarProcesso.consultar}" ajax="false" />
-					<p:commandButton value="Andamentos"
+					<p:commandButton value="Andamentos" rendered="#{not login.usuarioBean.cliente}"
 									 action="#{cadastrarAndamento.cadastrar}" ajax="false" >
 					</p:commandButton>
-					<p:commandButton value="Documentos"
+					<p:commandButton value="Documentos" rendered="#{not login.usuarioBean.cliente}"
 									 action="#{cadastrarDocumento.cadastrar}" ajax="false" >
 					</p:commandButton>
 

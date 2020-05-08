@@ -1,6 +1,4 @@
-package br.com.abce.advocacia.controller;
-
-import br.com.abce.advocacia.bean.Bean;
+package br.com.abce.advocacia.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

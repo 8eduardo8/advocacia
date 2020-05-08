@@ -5,11 +5,15 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
 >
 <body>
 <ui:composition>
 
     <p:panel header="Endereço" style="margin-top: 15px;">
+
+        <h:inputHidden value="#{enderecoBean.id}"/>
+
         <p:panelGrid columns="4"
                      columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-2 ui-lg-2, ui-g-12 ui-md-4 ui-lg-4"
                      layout="grid" styleClass="ui-panelgrid-blank ui-fluid">

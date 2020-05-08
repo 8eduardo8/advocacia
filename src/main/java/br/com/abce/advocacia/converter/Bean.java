@@ -1,4 +1,4 @@
-package br.com.abce.advocacia.bean;
+package br.com.abce.advocacia.converter;
 
 public interface Bean {
 

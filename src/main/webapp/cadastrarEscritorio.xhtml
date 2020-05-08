@@ -4,6 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
 >
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -15,6 +16,10 @@
 	<ui:composition template="menuPrime.xhtml">
 		<ui:define name="content">
 			<h:form>
+
+				<ui:include src="hidden_params.xhtml">
+					<ui:param name="bean" value="#{cadastrarEscritorio.escritorioBean}"></ui:param>
+				</ui:include>
 
 				<p:panel header="Dados Cadastrais">
 					<p:panelGrid columns="4"
@@ -37,6 +42,9 @@
                                 offLabel="Não" onIcon="pi pi-check" offIcon="pi pi-times"
                                 style="width:60px" />
 
+						<ui:include src="info_datas.xhtml">
+							<ui:param name="bean" value="#{cadastrarEscritorio.escritorioBean}"></ui:param>
+						</ui:include>
 					</p:panelGrid>
 
 					<ui:include src="endereco.xhtml">

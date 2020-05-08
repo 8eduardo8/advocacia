@@ -36,9 +36,9 @@
 					<p:panelGrid columns="2"
 						columnClasses="ui-g-12 ui-md-2 ui-lg-2,ui-g-12 ui-md-2 ui-lg-2"
 						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-						<p:commandButton icon="pi pi-search" value="CONSULTAR" style="border:none;"
+						<p:commandButton icon="pi pi-search" value="Consultar" style="border:none;"
 							action="#{consultarEscritorio.consultar}" ajax="false" />
-						<p:commandButton icon="pi pi-plus" value="NOVO" style="border:none;"
+						<p:commandButton icon="pi pi-plus" value="Novo" style="border:none;"
 							action="#{cadastrarEscritorio.novo}" ajax="false" />
 					</p:panelGrid>
 				</p:panel>
@@ -48,8 +48,8 @@
 					style="font-size:70%;" paginator="true" emptyMessage="Nenhum registro encontrado."
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} escritórios"
-					rowsPerPageTemplate="100,500,1000" rows="100">
-					<p:column headerText="Ações" style="width:50px;">
+					rowsPerPageTemplate="6,12,20" rows="100">
+					<p:column headerText="Ações" style="width:50px; text-align: center">
 						<p:commandButton icon="pi pi-pencil" ajax="false"
 							style="background:#616161;border:none;  text-align: center;"
 							action="#{cadastrarEscritorio.editar}">

@@ -58,7 +58,7 @@ public class ProcessoService implements Serializable {
         entity.setDataAtualizacao(processoBean.getDataCadastro());
         entity.setDataExclusao(processoBean.getDataExclusao());
 
-        if (entity.getId() == null) {
+        if (isNovoProcesso(entity.getId())) {
 
             if (processoBean.getListaUsuarios() != null)
                 for (UsuarioResumidoBean usuarioBean : processoBean.getListaUsuarios()) {
@@ -77,6 +77,10 @@ public class ProcessoService implements Serializable {
             processoRepository.editar(entity);
 
         }
+    }
+
+    private boolean isNovoProcesso(Long idProcesso) {
+        return idProcesso == null;
     }
 
     public List<ProcessoBean> listar() throws RecursoNaoEncontradoException {

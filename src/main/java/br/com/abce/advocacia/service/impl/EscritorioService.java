@@ -28,23 +28,22 @@ public class EscritorioService implements Serializable {
     private Util util;
 
     @Transactional
-    public void salvar(final EscritorioBean escritorioBean) throws InfraestruturaException {
+    public void salvar(final EscritorioBean escritorioBean) throws InfraestruturaException, ValidacaoException {
 
+
+        if (StringUtils.isBlank(escritorioBean.getRazao()))
+            throw new ValidacaoException("Razão social não informada.");
+
+        if (StringUtils.isBlank(escritorioBean.getCnpj()))
+            throw new ValidacaoException("CNPJ não informada.");
+
+        if (!util.isCNPJ(escritorioBean.getCnpj()))
+            throw new ValidacaoException("CNPJ inválido.");
+
+        if (StringUtils.isBlank(escritorioBean.getFantasia()))
+            throw new ValidacaoException("Nome Fantasia não informado.");
 
         try {
-
-            if (StringUtils.isBlank(escritorioBean.getRazao()))
-                throw new ValidacaoException("Razão social não informada.");
-
-            if (StringUtils.isBlank(escritorioBean.getCnpj()))
-                throw new ValidacaoException("CNPJ não informada.");
-
-            if (!util.isCNPJ(escritorioBean.getCnpj()))
-                throw new ValidacaoException("CNPJ inválido.");
-
-            if (StringUtils.isBlank(escritorioBean.getFantasia()))
-                throw new ValidacaoException("Nome Fantasia não informado.");
-
 
             EscritorioEntity escritorioEntity = new EscritorioEntity();
             escritorioEntity.setId(escritorioBean.getId());
@@ -65,7 +64,7 @@ public class EscritorioService implements Serializable {
 
             escritorioEntity.setEnderecoByEnderecoId(entity);
 
-            if (escritorioEntity.getId() == 0) {
+            if (isNovoEscritorio(escritorioEntity.getId())) {
                 escritorioEntity.setDataCadastro(new Date());
                 escritorioRepository.salvar(escritorioEntity);
             } else {
@@ -77,6 +76,10 @@ public class EscritorioService implements Serializable {
             LoggerUtil.error(e);
             throw new InfraestruturaException(e.getMessage());
         }
+    }
+
+    private boolean isNovoEscritorio(Long idEscritorio) {
+        return idEscritorio == null;
     }
 
     public List<EscritorioBean> listar() throws RecursoNaoEncontradoException {

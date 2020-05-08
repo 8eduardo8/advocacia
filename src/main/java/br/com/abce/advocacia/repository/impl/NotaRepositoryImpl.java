@@ -12,7 +12,7 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
     public static final String ID_PROCESSO = "id_processo";
 
     @Override
-    public List<NotaEntity> listar(final Long idProcesso) throws InfraestruturaException {
+    public List<NotaEntity> listar(final Long idProcesso, final int pageNumber, final int pageSize) throws InfraestruturaException {
 
         try {
 
@@ -24,6 +24,8 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
                             "  and pu.processoByProcessoId.id = :id_processo")
 
                     .setParameter(ID_PROCESSO, idProcesso)
+                    .setFirstResult((pageNumber-1) * pageSize)
+                    .setMaxResults(pageSize)
                     .getResultList();
 
         } catch (PersistenceException ex) {
@@ -68,7 +70,7 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
     }
 
     @Override
-    public List<NotaEntity> listarNotaProcessoUsuario(final Long idUsuario) throws InfraestruturaException {
+    public List<NotaEntity> listarNotaProcessoUsuario(final Long idUsuario, final int pageNumber, final int pageSize) throws InfraestruturaException {
 
         try {
 
@@ -84,6 +86,8 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
                             "order by n.dataCadastro desc ")
 
                     .setParameter("id_usuario", idUsuario)
+                    .setFirstResult((pageNumber-1) * pageSize)
+                    .setMaxResults(pageSize)
                     .getResultList();
 
         } catch (PersistenceException ex) {
