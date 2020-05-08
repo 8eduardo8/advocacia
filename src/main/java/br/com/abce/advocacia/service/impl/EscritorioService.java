@@ -148,7 +148,7 @@ public class EscritorioService implements Serializable {
         return getEscritorioBean(entity);
     }
 
-    public List<EscritorioBean> listar(final Long idUsuario) throws RecursoNaoEncontradoException, InfraestruturaException, ValidacaoException {
+    public List<EscritorioBean> listar(final Long idUsuario) throws RecursoNaoEncontradoException, InfraestruturaException {
 
         final List<EscritorioEntity> entityList = (idUsuario != null && idUsuario > 0L)
                 ? escritorioRepository.listar(idUsuario) : escritorioRepository.listar();

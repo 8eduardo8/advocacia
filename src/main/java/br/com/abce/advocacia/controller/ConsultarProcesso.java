@@ -71,12 +71,10 @@ public class ConsultarProcesso implements Serializable {
 
 		try {
 
-			if (processoBean == null) {
+			if (processoBean == null
+				&& idProcesso != null) {
 
-				if (idProcesso != null)
-
-					processoBean = processoService.buscar(idProcesso);
-
+				processoBean = processoService.buscar(idProcesso);
 			}
 
 			listaAndamentos = carregaListaAndamentos(processoBean.getId());

@@ -23,6 +23,7 @@ public class Consts {
 
     public static final String ID_PROCESSO_NAO_INFORMADO = "Id do processo não informado.";
     public static final String ID_USUARIO_NAO_INFORMADO = "Id do usuário não informado.";
+    public static final String PROCESSO_NAO_ENCONTRADO = "Processo não encontrado.";
 
     public static final int PAGE_SIZE_DEFAULT = 6;
     public static final int PAGINA_UM = 1;
@@ -53,5 +54,5 @@ public class Consts {
             "\n" +
             "Estamos apenas lhe informando que a sua senha foi alterada recentemente no sistema.\n" +
             "\n" +
-            "Favor não responder, e-mail automático.";;
+            "Favor não responder, e-mail automático.";
 }

@@ -10,8 +10,6 @@ public abstract class GenericController {
         Map<String,String> params =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-        final String idProcesso = params.get("idProcesso");
-
-        return idProcesso;
+        return params.get("idProcesso");
     }
 }

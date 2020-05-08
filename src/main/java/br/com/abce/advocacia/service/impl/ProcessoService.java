@@ -156,7 +156,7 @@ public class ProcessoService implements Serializable {
 
         if (entity == null)
 
-            throw new RecursoNaoEncontradoException("Processo não encontrado.");
+            throw new RecursoNaoEncontradoException(Consts.PROCESSO_NAO_ENCONTRADO);
 
         return getProcessoBean(entity);
     }
@@ -186,7 +186,7 @@ public class ProcessoService implements Serializable {
 
         if (processoEntity == null)
 
-            throw new RecursoNaoEncontradoException("Processo não encontrado.");
+            throw new RecursoNaoEncontradoException(Consts.PROCESSO_NAO_ENCONTRADO);
 
         return getProcessoBean(processoEntity);
     }
@@ -252,7 +252,7 @@ public class ProcessoService implements Serializable {
 
         if (entity == null)
 
-            throw new RecursoNaoEncontradoException("Processo não encontrado.");
+            throw new RecursoNaoEncontradoException(Consts.PROCESSO_NAO_ENCONTRADO);
 
         return getListaUsuarioResumido(entity);
     }

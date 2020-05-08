@@ -13,7 +13,6 @@ import br.com.abce.advocacia.util.Mensagem;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,6 +22,8 @@ import java.util.List;
 @Named
 @SessionScoped
 public class CadastrarProcesso extends GenericController implements Serializable {
+
+	public static final String CADASTRAR_PROCESSO = "cadastrarProcesso";
 
 	private ProcessoBean processoBean;
 	private UsuarioBean usuarioSelecionado;
@@ -60,7 +61,7 @@ public class CadastrarProcesso extends GenericController implements Serializable
 			Mensagem.erro(e.getMessage());
 			LoggerUtil.error(e);
 		}
-		return "cadastrarProcesso";
+		return CADASTRAR_PROCESSO;
 	}
 
 	public String novo() {
@@ -75,7 +76,7 @@ public class CadastrarProcesso extends GenericController implements Serializable
 			LoggerUtil.error(e);
 		}
 		processoBean = new ProcessoBean();
-		return "cadastrarProcesso";
+		return CADASTRAR_PROCESSO;
 	}
 
 	public String salvar() {
@@ -117,7 +118,7 @@ public class CadastrarProcesso extends GenericController implements Serializable
 			LoggerUtil.error(e);
 			return "";
 		}
-		return "cadastrarProcesso";
+		return CADASTRAR_PROCESSO;
 	}
 
 	public String remover(UsuarioBean item) {
@@ -140,7 +141,7 @@ public class CadastrarProcesso extends GenericController implements Serializable
 			return "";
 		}
 
-		return "cadastrarProcesso";
+		return CADASTRAR_PROCESSO;
 	}
 
 	public ProcessoBean getProcessoBean() {
