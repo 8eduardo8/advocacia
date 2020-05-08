@@ -21,7 +21,8 @@ public class SecurityController implements PhaseListener {
 		if (LOGIN_XHTML.equals(paginaAcessada)
 				|| paginaAcessada.contains("api")
 				|| paginaAcessada.contains("rest")
-				|| paginaAcessada.contains("esqueciSenha.xhtml")) {
+				|| paginaAcessada.contains("esqueciSenha.xhtml")
+				|| paginaAcessada.contains("alterarSenha.xhtml")) {
 			return;
 		}
 

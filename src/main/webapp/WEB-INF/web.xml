@@ -44,6 +44,10 @@
         <extension>ttf</extension>
         <mime-type>application/x-font-ttf</mime-type>
     </mime-mapping>
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/open-sans-v13-latin-300</mime-type>
+    </mime-mapping>
 
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>

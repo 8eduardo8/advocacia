@@ -43,9 +43,18 @@ public class Login implements Serializable {
 
 			usuarioBean = autenticacaoService.login(userLogin, senha);
 
-			retorno = usuarioBean.isRecuperarSenha() ? "alterarSenha" : "dashboard";
+			if (usuarioBean.isRecuperarSenha()) {
 
-			logado = true;
+				retorno = "alterarSenha";
+
+				logado = false;
+
+			} else {
+
+				retorno = "dashboard";
+
+				logado = true;
+			}
 
 		} catch (ValidacaoException | RecursoNaoEncontradoException e) {
 			Mensagem.info(e.getMessage());

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <div align="center">
+        <p:panel header="Alterar Senha" style="margin-top: 25px; width: 45%;">
+            <p:panelGrid columns="2"
+                         columnClasses="ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-8 ui-lg-8"
+                         layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                <p:outputLabel value="Senha Atual" />
+                <p:password value="#{cadastrarUsuario.senhaAtual}" />
+
+                <p:outputLabel value="Nova Senha" />
+                <p:password value="#{cadastrarUsuario.novaSenha}" />
+
+                <p:outputLabel value="Repetir Nova Senha" />
+                <p:password value="#{cadastrarUsuario.confirmaSenha}" />
+
+
+            </p:panelGrid>
+
+            <p:panelGrid columns="2"
+                         columnClasses="ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-8 ui-lg-8"
+                         layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                <p:commandButton value="Salvar" action="#{cadastrarUsuario.alterarSenha}" />
+                <p:commandButton value="Cancelar" action="#{dashboard.carregaDashboard}" />
+
+            </p:panelGrid>
+        </p:panel>
+
+        <p:panel header="Política de Formatação de Senha" style="width: 45%; margin-top: 20px;">
+            <ul class="disc">
+                <li>Conter no mínimo 6 caracteres</li>
+                <li>Possuir necessariamente letras e números</li>
+            </ul>
+        </p:panel>
+    </div>
+</html>

@@ -96,36 +96,6 @@
 					</p:panelGrid>
 				</p:panel>
 
-				<p:panelGrid rendered="#{cadastrarUsuario.usuarioBean.id > 0}"
-					columns="2"
-					columnClasses="ui-g-12 ui-md-6 ui-lg-6,ui-g-12 ui-md-6 ui-lg-6"
-					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-					<p:panel header="Alterar Senha">
-						<p:panelGrid columns="2"
-							columnClasses="ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-8 ui-lg-8"
-							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-
-							<p:outputLabel value="Senha Atual" />
-							<p:password value="#{cadastrarUsuario.senhaAtual}" />
-
-							<p:outputLabel value="Nova Senha" />
-							<p:password value="#{cadastrarUsuario.novaSenha}" />
-
-							<p:outputLabel value="Repetir Nova Senha" />
-							<p:password value="#{cadastrarUsuario.confirmaSenha}" />
-
-							<p:commandButton value="Alterar" style="border:none;"
-								action="#{cadastrarUsuario.alterarSenha}" ajax="false" />
-						</p:panelGrid>
-					</p:panel>
-
-					<p:panel header="Política de Formatação de Senha">
-						<ul class="disc">
-							<li>Conter no mínimo 6 caracteres</li>
-							<li>Possuir necessariamente letras e números</li>
-						</ul>
-					</p:panel>
-				</p:panelGrid>
 			</h:form>
 		</ui:define>
 	</ui:composition>

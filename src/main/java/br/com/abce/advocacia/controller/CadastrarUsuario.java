@@ -77,7 +77,7 @@ public class CadastrarUsuario implements Serializable {
 
 			Mensagem.info(Consts.OPERACO_REALIZADA_SUCESSO);
 
-			return "dashboard";
+			return "login";
 
 		} catch (ValidacaoException ex){
 			Mensagem.info(ex.getMessage());

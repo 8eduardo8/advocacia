@@ -35,6 +35,12 @@
 						<f:setPropertyActionListener target="#{cadastrarUsuario.usuarioBean}"
 							value="#{login.usuarioBean}" />
 					</p:commandLink>
+					<br />
+					<p:commandLink value="Alterar Senha" style="font-size:80%;"
+								   action="alterarSenha" ajax="false">
+						<f:setPropertyActionListener target="#{cadastrarUsuario.usuarioBean}"
+													 value="#{login.usuarioBean}" />
+					</p:commandLink>
 				</div>
 				<br />
 				<br />
@@ -53,6 +59,11 @@
 					</p:commandButton>
 					<p:commandButton value="Documentos" rendered="#{not login.usuarioBean.cliente}"
 									 action="#{cadastrarDocumento.cadastrar}" ajax="false" >
+					</p:commandButton>
+
+					<p:commandButton value="Alterar Senha" action="alterarSenha" ajax="false" >
+						<f:setPropertyActionListener target="#{cadastrarUsuario.usuarioBean}"
+													 value="#{login.usuarioBean}" />
 					</p:commandButton>
 
 					<p:commandButton style="background: #B71C1C;border: none; margin-top: 30px"
