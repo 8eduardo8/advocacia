@@ -1,7 +1,10 @@
 package br.com.abce.advocacia.bean;
 
+import br.com.abce.advocacia.util.Consts;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
+import java.beans.Transient;
 import java.io.Serializable;
 
 @ApiModel
@@ -38,4 +41,11 @@ public class NotaMensagem implements Serializable {
 	public void setTipo(int tipo) {
 		this.tipo = tipo;
 	}
+
+	@Transient
+	@JsonIgnoreProperties
+	public boolean isTipoMensagem() {
+		return this.tipo == Consts.TIPO_MENSAGEM;
+	}
+
 }

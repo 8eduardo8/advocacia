@@ -12,6 +12,7 @@ public class Consts {
 
     public static final int TIPO_ANDAMENTO_PROCESSO = 2;
     public static final int TIPO_MENSAGEM = 1;
+    public static final int TIPO_DOCUMENTO = 3;
 
     public static final Integer NAO_RECUPERACAO_SENHA = 0;
     public static final Integer RECUPERACAO_SENHA = 1;

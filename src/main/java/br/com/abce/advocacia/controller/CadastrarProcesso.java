@@ -26,7 +26,7 @@ public class CadastrarProcesso extends GenericController implements Serializable
 	public static final String CADASTRAR_PROCESSO = "cadastrarProcesso";
 
 	private ProcessoBean processoBean;
-	private UsuarioBean usuarioSelecionado;
+	private UsuarioResumidoBean usuarioSelecionado;
 	private List<UsuarioResumidoBean> listaUsuarioBean;
 
 	@Inject
@@ -160,11 +160,11 @@ public class CadastrarProcesso extends GenericController implements Serializable
 		this.listaUsuarioBean = listaUsuarioBean;
 	}
 
-	public UsuarioBean getUsuarioSelecionado() {
+	public UsuarioResumidoBean getUsuarioSelecionado() {
 		return usuarioSelecionado;
 	}
 
-	public void setUsuarioSelecionado(UsuarioBean usuarioSelecionado) {
+	public void setUsuarioSelecionado(UsuarioResumidoBean usuarioSelecionado) {
 		this.usuarioSelecionado = usuarioSelecionado;
 	}
 }

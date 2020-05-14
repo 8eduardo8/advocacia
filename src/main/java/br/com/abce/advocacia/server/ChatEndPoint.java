@@ -70,9 +70,6 @@ public class ChatEndPoint {
 
         final String idProcesso = users.get(session.getId());
 
-        message.setIdProcesso(idProcesso);
-        message.setData(getDataFormatada());
-
         NotaBean notaBean = new NotaBean();
 
         final ProcessoBean processoBean = processoService.buscar(Long.valueOf(idProcesso));
@@ -101,7 +98,13 @@ public class ChatEndPoint {
 
         }
 
-        notaService.salvarNota(notaBean);
+        notaBean = notaService.salvarNota(notaBean);
+
+
+        message.setIdProcesso(idProcesso);
+        message.setData(getDataFormatada());
+        message.setIdNota(notaBean.getId());
+        message.setFile(null);
 
         broadcast(message, this.session.getId());
     }

@@ -2,6 +2,7 @@ package br.com.abce.advocacia.server;
 
 public class Message {
 
+    private Long idNota;
     private String idProcesso;
     private String idUsuario;
     private String nomeUsuario;
@@ -11,6 +12,8 @@ public class Message {
 
     private String nomeFile;
     private String formatoFile;
+
+    private int tipoNota; // 1 - Documento; 2 - Nota; 3 - Mensagem; 4 - Servidor;
 
     public Message() {
         super();
@@ -78,5 +81,21 @@ public class Message {
 
     public void setNomeUsuario(String nomeUsuario) {
         this.nomeUsuario = nomeUsuario;
+    }
+
+    public Long getIdNota() {
+        return idNota;
+    }
+
+    public void setIdNota(Long idNota) {
+        this.idNota = idNota;
+    }
+
+    public int getTipoNota() {
+        return tipoNota;
+    }
+
+    public void setTipoNota(int tipoNota) {
+        this.tipoNota = tipoNota;
     }
 }

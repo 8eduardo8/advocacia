@@ -17,3 +17,18 @@
 	border-radius: 10px;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
+
+.balao-notificacao{
+	padding: 10px;
+	background: #ffffff;
+	color: #202020;
+	width: 50%;
+	height: auto;
+	border-radius: 10px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size: smaller;
+}
+
+.balao-notificacao > p {
+	margin: 0;
+}

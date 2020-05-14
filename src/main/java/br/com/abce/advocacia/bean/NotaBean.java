@@ -8,7 +8,7 @@ import java.util.Date;
 @ApiModel
 public class NotaBean implements Serializable {
 
-	private int id;
+	private Long id;
 	private String tipo;
 	private Long idUsuario;
 	private Long idProcesso;
@@ -27,11 +27,11 @@ public class NotaBean implements Serializable {
 		super();
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

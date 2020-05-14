@@ -58,6 +58,20 @@ public class NotaService implements Serializable {
         return getNotaBeans(notaEntityList);
     }
 
+    public List<NotaBean> listar(final Long idProcesso) throws ValidacaoException, RecursoNaoEncontradoException, InfraestruturaException {
+
+        if (idProcesso == null || idProcesso == 0L)
+            throw new ValidacaoException(Consts.ID_PROCESSO_NAO_INFORMADO);
+
+        final List<NotaEntity> notaEntityList = notaRepository.listar(idProcesso);
+
+        if (notaEntityList.isEmpty())
+
+            throw new RecursoNaoEncontradoException("Nota(s) não encontrada(s)");
+
+        return getNotaBeans(notaEntityList);
+    }
+
     private List<NotaBean> getNotaBeans(List<NotaEntity> notaEntityList) {
 
         List<NotaBean> notaBeanList = new ArrayList<>();
@@ -67,7 +81,7 @@ public class NotaService implements Serializable {
             NotaBean bean = new NotaBean();
 
             bean.setDataCadastro(entity.getDataCadastro());
-            bean.setId(entity.getId().intValue());
+            bean.setId(entity.getId());
 
             final ProcessoUsuarioEntity processoUsuarioId = entity.getProcessoUsuarioByProcessoUsuarioId();
 
@@ -75,7 +89,7 @@ public class NotaService implements Serializable {
             bean.setIdProcesso(processoUsuarioId.getProcessoByProcessoId().getId());
             bean.setIdProcessoUsuario(processoUsuarioId.getId());
 
-            bean.setUsuarioResumidoBean(usuarioService.getUsuarioBean(processoUsuarioId.getUsuarioByUsuarioId()));
+            bean.setUsuarioResumidoBean(usuarioService.getUsuarioBeanResumido(processoUsuarioId.getUsuarioByUsuarioId()));
 
             NotaTextoEntity textoEntity = entity.getNotaTextoByNotaTextoId();
 
@@ -94,7 +108,7 @@ public class NotaService implements Serializable {
     }
 
     @Transactional
-    public void salvarNota(NotaBean notaBean) throws ValidacaoException, InfraestruturaException {
+    public NotaBean salvarNota(NotaBean notaBean) throws ValidacaoException, InfraestruturaException {
 
         if (notaBean.getIdProcesso() == null || notaBean.getIdProcesso() == 0L)
 
@@ -148,7 +162,11 @@ public class NotaService implements Serializable {
 
             entity.setProcessoUsuarioByProcessoUsuarioId(processoUsuarioEntity);
 
-            notaRepository.salvar(entity);
+            notaRepository.salvarNota(entity);
+
+            notaBean.setId(entity.getId());
+
+            return notaBean;
 
         } catch (PersistenceException e) {
             throw new InfraestruturaException(e.getMessage(), e);

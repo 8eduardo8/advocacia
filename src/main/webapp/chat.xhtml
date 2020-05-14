@@ -37,7 +37,7 @@
                         ws.onmessage = function(event) {
                             var json = JSON.parse(event.data);
 
-                            atualizaChat(json.content, json.data, json.nomeUsuario)
+                            atualizaChat(json.content, json.data, json.nomeUsuario, json.tipoNota)
 
                             console.log("mensagem recebida -> " + event.data);
                         }
@@ -70,6 +70,7 @@
                         "idUsuario": $("#chatForm\\:idUsuario").val(),
                         "nomeUsuario": usuario,
                         "content": messageForm.val(),
+                        "tipoNota" : 1,
                         "file" : '',
                         "nomeFile" : '',
                         "formatoFile" : '',
@@ -80,32 +81,54 @@
                     messageForm.val('');
                 }
 
-                function atualizaChat(mensagem, data, autor){
+                function atualizaChat(mensagem, data, autor, tipoNota){
 
                     var nomeUsuario = $("#chatForm\\:nomeUsuario").val()
                     var mensagens = $("#messages");
 
-                    if (nomeUsuario == autor) {
+                    if (tipoNota == 1) {
 
-                        mensagens.append('<div align="right"> '  +
-                            '  <div class="balaoEnvio" style="text-align: left; margin-bottom: 10px; white-space: normal;"> '  +
-                            '    <p>' + mensagem + '</p> '  +
-                            '    <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;"> '  +
-                            '        <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
-                            '         '  +
-                            '    </div> '  +
-                            '  </div> '  +
-                            '</div>');
+                        if (nomeUsuario == autor) {
+
+                            mensagens.append('<div class="ui-outputpanel ui-widget">' +
+                                '<div align="right"> '  +
+                                '  <div class="balaoEnvio" style="text-align: left; margin-bottom: 10px; white-space: normal;"> '  +
+                                '    <p>' + mensagem + '</p> '  +
+                                '    <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;"> '  +
+                                '        <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
+                                '         '  +
+                                '    </div> '  +
+                                '  </div> '  +
+                                '  </div> '  +
+                                '</div>');
+
+                        } else {
+
+                            mensagens.append('<div class="ui-outputpanel ui-widget">' +
+                                '<div class="balao" style="margin-bottom: 10px; white-space: normal;"> '  +
+                                '    <p>' + mensagem + '</p> '  +
+                                '    <div style="text-align: right;text-size-adjust: auto;font-size: smaller;"> '  +
+                                '        <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
+                                '         '  +
+                                '    </div> '  +
+                                '  </div>' +
+                                '</div>')
+
+                        }
 
                     } else {
 
-                        mensagens.append('<div class="balao" style="margin-bottom: 10px; white-space: normal;"> '  +
-                            '    <p>' + mensagem + '</p> '  +
-                            '    <div style="text-align: right;text-size-adjust: auto;font-size: smaller;"> '  +
-                            '        <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
-                            '         '  +
-                            '    </div> '  +
-                            '  </div>')
+                        mensagens.append('<div class="ui-outputpanel ui-widget">' +
+                            '   <div align="center"> '  +
+                            '       <div class="balao-notificacao" style="text-align: center; margin-bottom: 10px; white-space: normal;"> '  +
+                            '       <label>' + mensagem + '</label> '  +
+                            '       <div align="right" style="text-align: right;text-size-adjust: auto;"> '  +
+                            '           <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
+                            '           '  +
+                            '       </div> '  +
+                            '        </div> '  +
+                        '        </div> '  +
+                            '</div>');
 
                     }
 
@@ -145,29 +168,47 @@
                     <div style="position: fixed; left: 0; width: 100%; background-color: #F5F5F5; color: white; padding: 10px; margin-top: 20px;">
                         <div id="messages" style="width:100%;border-color: #E0E0E0;overflow-x: scroll; overflow-y: hidden; overflow: auto; white-space: nowrap; height: 500px;">
                             <p:repeat value="#{chat.lista}" var="item">
-                                <p:outputPanel rendered="#{chat.usuarioBean.nome != item.nomeUsuario}">
-                                    <div class="balao" style="margin-bottom: 10px; white-space: normal;">
-                                        <h:outputLabel value="#{item.descricao}" />
-                                        <div style="text-align: right;text-size-adjust: auto;font-size: smaller;">
-                                            <h:outputLabel value="#{item.nomeUsuario}" style="color:#505050;" /> - <h:outputLabel value="#{item.dataCadastro}" style="color:#505050;">
+
+                                <p:outputPanel rendered="#{item.notaMensagem == null or (item.notaMensagem != null and !item.notaMensagem.tipoMensagem)}">
+                                    <div align="center">
+                                        <div class="balao-notificacao"
+                                             style="text-align: center; margin-bottom: 10px; white-space: normal;">
+                                            <h:outputLabel value="Andamento registrado ao processo: #{item.notaMensagem.mensagem}" rendered="#{item.notaMensagem != null}" />
+                                            <h:outputLabel value="Documento anexado ao processo: #{item.notaDocumento.descricao}" rendered="#{item.notaDocumento != null}" />
+                                            <div align="right" style="text-align: right;text-size-adjust: auto;">
+                                                <h:outputLabel value="#{item.usuarioResumidoBean.nome}" style="color:#303030"/> - <h:outputLabel value="#{item.dataCadastro}" style="color:#303030">
                                                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                             </h:outputLabel>
+                                            </div>
                                         </div>
                                     </div>
                                 </p:outputPanel>
 
-                                <p:outputPanel rendered="#{chat.usuarioBean.nome == item.nomeUsuario}">
-                                    <div align="right">
-                                        <div class="balaoEnvio"
-                                             style="text-align: left; margin-bottom: 10px; white-space: normal;">
-                                            <h:outputLabel value="#{item.descricao}" />
-                                            <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;">
-                                                <h:outputLabel value="#{item.nomeUsuario}" style="color:#303030"/> - <h:outputLabel value="#{item.dataCadastro}" style="color:#303030">
+                                <p:outputPanel rendered="#{item.notaMensagem != null and item.notaMensagem.tipoMensagem}">
+                                    <p:outputPanel rendered="#{chat.usuarioBean.nome != item.usuarioResumidoBean.nome}">
+                                        <div class="balao" style="margin-bottom: 10px; white-space: normal;">
+                                            <h:outputLabel value="#{item.notaMensagem.mensagem}" />
+                                            <div style="text-align: right;text-size-adjust: auto;font-size: smaller;">
+                                                <h:outputLabel value="#{item.usuarioResumidoBean.nome}" style="color:#505050;" /> - <h:outputLabel value="#{item.dataCadastro}" style="color:#505050;">
                                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                                 </h:outputLabel>
                                             </div>
                                         </div>
-                                    </div>
+                                    </p:outputPanel>
+
+                                    <p:outputPanel rendered="#{chat.usuarioBean.nome == item.usuarioResumidoBean.nome}">
+                                        <div align="right">
+                                            <div class="balaoEnvio"
+                                                 style="text-align: left; margin-bottom: 10px; white-space: normal;">
+                                                <h:outputLabel value="#{item.notaMensagem.mensagem}" />
+                                                <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;">
+                                                    <h:outputLabel value="#{item.usuarioResumidoBean.nome}" style="color:#303030"/> - <h:outputLabel value="#{item.dataCadastro}" style="color:#303030">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                                    </h:outputLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:outputPanel>
                                 </p:outputPanel>
                             </p:repeat>
                         </div>

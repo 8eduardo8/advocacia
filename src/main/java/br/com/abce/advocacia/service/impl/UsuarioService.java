@@ -41,7 +41,16 @@ public class UsuarioService implements Serializable {
 
             throw new RecursoNaoEncontradoException("Usuário(s) não encontrados(s).");
 
-        return (List<UsuarioBean>) getUsuarioBeanList(listaUsuario);
+        List<UsuarioBean> listaUsuarioBeans = new ArrayList<>() ;
+
+        for (UsuarioEntity usuarioEntity : listaUsuario) {
+
+            final UsuarioBean bean = getUsuarioBean(usuarioEntity);
+
+            listaUsuarioBeans.add(bean);
+        }
+
+        return listaUsuarioBeans;
     }
 
     public List<UsuarioResumidoBean> listarResumido() throws RecursoNaoEncontradoException {
@@ -52,16 +61,11 @@ public class UsuarioService implements Serializable {
 
             throw new RecursoNaoEncontradoException("Usuário(s) não encontrados(s).");
 
-        return (List<UsuarioResumidoBean>) getUsuarioBeanList(listaUsuario);
-    }
-
-    public List<? extends UsuarioResumidoBean> getUsuarioBeanList(List<UsuarioEntity> listaUsuario) {
-
-        List<UsuarioBean> listaUsuarioBeans = new ArrayList<>() ;
+        List<UsuarioResumidoBean> listaUsuarioBeans = new ArrayList<>() ;
 
         for (UsuarioEntity usuarioEntity : listaUsuario) {
 
-            final UsuarioBean bean = getUsuarioBean(usuarioEntity);
+            final UsuarioResumidoBean bean = getUsuarioBeanResumido(usuarioEntity);
 
             listaUsuarioBeans.add(bean);
         }
@@ -111,6 +115,18 @@ public class UsuarioService implements Serializable {
         }
 
         bean.setListaProcessoId(listaIdProcesso);
+
+        return bean;
+    }
+
+    public UsuarioResumidoBean getUsuarioBeanResumido(UsuarioEntity usuarioEntity) {
+
+        UsuarioResumidoBean bean = new UsuarioResumidoBean();
+        bean.setId(usuarioEntity.getId());
+        bean.setId(usuarioEntity.getId());
+        bean.setCpf(usuarioEntity.getCpf());
+        bean.setPerfil(usuarioEntity.getPerfil());
+        bean.setNome(usuarioEntity.getNome());
 
         return bean;
     }

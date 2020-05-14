@@ -1,7 +1,7 @@
 package br.com.abce.advocacia.controller;
 
 
-import br.com.abce.advocacia.bean.NotaAndamento;
+import br.com.abce.advocacia.bean.NotaBean;
 import br.com.abce.advocacia.bean.ProcessoBean;
 import br.com.abce.advocacia.bean.UsuarioBean;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
@@ -35,7 +35,7 @@ public class Chat {
 
     private UsuarioBean usuarioBean;
 
-    private List<NotaAndamento> lista;
+    private List<NotaBean> lista;
 
     private Long idProcesso;
 
@@ -74,7 +74,7 @@ public class Chat {
 
                 throw new ValidacaoException(Consts.NAO_POSSIVEL_DADOS_PROCESSO);
 
-            lista = notaService.listaMensagens(processoBean.getId());
+            lista = notaService.listar(processoBean.getId());
 
         } catch (ValidacaoException | RecursoNaoEncontradoException e) {
             Mensagem.info(e.getMessage());
@@ -92,11 +92,11 @@ public class Chat {
         this.processoBean = processoBean;
     }
 
-    public List<NotaAndamento> getLista() {
+    public List<NotaBean> getLista() {
         return lista;
     }
 
-    public void setLista(List<NotaAndamento> lista) {
+    public void setLista(List<NotaBean> lista) {
         this.lista = lista;
     }
 

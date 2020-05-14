@@ -34,6 +34,26 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
     }
 
     @Override
+    public List<NotaEntity> listar(final Long idProcesso) throws InfraestruturaException {
+
+        try {
+
+            return getEntityManager().createQuery(
+                    "select n " +
+                            "from NotaEntity n, " +
+                            "     ProcessoUsuarioEntity pu " +
+                            "where n.processoUsuarioByProcessoUsuarioId.id = pu.id " +
+                            "  and pu.processoByProcessoId.id = :id_processo")
+
+                    .setParameter(ID_PROCESSO, idProcesso)
+                    .getResultList();
+
+        } catch (PersistenceException ex) {
+            throw new InfraestruturaException(ex.getMessage(), ex);
+        }
+    }
+
+    @Override
     public List<NotaEntity> listarAndamentos(final Long idProcesso, final int tipo) throws InfraestruturaException {
 
         try {
@@ -93,5 +113,15 @@ public class NotaRepositoryImpl extends AbstractRepositoryImpl<NotaEntity> imple
         } catch (PersistenceException ex) {
             throw new InfraestruturaException(ex.getMessage(), ex);
         }
+    }
+
+    @Override
+    public NotaEntity salvarNota(NotaEntity entity) {
+
+        getEntityManager().persist(entity);
+
+        getEntityManager().flush();
+
+        return entity;
     }
 }
