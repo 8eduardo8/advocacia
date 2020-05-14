@@ -49,4 +49,21 @@ public class UsuarioResource extends AbstractResource implements StandardRestDef
 
     }
 
+    @PUT
+    @Path("{id}/foto")
+    @ApiOperation("Altera foto do usuário")
+    public void alterarFotoUsuario(@PathParam("id") final Long idUsuario, @FormParam("imagemBase64") final String imagemBase64) throws ValidacaoException, InfraestruturaException {
+
+        usuarioService.alterarFoto(imagemBase64, null, null, idUsuario);
+    }
+
+    @GET
+    @Path("/{id}/foto")
+    @ApiOperation("Busca foto do usuário")
+    public String getFotoUsuario(@PathParam("id") final Long idUsuario) throws RecursoNaoEncontradoException, InfraestruturaException {
+
+        return usuarioService.buscarFotoUsuario(idUsuario);
+
+    }
+
 }

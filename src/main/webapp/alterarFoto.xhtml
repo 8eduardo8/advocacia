@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Alterar Foto</title>
+</h:head>
+<h:body style="background:#ffffff;margin: 0 0 0 0;">
+
+    <ui:composition template="menuPrime.xhtml">
+        <ui:define name="content">
+            <h:form enctype="multipart/form-data">
+                <div align="center">
+                    <p:panel header="Alterar Foto" style="margin-top: 25px; width: 45%;">
+                        <p:panelGrid columns="2"
+                                     columnClasses="ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-8 ui-lg-8"
+                                     layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                            <p:column>
+                                <p:panelGrid columns="2"
+                                             columnClasses="ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-8 ui-lg-8"
+                                             layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                                    <p:graphicImage id="imagemUsuario" width="110" height="110" cache="false" class="img-thumbnail" value="#{alterarFoto.imagePerfil()}" />
+                                    <p:outputLabel value="Foto" />
+                                    <p:fileUpload value="#{alterarFoto.file}" mode="simple" skinSimple="true"
+                                                  sizeLimit="1048576" allowTypes="/(\.|\/)(jpe?g|png)$/" label="Escolher"
+                                                  uploadIcon="upload"
+                                                  validateContentType="Permitido apenas arquivos no formado (.jpe, .jpeg, .png)"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2"
+                                             columnClasses="ui-g-12 ui-md-4 ui-lg-4,ui-g-12 ui-md-8 ui-lg-8"
+                                             layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                                    <p:commandButton value="Salvar" action="#{alterarFoto.alterarFoto}" ajax="false"/>
+                                    <p:commandButton value="Cancelar" action="#{dashboard.carregaDashboard}" ajax="false" />
+
+                                </p:panelGrid>
+                            </p:column>
+                            <p:column>
+                                <p:panel header="Política de Upload de Foto" style="width: 45%; margin-top: 20px;">
+                                    <ul class="disc">
+                                        <li>Foto deve possuir tamanho máximo de 1 MB</li>
+                                        <li>Formatos permitidos, .png, .jpg, .jpeg.</li>
+                                    </ul>
+                                </p:panel>
+                            </p:column>
+
+                        </p:panelGrid>
+
+
+                    </p:panel>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

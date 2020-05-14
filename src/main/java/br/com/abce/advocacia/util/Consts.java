@@ -24,10 +24,13 @@ public class Consts {
     public static final String ID_PROCESSO_NAO_INFORMADO = "Id do processo não informado.";
     public static final String ID_USUARIO_NAO_INFORMADO = "Id do usuário não informado.";
     public static final String PROCESSO_NAO_ENCONTRADO = "Processo não encontrado.";
+    public static final String USUARIO_NAO_ENCONTRADO = "Usuário não encontrado.";
+
 
     public static final int PAGE_SIZE_DEFAULT = 6;
     public static final int PAGINA_UM = 1;
 
+    public static final String URL_SISTEMA = "http://localhost:8080/advocacia/login.xhtml";
 
 
     public static final String ASSUNTO_SENHA_PROVISORIA = "Senha provisória";
@@ -36,6 +39,12 @@ public class Consts {
             "Uma senha provisória foi gerada para você acessar o sistema.\n" +
             "\n" +
             "\tsenha: %s\n" +
+            "\n" +
+            "\n" +
+            "Segue o link para acesso ao sistema:\n" +
+            "\n" +
+            "\t%s" +
+            "\n" +
             "\n" +
             "Favor não responder, e-mail automático.";
 
@@ -46,6 +55,12 @@ public class Consts {
             "\n" +
             "\tusuário: %s\n" +
             "\tsenha: %s\n" +
+            "\n" +
+            "\n" +
+            "Segue o link para acesso ao sistema:\n" +
+            "\n" +
+            "\t%s" +
+            "\n" +
             "\n" +
             "Favor não responder, e-mail automático.";
 

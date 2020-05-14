@@ -1,10 +1,14 @@
 package br.com.abce.advocacia.util;
 
+import com.google.common.io.Files;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.InputMismatchException;
 
 public class Util {
@@ -178,5 +182,35 @@ public class Util {
         }
 
         return senha;
+    }
+
+    public byte[] decodeFileBase64(final String file)  {
+
+        byte[] decodeFile = null;
+
+        if (StringUtils.isNotBlank(file))
+
+            decodeFile = Base64.getDecoder().decode(file);
+
+
+        return decodeFile;
+    }
+
+    public String encodeFileBase64(final byte[] file) {
+
+        String decodeFile = null;
+
+        if (file != null)
+
+            decodeFile = Base64.getEncoder().encodeToString(file);
+
+
+        return decodeFile;
+
+    }
+
+    public byte[] getImageByte(final String nameDirImage, final String diretorio) throws IOException {
+
+        return Files.toByteArray(new File(diretorio + nameDirImage));
     }
 }

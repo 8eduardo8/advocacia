@@ -43,7 +43,7 @@
                         }
 
                         ws.onclose = function(event) {
-                            console.log('Socket está fechado. Reconexão será em até 1 segundo.', e.reason);
+                            console.log('Socket está fechado. Reconexão será em até 1 segundo.', event.data);
                             setTimeout(function() {
                                 connect();
                             }, 1000);
@@ -51,9 +51,12 @@
 
 
                         ws.onerror = function(event) {
-                            console.error('Socket encontrou um erro: ', event.message, 'Fechando socket');
+                            console.error('Socket encontrou um erro: ', event.data, 'Fechando socket');
                             ws.close()
                         };
+
+
+                        autoScroll();
 
                     });
 
@@ -105,7 +108,19 @@
                             '  </div>')
 
                     }
+
+                    autoScroll();
                 }
+
+                function autoScroll(){
+
+                    let messages = $("#messages");
+
+                    messages.animate({
+                        scrollTop: 9999
+                    }, 1000);
+                }
+
             </script>
 
             <h:form id="chatForm">
@@ -125,38 +140,39 @@
                             <p:inputText type="hidden"  value="#{chat.usuarioBean.nome}" id="nomeUsuario"/>
 
                         </p:panelGrid>
+                    </p:panel>
 
-                        <div style="position: fixed; left: 0; width: 100%; background-color: #F5F5F5; color: white; padding: 10px; margin-top: 20px;">
-                            <div id="messages" style="width:100%;border-color: #E0E0E0;overflow-x: scroll; overflow-y: hidden; overflow: auto; white-space: nowrap; height: 500px;">
-                                <p:repeat value="#{chat.lista}" var="item">
-                                    <p:outputPanel rendered="#{chat.usuarioBean.nome != item.nomeUsuario}">
-                                        <div class="balao" style="margin-bottom: 10px; white-space: normal;">
+                    <div style="position: fixed; left: 0; width: 100%; background-color: #F5F5F5; color: white; padding: 10px; margin-top: 20px;">
+                        <div id="messages" style="width:100%;border-color: #E0E0E0;overflow-x: scroll; overflow-y: hidden; overflow: auto; white-space: nowrap; height: 500px;">
+                            <p:repeat value="#{chat.lista}" var="item">
+                                <p:outputPanel rendered="#{chat.usuarioBean.nome != item.nomeUsuario}">
+                                    <div class="balao" style="margin-bottom: 10px; white-space: normal;">
+                                        <h:outputLabel value="#{item.descricao}" />
+                                        <div style="text-align: right;text-size-adjust: auto;font-size: smaller;">
+                                            <h:outputLabel value="#{item.nomeUsuario}" style="color:#505050;" /> - <h:outputLabel value="#{item.dataCadastro}" style="color:#505050;">
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                            </h:outputLabel>
+                                        </div>
+                                    </div>
+                                </p:outputPanel>
+
+                                <p:outputPanel rendered="#{chat.usuarioBean.nome == item.nomeUsuario}">
+                                    <div align="right">
+                                        <div class="balaoEnvio"
+                                             style="text-align: left; margin-bottom: 10px; white-space: normal;">
                                             <h:outputLabel value="#{item.descricao}" />
-                                            <div style="text-align: right;text-size-adjust: auto;font-size: smaller;">
-                                                <h:outputLabel value="#{item.nomeUsuario}" style="color:#505050;" /> - <h:outputLabel value="#{item.dataCadastro}" style="color:#505050;">
+                                            <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;">
+                                                <h:outputLabel value="#{item.nomeUsuario}" style="color:#303030"/> - <h:outputLabel value="#{item.dataCadastro}" style="color:#303030">
                                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                                 </h:outputLabel>
                                             </div>
                                         </div>
-                                    </p:outputPanel>
-
-                                    <p:outputPanel rendered="#{chat.usuarioBean.nome == item.nomeUsuario}">
-                                        <div align="right">
-                                            <div class="balaoEnvio"
-                                                 style="text-align: left; margin-bottom: 10px; white-space: normal;">
-                                                <h:outputLabel value="#{item.descricao}" />
-                                                <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;">
-                                                    <h:outputLabel value="#{item.nomeUsuario}" style="color:#303030"/> - <h:outputLabel value="#{item.dataCadastro}" style="color:#303030">
-                                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-                                                    </h:outputLabel>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </p:outputPanel>
-                                </p:repeat>
-                            </div>
+                                    </div>
+                                </p:outputPanel>
+                            </p:repeat>
                         </div>
 
+                        <div id="fileuploader">Anexar</div>
 
                         <div style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: #F5F5F5; color: white; padding: 10px; margin-top: 20px;">
                             <form name="message" action="">
@@ -164,8 +180,7 @@
                                 <input type="button" name="submitmsg" value="Enviar Mensagem" onclick="sendMessage();" />
                             </form>
                         </div>
-
-                    </p:panel>
+                    </div>
                 </div>
             </h:form>
         </ui:define>

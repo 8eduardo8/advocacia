@@ -36,7 +36,7 @@ public class AutenticacaoService implements Serializable {
         final UsuarioBean usuarioBean = usuarioService.buscar(usuario);
 
         if (usuarioBean == null)
-            throw new RecursoNaoEncontradoException("Usuário não encontrado.");
+            throw new RecursoNaoEncontradoException(Consts.USUARIO_NAO_ENCONTRADO);
 
         if (!usuarioBean.getSenha().equals(senhaCriptada)) {
 
@@ -90,7 +90,7 @@ public class AutenticacaoService implements Serializable {
         usuarioService.salvar(usuarioBean);
 
         final String corpo = String.format(Consts.CORPO_EMAIL_SENHA_PROVISORIA,
-                usuarioBean.getNome(), novaSenha);
+                usuarioBean.getNome(), novaSenha, Consts.URL_SISTEMA);
 
         mailService.enviarEmail(usuarioBean.getEmail(), Consts.ASSUNTO_SENHA_PROVISORIA, corpo);
     }

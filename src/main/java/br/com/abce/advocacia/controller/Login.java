@@ -1,16 +1,21 @@
 package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.AutenticacaoService;
+import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 @Named
@@ -22,8 +27,13 @@ public class Login implements Serializable {
 	private UsuarioBean usuarioBean;
 	private boolean logado;
 
+	private StreamedContent usuarioImagem;
+
 	@Inject
 	private AutenticacaoService autenticacaoService;
+
+	@Inject
+	private UsuarioService usuarioService;;
 
 	@PostConstruct
 	public void init() {
@@ -75,6 +85,21 @@ public class Login implements Serializable {
 		return "login";
 	}
 
+	private void carregaImageUsuario() {
+
+		try {
+
+			byte[] fotoUsuarioDeserializada = usuarioService.buscarFotoUsuarioDeserializada(getUsuarioBean().getId());
+
+			usuarioImagem = new DefaultStreamedContent(new ByteArrayInputStream(fotoUsuarioDeserializada));
+
+		} catch (RecursoNaoEncontradoException e) {
+			Mensagem.info(e.getMessage());
+		} catch (InfraestruturaException e) {
+			Mensagem.erro(e.getMessage());
+		}
+	}
+
 	public String getUserLogin() {
 		return userLogin;
 	}
@@ -108,4 +133,14 @@ public class Login implements Serializable {
 	}
 
 
+	public StreamedContent getUsuarioImagem() {
+
+		if (usuarioImagem == null) 	carregaImageUsuario();
+
+		return usuarioImagem;
+	}
+
+	public void setUsuarioImagem(StreamedContent usuarioImagem) {
+		this.usuarioImagem = usuarioImagem;
+	}
 }

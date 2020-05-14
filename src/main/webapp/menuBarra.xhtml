@@ -19,7 +19,7 @@
 		<h:form id="formBarra">
 			<p:sidebar widgetVar="sidebar1" baseZIndex="10000">
 				<div align="center">
-					<h:graphicImage url="imagem/user.png" style="width: 100px; align: center" />
+					<p:graphicImage value="#{alterarFoto.imagePerfil()}" style="width: 100px; align: center" />
 				</div>
 				<div>
 					<h:outputLabel value="#{login.usuarioBean.login}" style="font-size:80%;" />
@@ -36,10 +36,12 @@
 							value="#{login.usuarioBean}" />
 					</p:commandLink>
 					<br />
+					<p:commandLink value="Trocar Foto" style="font-size:80%;"
+								   action="alterarFoto" ajax="false">
+					</p:commandLink>
+					<br />
 					<p:commandLink value="Alterar Senha" style="font-size:80%;"
 								   action="alterarSenha" ajax="false">
-						<f:setPropertyActionListener target="#{cadastrarUsuario.usuarioBean}"
-													 value="#{login.usuarioBean}" />
 					</p:commandLink>
 				</div>
 				<br />

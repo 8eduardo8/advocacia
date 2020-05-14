@@ -11,5 +11,8 @@
     <lifecycle>
         <phase-listener>br.com.abce.advocacia.util.LifeCycleListener</phase-listener>
     </lifecycle>
-  
+
+    <lifecycle>
+        <phase-listener>br.com.abce.advocacia.util.CacheControlPhaseListener</phase-listener>
+    </lifecycle>
 </faces-config>

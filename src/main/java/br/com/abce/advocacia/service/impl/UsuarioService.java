@@ -13,8 +13,10 @@ import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.Util;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -166,7 +168,7 @@ public class UsuarioService implements Serializable {
             usuarioRepository.salvar(entity);
 
             final String corpo = String.format(Consts.CORPO_EMAIL_NOVO_USUARIO,
-                    usuarioBean.getNome(), usuarioBean.getLogin(), novaSenha);
+                    usuarioBean.getNome(), usuarioBean.getLogin(), novaSenha, Consts.URL_SISTEMA);
 
             mailService.enviarEmail(usuarioBean.getEmail(), Consts.ASSUNTO_EMAIL_NOVO_USUARIO, corpo);
 
@@ -249,7 +251,7 @@ public class UsuarioService implements Serializable {
 
         if (entity == null)
 
-            throw new RecursoNaoEncontradoException("Usuário não encontrado.");
+            throw new RecursoNaoEncontradoException(Consts.USUARIO_NAO_ENCONTRADO);
 
         return getUsuarioBean(entity);
     }
@@ -260,7 +262,7 @@ public class UsuarioService implements Serializable {
 
         if (entity == null)
 
-            throw new RecursoNaoEncontradoException("Usuário não encontrado.");
+            throw new RecursoNaoEncontradoException(Consts.USUARIO_NAO_ENCONTRADO);
 
         return  getUsuarioBean(entity);
     }
@@ -317,5 +319,62 @@ public class UsuarioService implements Serializable {
         String corpo = String.format(Consts.CORPO_EMAIL_TROCA_SENHA, usuarioBean.getNome());
 
         mailService.enviarEmail(usuarioBean.getEmail(), Consts.ASSUNTO_TROCA_SENHA, corpo);
+    }
+
+    @Transactional
+    public void alterarFoto(final String imagemBase64, final String contentType, final String fileName, Long id) throws ValidacaoException, InfraestruturaException {
+
+
+        if (id == null)
+            throw new ValidacaoException(Consts.ID_USUARIO_NAO_INFORMADO);
+
+        if (StringUtils.isBlank(imagemBase64))
+            throw new ValidacaoException("Foto do usuáro não informado.");
+
+        UsuarioEntity usuarioEntity = usuarioRepository.buscar(id);
+
+        if (usuarioEntity == null)
+            throw new ValidacaoException(Consts.USUARIO_NAO_ENCONTRADO);
+
+
+        try {
+
+            usuarioEntity.setFoto(util.decodeFileBase64(imagemBase64));
+
+            usuarioRepository.editar(usuarioEntity);
+
+        } catch (Exception e) {
+            throw new InfraestruturaException(e.getMessage(), e);
+        }
+
+    }
+
+    public byte[] buscarFotoUsuarioDeserializada(final Long idUsuario) throws RecursoNaoEncontradoException, InfraestruturaException {
+
+        final UsuarioEntity entity = usuarioRepository.buscar(idUsuario);
+
+        if (entity == null)
+
+            throw new RecursoNaoEncontradoException(Consts.USUARIO_NAO_ENCONTRADO);
+
+        return entity.getFoto() != null ? entity.getFoto() : getDefaultUserImg();
+    }
+
+    public String buscarFotoUsuario(final Long idUsuario) throws RecursoNaoEncontradoException, InfraestruturaException {
+
+        return util.encodeFileBase64(buscarFotoUsuarioDeserializada(idUsuario));
+    }
+
+    private byte[] getDefaultUserImg() throws InfraestruturaException {
+
+        try {
+
+            final String dir = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+
+            return util.getImageByte("/imagem/user.png", dir);
+
+        } catch (IOException e) {
+            throw new InfraestruturaException(e.getMessage(), e);
+        }
     }
 }
