@@ -8,6 +8,7 @@ import java.util.Objects;
 @Table(name = "nota", schema = "advocacia", catalog = "")
 public class NotaEntity {
     private Long id;
+    private Integer tipo;
     private Date dataCadastro;
     private Date dataAtualizacao;
     private Date dataExclusao;
@@ -24,6 +25,16 @@ public class NotaEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "tipo", nullable = false)
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
     }
 
     @Basic

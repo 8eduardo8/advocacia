@@ -46,7 +46,7 @@ public class ChatEndPoint {
     @OnOpen
     public void onOpen(
             Session session,
-            @PathParam(value = "id-processo") String idProcesso) throws IOException, EncodeException {
+            @PathParam(value = "id-processo") String idProcesso) throws IOException {
 
         LoggerUtil.info(String.format("Chat - %s", idProcesso));
 
@@ -66,51 +66,56 @@ public class ChatEndPoint {
 
     @OnMessage
     public void onMessage(Session session, Message message)
-            throws IOException, EncodeException, ValidacaoException, InfraestruturaException, RecursoNaoEncontradoException {
+            throws IOException, ValidacaoException, InfraestruturaException, RecursoNaoEncontradoException {
 
         final String idProcesso = users.get(session.getId());
 
-        NotaBean notaBean = new NotaBean();
+        if (StringUtils.isNotBlank(message.getContent()) || message.getFile() != null) {
 
-        final ProcessoBean processoBean = processoService.buscar(Long.valueOf(idProcesso));
+            NotaBean notaBean = new NotaBean();
 
-        notaBean.setIdProcesso(processoBean.getId());
+            final ProcessoBean processoBean = processoService.buscar(Long.valueOf(idProcesso));
 
-        final UsuarioBean usuarioBean = usuarioService.buscar(Long.valueOf(message.getIdUsuario()));
+            notaBean.setIdProcesso(processoBean.getId());
 
-        notaBean.setIdUsuario(usuarioBean.getId());
-        notaBean.setDataCadastro(new Date());
+            final UsuarioBean usuarioBean = usuarioService.buscar(Long.valueOf(message.getIdUsuario()));
 
-        if (StringUtils.isNotBlank(message.getContent())) {
+            notaBean.setIdUsuario(usuarioBean.getId());
+            notaBean.setDataCadastro(new Date());
+            notaBean.setTipo(Consts.TIPO_MENSAGEM);
 
-            notaBean.setNotaMensagem(new NotaMensagem());
-            notaBean.getNotaMensagem().setMensagem(message.getContent());
-            notaBean.getNotaMensagem().setTipo(Consts.TIPO_MENSAGEM);
+            if (StringUtils.isNotBlank(message.getContent())) {
 
+                notaBean.setNotaMensagem(new NotaMensagem());
+                notaBean.getNotaMensagem().setMensagem(message.getContent());
+                notaBean.getNotaMensagem().setTipo(Consts.TIPO_MENSAGEM);
+
+            }
+
+            if (StringUtils.isNotBlank(message.getFile())) {
+
+                notaBean.setNotaDocumento(new NotaDocumento());
+                notaBean.getNotaDocumento().setDescricao(Consts.DOCUMENTO_ANEXADO_MENSAGEM);
+                notaBean.getNotaDocumento().setArquivo(Base64.getDecoder().decode(message.getFile()));
+                notaBean.getNotaDocumento().setFormato(message.getFormatoFile());
+                notaBean.getNotaDocumento().setNome(message.getNomeFile());
+
+            }
+
+            notaBean = notaService.salvarNota(notaBean);
+
+            message.setIdNota(notaBean.getId());
         }
-
-        if (StringUtils.isNotBlank(message.getFile())) {
-
-            notaBean.setNotaDocumento(new NotaDocumento());
-            notaBean.getNotaDocumento().setArquivo(Base64.getDecoder().decode(message.getFile()));
-            notaBean.getNotaDocumento().setFormato(message.getFormatoFile());
-            notaBean.getNotaDocumento().setNome(message.getNomeFile());
-
-        }
-
-        notaBean = notaService.salvarNota(notaBean);
-
 
         message.setIdProcesso(idProcesso);
         message.setData(getDataFormatada());
-        message.setIdNota(notaBean.getId());
         message.setFile(null);
 
         broadcast(message, this.session.getId());
     }
 
     @OnClose
-    public void onClose(Session session) throws IOException, EncodeException {
+    public void onClose(Session session) throws IOException {
 
         chatEndpoints.remove(this);
 

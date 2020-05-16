@@ -32,3 +32,10 @@
 .balao-notificacao > p {
 	margin: 0;
 }
+
+.bt-anexo {
+	width: 15px;
+	height: 15px;
+	margin-left: 5px;
+	text-align: right;
+}

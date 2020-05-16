@@ -17,6 +17,7 @@ public class Consts {
     public static final Integer NAO_RECUPERACAO_SENHA = 0;
     public static final Integer RECUPERACAO_SENHA = 1;
 
+    public static final String DOCUMENTO_ANEXADO_MENSAGEM = "Documento anexado na mensagem referente ao Processo.";
 
     public static final String NAO_POSSIVEL_DADOS_USUARIO = "Não foi possível obter o dados do usuário.";
     public static final String NAO_POSSIVEL_DADOS_PROCESSO = "Não foi possível obter o dados do processo.";

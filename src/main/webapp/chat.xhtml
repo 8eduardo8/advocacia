@@ -18,8 +18,11 @@
     <ui:composition template="menuPrime.xhtml">
         <ui:define name="content">
 
+            <script type="text/javascript" charset="utf-8" src="js/script.js"></script>
             <script type="text/javascript" charset="utf-8" src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+
             <script type="text/javascript">
+
                 var ws;
                 $(document).ready(
                     function connect() {
@@ -37,7 +40,7 @@
                         ws.onmessage = function(event) {
                             var json = JSON.parse(event.data);
 
-                            atualizaChat(json.content, json.data, json.nomeUsuario, json.tipoNota)
+                            atualizaChat(json)
 
                             console.log("mensagem recebida -> " + event.data);
                         }
@@ -58,44 +61,102 @@
 
                         autoScroll();
 
+                    }
+                );
+
+                $(document).ready(
+
+                    function () {
+
+                        $('#select_file').click(function () {
+                            $('#file').click();
+                            $('#file').change(function () {
+                                var filename = $('#file').val();
+                                $('#select_file').html(filename);
+                            });
+                        })
+                    }
+                );
+
+
+                function getBase64(file) {
+                    return new Promise((resolve, reject) => {
+                        if (typeof file != "undefined") {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = () => {
+                                let encoded = reader.result.toString().replace(/^data:(.*,)?/, '');
+                                if ((encoded.length % 4) > 0) {
+                                    encoded += '='.repeat(4 - (encoded.length % 4));
+                                }
+                                resolve(encoded);
+                            };
+                            reader.onerror = error => reject(error);
+                        }
                     });
+                }
 
+                function downloadFile(idFile, type){
+                    $.ajax({
+                        type: "GET",
+                        url: "/rest/v1/documento/"+idFile +"/download",
+                        contentType: type,
+                        success: function(json, status){
+                            if (status != "success") {
+                                log("Error loading data");
+                                return;
+                            }
+                            log("Data loaded!");
+                        },
+                        error: function(result, status, err) {
+                            log("Error loading data");
+                            return;
+                        }
+                    });
+                }
 
-                function sendMessage() {
+                async function sendMessage() {
 
                     var data = new Date();
                     var usuario = $("#chatForm\\:nomeUsuario").val();
                     var messageForm = $("#message");
+                    var file = $('#file')[0].files[0];
                     var message = {
                         "idUsuario": $("#chatForm\\:idUsuario").val(),
                         "nomeUsuario": usuario,
                         "content": messageForm.val(),
-                        "tipoNota" : 1,
-                        "file" : '',
-                        "nomeFile" : '',
-                        "formatoFile" : '',
-                        'data' : data
+                        "tipoNota": 1,
+                        "file": await getBase64(file),
+                        "nomeFile": file.name,
+                        "formatoFile": file.type,
+                        'data': data
                     }
                     ws.send(JSON.stringify(message));
 
                     messageForm.val('');
+
+                    $('#file').val('');
+
+                    $('#select_file').html("Please select image");
                 }
 
-                function atualizaChat(mensagem, data, autor, tipoNota){
+                function atualizaChat(json){
 
-                    var nomeUsuario = $("#chatForm\\:nomeUsuario").val()
+                    json.content, json.data, json.nomeUsuario, json.tipoNota
+
+                    var usuario = $("#chatForm\\:nomeUsuario").val()
                     var mensagens = $("#messages");
 
-                    if (tipoNota == 1) {
+                    if (json.tipoNota == 1) {
 
-                        if (nomeUsuario == autor) {
+                        if (json.nomeUsuario == usuario) {
 
                             mensagens.append('<div class="ui-outputpanel ui-widget">' +
                                 '<div align="right"> '  +
                                 '  <div class="balaoEnvio" style="text-align: left; margin-bottom: 10px; white-space: normal;"> '  +
-                                '    <p>' + mensagem + '</p> '  +
+                                '    <p>' + json.content + '</p> '  +
                                 '    <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;"> '  +
-                                '        <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
+                                '        <p style="color:#303030">' + json.nomeUsuario + ' - ' + json.data + '</p> '  +
                                 '         '  +
                                 '    </div> '  +
                                 '  </div> '  +
@@ -106,9 +167,9 @@
 
                             mensagens.append('<div class="ui-outputpanel ui-widget">' +
                                 '<div class="balao" style="margin-bottom: 10px; white-space: normal;"> '  +
-                                '    <p>' + mensagem + '</p> '  +
+                                '    <p>' + json.content + '</p> '  +
                                 '    <div style="text-align: right;text-size-adjust: auto;font-size: smaller;"> '  +
-                                '        <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
+                                '        <p style="color:#303030">' + json.nomeUsuario + ' - ' + json.data + '</p> '  +
                                 '         '  +
                                 '    </div> '  +
                                 '  </div>' +
@@ -121,9 +182,9 @@
                         mensagens.append('<div class="ui-outputpanel ui-widget">' +
                             '   <div align="center"> '  +
                             '       <div class="balao-notificacao" style="text-align: center; margin-bottom: 10px; white-space: normal;"> '  +
-                            '       <label>' + mensagem + '</label> '  +
+                            '       <label>' + json.content + '</label> '  +
                             '       <div align="right" style="text-align: right;text-size-adjust: auto;"> '  +
-                            '           <p style="color:#303030">' + autor + ' - ' + data + '</p> '  +
+                            '           <p style="color:#303030">' + json.nomeUsuario + ' - ' + json.data + '</p> '  +
                             '           '  +
                             '       </div> '  +
                             '        </div> '  +
@@ -169,12 +230,14 @@
                         <div id="messages" style="width:100%;border-color: #E0E0E0;overflow-x: scroll; overflow-y: hidden; overflow: auto; white-space: nowrap; height: 500px;">
                             <p:repeat value="#{chat.lista}" var="item">
 
-                                <p:outputPanel rendered="#{item.notaMensagem == null or (item.notaMensagem != null and !item.notaMensagem.tipoMensagem)}">
+                                <p:outputPanel rendered="#{not item.mensagem()}">
+
                                     <div align="center">
                                         <div class="balao-notificacao"
                                              style="text-align: center; margin-bottom: 10px; white-space: normal;">
-                                            <h:outputLabel value="Andamento registrado ao processo: #{item.notaMensagem.mensagem}" rendered="#{item.notaMensagem != null}" />
-                                            <h:outputLabel value="Documento anexado ao processo: #{item.notaDocumento.descricao}" rendered="#{item.notaDocumento != null}" />
+                                            <h:outputLabel value="Andamento registrado ao processo: #{item.notaMensagem.mensagem}" rendered="#{item.andamento()}" />
+                                            <h:outputLabel value="Documento anexado ao processo: #{item.notaDocumento.descricao}" rendered="#{item.documentoProcesso()}" />
+                                            <h:graphicImage value="imagem/anexo-file.png"  styleClass="bt-anexo" rendered="#{item.notaDocumento != null}" />
                                             <div align="right" style="text-align: right;text-size-adjust: auto;">
                                                 <h:outputLabel value="#{item.usuarioResumidoBean.nome}" style="color:#303030"/> - <h:outputLabel value="#{item.dataCadastro}" style="color:#303030">
                                                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
@@ -184,10 +247,11 @@
                                     </div>
                                 </p:outputPanel>
 
-                                <p:outputPanel rendered="#{item.notaMensagem != null and item.notaMensagem.tipoMensagem}">
+                                <p:outputPanel rendered="#{item.mensagem()}">
                                     <p:outputPanel rendered="#{chat.usuarioBean.nome != item.usuarioResumidoBean.nome}">
                                         <div class="balao" style="margin-bottom: 10px; white-space: normal;">
                                             <h:outputLabel value="#{item.notaMensagem.mensagem}" />
+                                            <h:graphicImage value="imagem/anexo-file.png" styleClass="bt-anexo" rendered="#{item.notaDocumento != null}" />
                                             <div style="text-align: right;text-size-adjust: auto;font-size: smaller;">
                                                 <h:outputLabel value="#{item.usuarioResumidoBean.nome}" style="color:#505050;" /> - <h:outputLabel value="#{item.dataCadastro}" style="color:#505050;">
                                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
@@ -201,6 +265,7 @@
                                             <div class="balaoEnvio"
                                                  style="text-align: left; margin-bottom: 10px; white-space: normal;">
                                                 <h:outputLabel value="#{item.notaMensagem.mensagem}" />
+                                                <h:graphicImage value="imagem/anexo-file.png" styleClass="bt-anexo" rendered="#{item.notaDocumento != null}" />
                                                 <div align="right" style="text-align: right;text-size-adjust: auto;font-size: smaller;">
                                                     <h:outputLabel value="#{item.usuarioResumidoBean.nome}" style="color:#303030"/> - <h:outputLabel value="#{item.dataCadastro}" style="color:#303030">
                                                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
@@ -215,10 +280,19 @@
 
                         <div id="fileuploader">Anexar</div>
 
+
+
                         <div style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: #F5F5F5; color: white; padding: 10px; margin-top: 20px;">
                             <form name="message" action="">
                                 <textarea name="usermsg" id="message" style="width:100%;border-color: #E0E0E0;"  cols="22" rows="3" maxlength="2000" />
                                 <input type="button" name="submitmsg" value="Enviar Mensagem" onclick="sendMessage();" />
+                            </form>
+
+                            <form method="post" action="" enctype="multipart/form-data" id="uploadForm">
+                                <div >
+                                    <b id = "select_file" class="span3" style="color: black; font-weight: bold; cursor: pointer; ">Please select image</b>
+                                    <input type="file" id="file" name="file" style="display: none; visibility: hidden;" />
+                                </div>
                             </form>
                         </div>
                     </div>

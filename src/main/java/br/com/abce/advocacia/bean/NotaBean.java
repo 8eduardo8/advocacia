@@ -1,7 +1,10 @@
 package br.com.abce.advocacia.bean;
 
+import br.com.abce.advocacia.util.Consts;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,7 +12,7 @@ import java.util.Date;
 public class NotaBean implements Serializable {
 
 	private Long id;
-	private String tipo;
+	private Integer tipo;
 	private Long idUsuario;
 	private Long idProcesso;
 	private Long idProcessoUsuario;
@@ -35,11 +38,11 @@ public class NotaBean implements Serializable {
 		this.id = id;
 	}
 
-	public String getTipo() {
+	public Integer getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
 
@@ -113,5 +116,23 @@ public class NotaBean implements Serializable {
 
 	public void setUsuarioResumidoBean(UsuarioResumidoBean usuarioResumidoBean) {
 		this.usuarioResumidoBean = usuarioResumidoBean;
+	}
+
+	@Transient
+	@JsonIgnoreProperties
+	public boolean mensagem() {
+		return this.tipo == Consts.TIPO_MENSAGEM;
+	}
+
+	@Transient
+	@JsonIgnoreProperties
+	public boolean andamento() {
+		return this.tipo == Consts.TIPO_ANDAMENTO_PROCESSO;
+	}
+
+	@Transient
+	@JsonIgnoreProperties
+	public boolean documentoProcesso() {
+		return this.tipo == Consts.TIPO_DOCUMENTO;
 	}
 }

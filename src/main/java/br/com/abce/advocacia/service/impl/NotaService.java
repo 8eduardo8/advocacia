@@ -88,6 +88,7 @@ public class NotaService implements Serializable {
             bean.setIdUsuario(processoUsuarioId.getUsuarioByUsuarioId().getId());
             bean.setIdProcesso(processoUsuarioId.getProcessoByProcessoId().getId());
             bean.setIdProcessoUsuario(processoUsuarioId.getId());
+            bean.setTipo(entity.getTipo());
 
             bean.setUsuarioResumidoBean(usuarioService.getUsuarioBeanResumido(processoUsuarioId.getUsuarioByUsuarioId()));
 
@@ -160,6 +161,7 @@ public class NotaService implements Serializable {
                 entity.setNotaDocumentoByNotaDocumentoId(documentoEntity);
             }
 
+            entity.setTipo(notaBean.getTipo());
             entity.setProcessoUsuarioByProcessoUsuarioId(processoUsuarioEntity);
 
             notaRepository.salvarNota(entity);
@@ -231,6 +233,7 @@ public class NotaService implements Serializable {
             notaEntity.setDataCadastro(new Date());
             notaEntity.setNotaTextoByNotaTextoId(notaTextoEntity);
             notaEntity.setProcessoUsuarioByProcessoUsuarioId(processoUsuarioEntity);
+            notaEntity.setTipo(Consts.TIPO_ANDAMENTO_PROCESSO);
 
             notaTextoEntity.setNotaEntity(notaEntity);
 
@@ -395,6 +398,7 @@ public class NotaService implements Serializable {
             notaEntity.setDataCadastro(new Date());
             notaEntity.setNotaDocumentoByNotaDocumentoId(notaDocumentoEntity);
             notaEntity.setProcessoUsuarioByProcessoUsuarioId(processoUsuarioEntity);
+            notaEntity.setTipo(Consts.TIPO_DOCUMENTO);
 
             notaDocumentoEntity.setNotaEntity(notaEntity);
 

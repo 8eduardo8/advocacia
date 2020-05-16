@@ -13,7 +13,7 @@ public class Message {
     private String nomeFile;
     private String formatoFile;
 
-    private int tipoNota; // 1 - Documento; 2 - Nota; 3 - Mensagem; 4 - Servidor;
+    private int tipoNota; // 1 - Mensagem; 2 - Andamento Processo; 3 - Documento do Processo; 4 - Servidor;
 
     public Message() {
         super();

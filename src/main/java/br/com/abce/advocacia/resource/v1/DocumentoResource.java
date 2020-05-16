@@ -13,10 +13,10 @@ import io.swagger.annotations.ApiOperation;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 
 @Path("/v1/documento/")
 @Api(value = "Operações de upload de documento")
-@ApiSecurity
 public class DocumentoResource extends AbstractResource implements StandardRestDefinition {
 
     @Inject
@@ -28,12 +28,25 @@ public class DocumentoResource extends AbstractResource implements StandardRestD
     @GET
     @Path("/{id}")
     @ApiOperation("Recupera o documento do processo")
+    @ApiSecurity
     public NotaDocumento getDocumento(@PathParam("id") final Long id) throws InfraestruturaException, RecursoNaoEncontradoException {
         return notaDocumentoService.buscar(id);
     }
 
+    @GET
+    @Path("/{id}/download")
+    @ApiOperation("Recupera o documento do processo")
+    public Response getDocumentoArquvio(@PathParam("id") final Long id) throws InfraestruturaException, RecursoNaoEncontradoException {
+        NotaDocumento documento = notaDocumentoService.buscar(id);
+        Response.ResponseBuilder responseBuilder = Response.ok(documento.getArquivo());
+        responseBuilder.type(documento.getFormato());
+        responseBuilder.header("Content-Disposition", "attachment; filename=" + documento.getNome());
+        return responseBuilder.build();
+    }
+
     @POST
     @ApiOperation("Salvar novo documento de um processo")
+    @ApiSecurity
     public void salvarDocumento(@BeanParam final NotaDocumento notaDocumento) throws InfraestruturaException, ValidacaoException {
         notaService.salvarDocumento(notaDocumento);
     }

@@ -27,9 +27,11 @@ public class NotaDocumentoService implements Serializable {
 
             NotaDocumento notaDocumento = new NotaDocumento();
 
+            notaDocumento.setIdDocumento(notaDocumentoEntity.getId());
             notaDocumento.setNome(notaDocumentoEntity.getNome());
             notaDocumento.setFormato(notaDocumentoEntity.getFormarto());
             notaDocumento.setArquivo(notaDocumentoEntity.getArquivo());
+            notaDocumento.setDescricao(notaDocumento.getDescricao());
 
             return notaDocumento;
 

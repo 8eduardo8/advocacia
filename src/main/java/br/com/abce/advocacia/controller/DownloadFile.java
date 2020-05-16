@@ -26,9 +26,14 @@ public class DownloadFile implements Serializable {
 
     public StreamedContent generateFile(NotaDocumento notaDocumento) {
 
+        return generateFile(notaDocumento.getIdDocumento());
+    }
+
+    public StreamedContent generateFile(final Long idNotaDocumento) {
+
         try {
 
-            NotaDocumento document = notaDocumentoService.buscar(notaDocumento.getIdDocumento());
+            NotaDocumento document = notaDocumentoService.buscar(idNotaDocumento);
 
             file = new DefaultStreamedContent(new ByteArrayInputStream(document.getArquivo()),
                     document.getFormato(), document.getNome());
