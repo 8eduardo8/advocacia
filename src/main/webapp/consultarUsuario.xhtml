@@ -58,7 +58,7 @@
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} usuários"
 					rowsPerPageTemplate="6,12,20" rows="100">
-					<p:column headerText="Ações" style="width:50px;">
+					<p:column headerText="Ações" style="width:50px; text-align: center">
 						<p:commandButton icon="pi pi-pencil" ajax="false"
 							style="background:#616161;border:none; text-align: center;"
 							action="#{cadastrarUsuario.editar}">
@@ -69,7 +69,7 @@
 					<p:column headerText="Login" style="width:100px; text-align: center;">
 						<h:outputText value="#{item.login}" />
 					</p:column>
-					<p:column headerText="Nome" style="width:200px; text-align: center;">
+					<p:column headerText="Nome" style="width:120px; text-align: center;">
 						<h:outputText value="#{item.nome}" />
 					</p:column>
 					<p:column headerText="Sobrenome" style="width:200px; text-align: center;">
@@ -79,7 +79,7 @@
 						<h:outputText value="#{item.cpf}" />
 					</p:column>
 					<p:column headerText="Sexo" style="width:100px; text-align: center;">
-						<h:outputText value="#{item.sexo}" />
+						<h:outputText value="#{item.getDescSexo()}" />
 					</p:column>
 					<p:column headerText="Email" style="width:200px; text-align: center;">
 						<h:outputText value="#{item.email}" />

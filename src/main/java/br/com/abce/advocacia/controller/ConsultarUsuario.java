@@ -1,13 +1,14 @@
 package br.com.abce.advocacia.controller;
 
 import br.com.abce.advocacia.bean.UsuarioBean;
+import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@ConversationScoped
+@RequestScoped
 public class ConsultarUsuario implements Serializable {
 
 	private String filtro;
@@ -29,10 +30,13 @@ public class ConsultarUsuario implements Serializable {
 	@PostConstruct
 	public void init() {
 
+		ativo = true;
+
 		consultar();
 	}
 
 	public String consultar() {
+
 		lista = new ArrayList<>();
 
 		try {
@@ -41,9 +45,9 @@ public class ConsultarUsuario implements Serializable {
 
 		} catch (RecursoNaoEncontradoException ex) {
 			Mensagem.info(ex.getMessage());
-		} catch (Exception e) {
-			Mensagem.erro(e.getMessage());
-			LoggerUtil.error(e);
+		} catch (InfraestruturaException ex) {
+			LoggerUtil.error(ex);
+			Mensagem.erro(ex.getMessage());
 		}
 
 		return "consultarUsuario";
@@ -66,6 +70,10 @@ public class ConsultarUsuario implements Serializable {
 	}
 
 	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public boolean getAtivo(){
 		return ativo;
 	}
 

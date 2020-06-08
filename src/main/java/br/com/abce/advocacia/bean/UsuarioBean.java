@@ -1,7 +1,9 @@
 package br.com.abce.advocacia.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -109,6 +111,12 @@ public class UsuarioBean extends UsuarioResumidoBean implements Serializable {
 
 	public String getSexo() {
 		return sexo;
+	}
+
+	@Transient
+	@JsonIgnoreProperties
+	public String getDescSexo(){
+		return "M".equals(this.getSexo()) ? "Masculino" : "Feminino";
 	}
 
 	public void setSexo(String sexo) {

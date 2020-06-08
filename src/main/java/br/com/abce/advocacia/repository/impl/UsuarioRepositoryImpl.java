@@ -3,6 +3,7 @@ package br.com.abce.advocacia.repository.impl;
 import br.com.abce.advocacia.entity.UsuarioEntity;
 import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.repository.UsuarioRepository;
+import br.com.abce.advocacia.util.Consts;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.NoResultException;
@@ -60,15 +61,22 @@ public class UsuarioRepositoryImpl extends AbstractRepositoryImpl<UsuarioEntity>
     @Override
     public List<UsuarioEntity> listar(String filtro, int perfil, boolean ativo) throws InfraestruturaException {
 
-        List<UsuarioEntity> usuarioEntity = listar();
-//                (List<UsuarioEntity>) getEntityManager().createQuery(
-//                "select u from UsuarioEntity u " +
-//                        "where (:perfil is null or u.perfil = :perfil) " +
-//                        "  and (:ativo is null or :ativo = u.situacao) " +
-//                        "  and (:filtro is null or upper(u.nome) like ''%:filtro%'' ) ")
-//                .setParameter("perfil", perfil)
-//                .getResultList();
+        try {
 
-        return usuarioEntity;
+            List<UsuarioEntity> usuarioEntity =
+                    (List<UsuarioEntity>) getEntityManager().createQuery(
+                            "select u from UsuarioEntity u " +
+                                    "where (:perfil is null or u.perfil = :perfil) " +
+                                    "  and (:ativo is null or :ativo = u.situacao) " +
+                                    "  and (:filtro is null or concat(concat(upper(u.nome), ' '), u.sobreNome) like upper(:filtro)) ")
+                            .setParameter("perfil", perfil)
+                            .setParameter("ativo", ativo ? Consts.REGISTRO_ATIVO : Consts.REGISTRO_INATIVO)
+                            .setParameter("filtro", StringUtils.isNotBlank(filtro) ? "%" + filtro + "%" : null)
+                            .getResultList();
+
+            return usuarioEntity;
+        } catch (PersistenceException ex) {
+            throw new InfraestruturaException(ex.getMessage());
+        }
     }
 }

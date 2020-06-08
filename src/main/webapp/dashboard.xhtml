@@ -35,25 +35,24 @@
 							<h:outputText value="#{nota.dataCadastro}" >
 								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
 							</h:outputText>
-							<h:outputText rendered="#{nota.notaMensagem != null and nota.notaMensagem.tipo == 1}"
+							<h:outputText rendered="#{nota.mensagem()}"
 										  title="Nova Mensagem" style="margin-left: 5px;" styleClass="pi pi-comment"/>
-							<h:outputText rendered="#{nota.notaMensagem != null and nota.notaMensagem.tipo == 2}"
+							<h:outputText rendered="#{nota.andamento()}"
 										  title="Novo Andamento" style="margin-left: 5px;" styleClass="pi pi-refresh"/>
-							<h:outputText rendered="#{nota.notaDocumento != null}"
+							<h:outputText rendered="#{nota.documentoProcesso()}"
 										  title="Novo Documento" style="margin-left: 5px;" styleClass="pi pi-file"/>
 
 						</p:column>
 						<p:column style="width:32px;text-align: center">
 							<p:commandButton icon="pi pi-arrow-circle-right" ajax="false" action="#{chat.conversa}"
-											 rendered="#{nota.notaMensagem != null and nota.notaMensagem.tipo == 1}"
+											 rendered="#{nota.mensagem()}"
 											 style="background:#616161;border:none; text-align: center;">
 								<f:setPropertyActionListener
 										target="#{chat.idProcesso}" value="#{nota.idProcesso}" />
 							</p:commandButton>
 
 							<p:commandButton icon="pi pi-arrow-circle-right" ajax="false" action="#{consultarProcesso.detalhar}"
-											 rendered="#{(nota.notaMensagem != null and nota.notaMensagem.tipo == 2)
-											 				or nota.notaDocumento != null}"
+											 rendered="#{not nota.mensagem()}"
 											 style="background:#616161;border:none; text-align: center;">
 								<f:setPropertyActionListener
 										target="#{consultarProcesso.idProcesso}" value="#{nota.idProcesso}" />

@@ -26,9 +26,27 @@
 						<p:inputText value="#{consultarProcesso.filtro}" />
 
 						<p:outputLabel value="Situação" />
-						<p:selectOneMenu value="#{consultarProcesso.situacao}">
-							<f:selectItem itemValue="" itemLabel="TODOS" />
+						<p:selectOneMenu  value="#{consultarProcesso.situacao}" effect="fold" editable="false">
+							<f:selectItem itemLabel="Em andamento" itemValue="0" />
+							<f:selectItem itemLabel="Arquivado" itemValue="1" />
+							<f:selectItem itemLabel="Suspenso" itemValue="2" />
+							<f:selectItem itemLabel="Concluído" itemValue="3" />
 						</p:selectOneMenu>
+
+						<p:outputLabel alue="Envolvidos" />
+						<p:selectOneMenu filter="true" filterMatchMode="contains"
+										 value="#{consultarProcesso.usuarioId}">
+							<f:selectItem itemLabel="Selecione um" itemValue="" />
+							<f:selectItems value="#{consultarProcesso.listaUsuarioResumido}"
+										   var="usuario" itemLabel="#{usuario.nome} - #{usuario.cpf} - #{usuario.descPerfil}"
+										   itemValue="#{usuario.id}">
+							</f:selectItems>
+						</p:selectOneMenu>
+
+						<p:outputLabel value="Data Início" />
+						<p:datePicker value="#{consultarProcesso.dataInicio}"
+									  pattern="dd/MM/yyyy" />
+
 					</p:panelGrid>
 
 					<p:panelGrid columns="2"

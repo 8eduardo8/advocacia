@@ -79,13 +79,13 @@ public class ProcessoService implements Serializable {
         }
     }
 
-    private boolean isNovoProcesso(Long idProcesso) {
+    private boolean isNovoProcesso(final Long idProcesso) {
         return idProcesso == null;
     }
 
-    public List<ProcessoBean> listar() throws RecursoNaoEncontradoException {
+    public List<ProcessoBean> listar(final String filtro, final Integer situacao, final Date dataInicio, final Long idUsuario) throws RecursoNaoEncontradoException, InfraestruturaException {
 
-        final List<ProcessoEntity> listEntity = processoRepository.listar();
+        final List<ProcessoEntity> listEntity = processoRepository.listar(filtro, situacao, dataInicio, idUsuario);
 
         if (listEntity.isEmpty())
 

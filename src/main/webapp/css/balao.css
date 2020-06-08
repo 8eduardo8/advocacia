@@ -39,3 +39,19 @@
 	margin-left: 5px;
 	text-align: right;
 }
+
+.circle {
+	background-color: #aaa;
+	border-radius: 50%;
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	position: relative;
+	left: 20px;
+}
+
+.circle img {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}

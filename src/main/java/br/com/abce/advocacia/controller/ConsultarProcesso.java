@@ -1,35 +1,38 @@
 package br.com.abce.advocacia.controller;
 
-import br.com.abce.advocacia.bean.NotaAndamento;
-import br.com.abce.advocacia.bean.NotaDocumento;
-import br.com.abce.advocacia.bean.ProcessoBean;
-import br.com.abce.advocacia.bean.ProcessoCompletoBean;
+import br.com.abce.advocacia.bean.*;
 import br.com.abce.advocacia.exceptions.InfraestruturaException;
 import br.com.abce.advocacia.exceptions.RecursoNaoEncontradoException;
 import br.com.abce.advocacia.exceptions.ValidacaoException;
 import br.com.abce.advocacia.service.impl.NotaService;
 import br.com.abce.advocacia.service.impl.ProcessoService;
+import br.com.abce.advocacia.service.impl.UsuarioService;
 import br.com.abce.advocacia.util.Consts;
 import br.com.abce.advocacia.util.LoggerUtil;
 import br.com.abce.advocacia.util.Mensagem;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Named
-@ConversationScoped
+@RequestScoped
 public class ConsultarProcesso implements Serializable {
 
 	private String filtro;
-	private String situacao;
+	private Integer situacao;
+	private Date dataInicio;
+	private Long usuarioId;
+
 	private List<ProcessoBean> lista;
 	private List<NotaAndamento> listaAndamentos;
 	private List<NotaDocumento> listaDocumentos;
+	private List<UsuarioResumidoBean> listaUsuarioResumido;
 
 	private ProcessoBean processoBean;
 
@@ -43,6 +46,9 @@ public class ConsultarProcesso implements Serializable {
 	@Inject
 	private NotaService notaService;
 
+	@Inject
+	private UsuarioService usuarioService;
+
 	@PostConstruct
 	public void init() {
 
@@ -55,7 +61,9 @@ public class ConsultarProcesso implements Serializable {
 
 		try {
 
-			lista = processoService.listar();
+			lista = processoService.listar(getFiltro(), getSituacao(), getDataInicio(), getUsuarioId());
+
+			listaUsuarioResumido = usuarioService.listarResumido();
 
 		} catch (RecursoNaoEncontradoException ex) {
 			Mensagem.info(ex.getMessage());
@@ -133,14 +141,6 @@ public class ConsultarProcesso implements Serializable {
 		this.filtro = filtro;
 	}
 
-	public String getSituacao() {
-		return situacao;
-	}
-
-	public void setSituacao(String situacao) {
-		this.situacao = situacao;
-	}
-
 	public List<ProcessoBean> getLista() {
 		return lista;
 	}
@@ -203,5 +203,37 @@ public class ConsultarProcesso implements Serializable {
 
 	public void setIdProcesso(Long idProcesso) {
 		this.idProcesso = idProcesso;
+	}
+
+	public Date getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public Integer getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(Integer situacao) {
+		this.situacao = situacao;
+	}
+
+	public List<UsuarioResumidoBean> getListaUsuarioResumido() {
+		return listaUsuarioResumido;
+	}
+
+	public void setListaUsuarioResumido(List<UsuarioResumidoBean> listaUsuarioResumido) {
+		this.listaUsuarioResumido = listaUsuarioResumido;
+	}
+
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
+
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId = usuarioId;
 	}
 }

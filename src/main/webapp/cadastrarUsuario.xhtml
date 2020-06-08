@@ -43,8 +43,8 @@
 						<p:outputLabel value="Sobrenome" />
 						<p:inputText value="#{cadastrarUsuario.usuarioBean.sobrenome}" />
 
-						<p:outputLabel value="Perfil" />
-						<p:selectOneMenu value="#{cadastrarUsuario.usuarioBean.perfil}">
+						<p:outputLabel value="Perfil" rendered="#{not login.usuarioBean.cliente}"/>
+						<p:selectOneMenu value="#{cadastrarUsuario.usuarioBean.perfil}"  rendered="#{not login.usuarioBean.cliente}">
 							<f:selectItems value="#{cadastrarUsuario.listaPerfil}"
 								var="perfil" itemValue="#{perfil.codigo}" itemLabel="#{perfil.descricao}" />
 						</p:selectOneMenu>
@@ -54,8 +54,8 @@
 
 						<p:outputLabel value="Sexo" />
 						<p:selectOneMenu value="#{cadastrarUsuario.usuarioBean.sexo}">
-							<f:selectItem itemLabel="MASCULINO" itemValue="M" />
-							<f:selectItem itemLabel="FEMININO" itemValue="F" />
+							<f:selectItem itemLabel="Masculino" itemValue="M" />
+							<f:selectItem itemLabel="Feminino" itemValue="F" />
 						</p:selectOneMenu>
 
 						<p:outputLabel value="Ativo" />
