@@ -32,7 +32,7 @@ public class ConsultarUsuario implements Serializable {
 
 		ativo = true;
 
-		consultar();
+//		consultar();
 	}
 
 	public String consultar() {
