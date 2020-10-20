@@ -159,6 +159,36 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>desenv</id>
+            <properties>
+                <dominio.url>localhost:8080</dominio.url>
+                <ambiente>desenv</ambiente>
+                <rest.key.security>09cb9dfe908a8d1d95cf64b2464784c5792a1116332a0b5601a465f5281ac6fc</rest.key.security>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>homolog</id>
+            <properties>
+                <dominio.url>http://23.96.111.134:8081</dominio.url>
+                <ambiente>homolog</ambiente>
+                <rest.key.security>09cb9dfe908a8d1d95cf64b2464784c5792a1116332a0b5601a465f5281ac6fc</rest.key.security>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <dominio.url>http://23.96.111.134:8081</dominio.url>
+                <ambiente>prod</ambiente>
+                <rest.key.security>64bebca8d32fbddbf0f83d67293c8043b80e46eca6da64f18d58c7196538ba4f</rest.key.security>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>advocacia</finalName>
         <plugins>
@@ -176,10 +206,25 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>src/main/webapp</directory>
+                            <includes>
+                                <include>**/*.js</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
 </project>
